@@ -1,0 +1,60 @@
+#web3_bazaar {
+  * {
+    font-family: 'EarlsRevenge', sans-serif !important;
+  }
+  &.theme--light.v-application {
+    background: none;
+  }
+  .container:not(.container--fluid) {
+    max-width: 1200px;
+  }
+  .hero-section {
+    position: relative;
+    background: linear-gradient(
+      0deg,
+      rgba(188, 101, 193, 1) 32%,
+      rgba(30, 7, 94, 1) 33%
+    );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    @media (min-width: 480px) {
+      min-height: 600px;
+    }
+
+    &--image {
+      @media (min-width: 380px) {
+        min-height: 490px;
+      }
+
+      min-height: 340px;
+      background: url('~/assets/img/core-img/Web3Bazaar_1of1_ArtPiece_HD_FINAL.png')
+        no-repeat bottom center;
+      background-size: contain;
+    }
+    .more-btn {
+      font-size: 20px;
+    }
+  }
+  .login-btn {
+    font-size: 22px !important;
+  }
+  .author-item:not(:last-child) {
+    margin-bottom: 30px;
+  }
+  section.features {
+    .dream-dots {
+      font-size: 22px;
+    }
+  }
+  .author-info h5 {
+    font-size: 20px;
+  }
+}
+
+@font-face {
+  font-family: 'EarlsRevenge';
+  src: url('~assets/fonts/EarlsRevenge-69Kg.ttf');
+}
