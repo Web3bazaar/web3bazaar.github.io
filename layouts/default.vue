@@ -1,71 +1,7 @@
 <template>
   <v-app id="web3_bazaar">
-    <nav id="banner" class="navbar navbar-expand-lg navbar-white fixed-top">
-      <v-container>
-        <!-- Brand -->
-        <a class="navbar-brand" href="/"
-          ><span
-            ><img
-              width="45"
-              src="@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png"
-              alt="logo"
-          /></span>
-          Web3Bazaar</a
-        >
-
-        <!-- Toggler/collapsibe Button -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#collapsibleNavbar"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Navbar links -->
-        <div id="collapsibleNavbar" class="collapse navbar-collapse">
-          <ul class="navbar-nav ml-auto">
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown"
-                >Discover</a
-              >
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="">Live Auctions</a>
-                <a class="dropdown-item" href="">Discover</a>
-                <a class="dropdown-item" href="item-details">Item Details</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="">Activity</a>
-            </li>
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown"
-                >Pages</a
-              >
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="">Wallet Connect</a>
-                <a class="dropdown-item" href="create-new-trade">Create Item</a>
-                <a class="dropdown-item" href="">Authors</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="">Contact</a>
-            </li> -->
-            <li class="lh-55px">
-              <a href="http://docs.web3bazaar.org/" class="btn login-btn ml-50"
-                >Wiki</a
-              >
-            </li>
-          </ul>
-        </div>
-      </v-container>
-    </nav>
-    <div id="main-b">
+    <layout-header-app />
+    <div id="main-b" class="overflow-y-auto">
       <div class="jumbotron-fluid">
         <Nuxt />
       </div>
@@ -75,16 +11,30 @@
       <div class="footer-bottom">
         <div class="auto-container">
           <div class="copyright-text">Copyright ©{{ getYear }} Web3 Bazaar</div>
+          <button @click="toggleSound">Toggle my sound preferences!</button>
         </div>
       </div>
     </footer>
     <!-- ##### Footer Area End ##### -->
+
+    <modal-wrapper v-if="showModal" />
+    <ProviderDetector
+      @checkSuccess="metamaskCheckSuccess"
+      @checkError="metamaskCheckError"
+    />
   </v-app>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
+import ModalWrapper from '@/modals/modal-wrapper.vue'
+
 export default {
   name: 'DefaultLayout',
+  components: {
+    ModalWrapper,
+  },
   data() {
     return {
       clipped: false,
@@ -106,12 +56,98 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js',
+      audio: null,
+    }
+  },
+  head() {
+    return {
+      htmlAttrs: {
+        // style: 'overflow-y:hidden',
+      },
     }
   },
   computed: {
     getYear() {
       return new Date().getFullYear()
     },
+    ...mapState('modals', ['showModal', 'modalType']),
+    ...mapState('sound', ['isSoundEnabled']),
+  },
+  mounted() {
+    this.$store.commit('sound/initializeSound')
+    this.playSound()
+  },
+  methods: {
+    playSound() {
+      if (this.isSoundEnabled) {
+        this.audio = new Audio(
+          require('~/assets/audio/background/Life-at-the-bazaar.mp3').default
+        )
+
+        this.audio.volume = 0
+        const interval = 400 // 200ms interval
+
+        const fadeout = () =>
+          setInterval(() => {
+            // Reduce volume by 0.05 as long as it is above 0
+            // This works as long as you start with a multiple of 0.05!
+            if (this.audio.volume < 0.6) {
+              this.audio.volume += 0.03
+            } else {
+              // Stop the setInterval when 0 is reached
+              clearInterval(fadeout)
+            }
+          }, interval)
+
+        fadeout()
+        this.audio.loop = true
+
+        this.audio.play()
+      }
+    },
+    toggleSound() {
+      this.$store.commit('sound/toggleSound')
+      if (!this.audio) {
+        this.playSound()
+      } else if (this.audio.paused) {
+        this.audio.play()
+      } else {
+        this.audio.pause()
+      }
+      // this.audio = null
+    },
+    metamaskCheckSuccess() {
+      console.log('CHECK COMPLETE')
+      // load data now
+    },
+    metamaskCheckError(message) {
+      console.log('CHECK COMPLETE')
+      if (message) alert(message)
+    },
   },
 }
 </script>
+<style lang="scss">
+/* width */
+::-webkit-scrollbar {
+  width: 30px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(116, 80, 254, 0.7);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+// #main-b {
+//   max-height: 100vh;
+// }
+</style>
