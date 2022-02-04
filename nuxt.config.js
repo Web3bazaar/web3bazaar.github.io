@@ -22,14 +22,14 @@ export default {
       },
     ],
     script: [
-      { src: '/script/jquery.min.js' },
-      { src: '/script/jquery.syotimer.min.js' },
-      { src: '/script/kute.min.js' },
-      { src: '/script/popper.min.js' },
-      { src: '/script/bootstrap.min.js' },
-      { src: '/script/animated.js' },
-      { src: '/script/plugins.js' },
-      { src: '/script/script.js' },
+      // { src: '/script/jquery.min.js' },
+      // { src: '/script/jquery.syotimer.min.js' },
+      // { src: '/script/kute.min.js' },
+      // { src: '/script/popper.min.js' },
+      // { src: '/script/bootstrap.min.js' },
+      // { src: '/script/animated.js' },
+      // { src: '/script/plugins.js' },
+      // { src: '/script/script.js' },
     ],
   },
 
@@ -47,7 +47,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // { src: '~/plugins/animated.js', mode: 'client' },
+    { src: '~/plugins/filters.js' },
     // { src: '~/plugins/popper.min.js', mode: 'client' },
     // { src: '~/plugins/jquery.min.js', mode: 'client' },
     // { src: '~/plugins/bootstrap.min.js', mode: 'client' },
@@ -74,7 +74,7 @@ export default {
     [
       '@nuxtjs/vuetify',
       {
-        theme: { disable: true },
+        theme: { dark: true },
       },
     ],
   ],
@@ -105,5 +105,16 @@ export default {
   // },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+        },
+      })
+    },
+  },
+  ssr: false,
 }
