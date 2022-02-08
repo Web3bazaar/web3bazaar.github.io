@@ -83,4 +83,5 @@ export const actions = {
 export const getters = {
   getActiveChain: (state) =>
     state.networks.find((item) => item.chainId === state.activeNetwork),
+  account: (state) => state.account,
 }

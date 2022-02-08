@@ -39,6 +39,26 @@ $bgDark: #03091f;
     padding: 0;
     margin: 0;
   }
+  // #######################
+  // TRADES
+  // #######################
+  .trade-wrapper {
+    font-size: 22px;
+    &--title {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+    .project_logo {
+      border-radius: 12px;
+    }
+    #project_from,
+    #project_to {
+      font-size: 0.7em;
+    }
+    p {
+      font-size: 0.7em;
+    }
+  }
 
   // #######################
   // UI
@@ -49,7 +69,7 @@ $bgDark: #03091f;
     min-width: 160px;
     height: 48px;
     line-height: 48px;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 600;
     border: none;
     letter-spacing: 1px;

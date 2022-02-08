@@ -1,10 +1,18 @@
 <template>
-  <v-container>
-    <v-row class="trade-item" justify="center">
+  <v-container class="trade-wrapper">
+    {{ itemTo }}
+    <v-row :class="{ 'new-trade': newTrade }" justify="center">
       <!-- From -->
-      <v-col cols="12" sm="2" class="item-col">
+      <v-col cols="12" sm="3" class="item-col">
+        <p>From</p>
         <v-card class="item-card">
-          <trade-list-item :item="itemFrom" />
+          <trade-list-item
+            v-model="itemFrom"
+            :account-from="account"
+            :new-trade="newTrade"
+            :projects="projects"
+            :project-items="projectFromItems"
+          />
         </v-card>
       </v-col>
 
@@ -17,41 +25,89 @@
         />
       </v-col>
       <!-- To -->
-      <v-col cols="12" sm="2" class="item-col">
+      <v-col cols="12" sm="3" class="item-col">
+        <p>To</p>
+
         <v-card class="item-card">
-          <trade-list-item :item="itemTo" />
+          <trade-list-item
+            v-model="itemTo"
+            :new-trade="newTrade"
+            :projects="projects"
+            :project-items="projectToItems"
+          />
         </v-card>
-      </v-col>
-    </v-row>
-    <v-row class="trade-item" justify="center">
-      <v-col cols="12" class="text-center">
-        <button type="submit" class="more-btn mb-15">Claim back</button>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  props: {
+    newTrade: {
+      type: Boolean,
+      default: false,
+    },
+    projects: {
+      type: Array,
+      default: () => [],
+    },
+    projectFromItems: {
+      type: Array,
+      default: () => [],
+    },
+    projectToItems: {
+      type: Array,
+      default: () => [],
+    },
+  },
+
   data() {
-    return {
-      itemFrom: {
-        address: '0x999...123',
-        project_name: 'SunFlower Farms',
-        item_name: 'Sunflower',
-        item_quantity: 10,
-        item_logo_url:
-          'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-28427.appspot.com/o/assets%2F-MdunBb1X4ZSri9eSiAH%2F-MdunWUWe2Sfa8_DWsah%2F-Mduu7lwWSjVljFv_AOn%2Ffruit.png?alt=media&token=2907b67b-da46-4548-858f-a37885b887f0',
+    return {}
+  },
+  computed: {
+    ...mapState('connector', ['account']),
+    projectTo() {
+      return this.itemTo.project_name
+    },
+    projectFrom() {
+      return this.itemFrom.project_name
+    },
+    itemTo: {
+      get() {
+        return this.$store.state.trader.itemTo
       },
-      itemTo: {
-        address: '0x123...999',
-        project_name: 'SunFlower Farms',
-        item_name: 'potato',
-        item_quantity: 30,
-        item_logo_url:
-          'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-28427.appspot.com/o/assets%2F-MdunBb1X4ZSri9eSiAH%2F-MdunWUWe2Sfa8_DWsah%2F-MduuF0vhWOH6ROHcNKn%2Ffruit.png?alt=media&token=17281d54-377f-4f91-be9b-367f266aabb5',
+      set(value) {
+        this.$store.commit('trader/itemTo', value)
       },
-    }
+    },
+    itemFrom: {
+      get() {
+        return this.$store.state.trader.itemFrom
+      },
+      set(value) {
+        this.$store.commit('trader/itemFrom', value)
+      },
+    },
+  },
+  watch: {
+    projectFrom(val) {
+      console.log('projectFrom', val)
+      // TODO: fetch list of items
+    },
+    projectTo(val) {
+      console.log('projectTo', val)
+      // TODO: fetch list of items
+    },
+  },
+  created() {
+    // just for testing
+    this.$store.commit('trader/itemFrom', {
+      ...this.itemFrom,
+      address: this.account,
+    })
   },
 }
 </script>
@@ -63,6 +119,64 @@ export default {
   }
   .item-col:last-child .item-card .container {
     right: 3px;
+  }
+}
+.new-trade {
+  .v-card.item-card {
+    height: 500px;
+  }
+}
+.trade-item {
+  div[class^='col'] {
+    position: relative;
+  }
+}
+.v-card.item-card {
+  height: 260px;
+  position: relative;
+  background-image: linear-gradient(
+    130deg,
+    #eb3fa9 0%,
+    #395ff6 50%,
+    #eb3fa9 100%
+  );
+  color: whitesmoke;
+  * {
+    text-align: center;
+  }
+
+  .container {
+    height: 100%;
+
+    border-radius: 10px;
+    background-color: #0a1026;
+    position: relative;
+    border: solid 1px rgba(255, 255, 255, 0.25);
+    text-align: left;
+    padding: 10px;
+    // width: 97.4%;
+    // height: 98.7%;
+
+    top: -3px;
+    p {
+      margin-bottom: 4px;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      width: 102.6%;
+      height: 101.3%;
+      top: -3px;
+      left: -3px;
+      border-radius: 10px;
+      z-index: -1;
+      background-image: linear-gradient(
+        130deg,
+        #eb3fa9 0%,
+        #395ff6 50%,
+        #eb3fa9 100%
+      );
+    }
   }
 }
 </style>

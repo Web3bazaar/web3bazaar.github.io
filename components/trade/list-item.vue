@@ -1,27 +1,122 @@
 <template>
-  <v-container class="">
-    <v-row class="justify-space-evenly">
+  <v-container>
+    <v-row v-if="!newTrade" class="justify-space-evenly">
       <v-col cols="12">
-        <div id="account_from">{{ item.address }}</div>
+        <div id="account_from">{{ value.address | truncate(9) }}</div>
+      </v-col>
+      <v-col cols="12" sm="12">
+        <v-img
+          contain
+          class="project_logo mx-auto mb-1"
+          :src="value.base_img"
+        />
+        <div id="project_from">{{ value.project_name }}</div>
+      </v-col>
+      <v-col cols="12" sm="12" class="d-flex justify-center pb-1">
+        <v-img
+          contain
+          class="mr-1 ml-0"
+          max-width="20px"
+          :src="value.item_logo_url"
+        />
+        <p class="item-quantity mr-1">{{ value.item_quantity }}</p>
+
+        <p class="item-name">{{ value.item_name }}</p>
+      </v-col>
+    </v-row>
+
+    <v-row v-else class="justify-space-evenly">
+      <v-col v-if="!accountFrom" cols="12">
+        <p>Enter counter-party address</p>
+        <v-text-field
+          solo
+          dense
+          :value="value.address"
+          :hide-details="true"
+          @input="update('address', $event)"
+        />
+      </v-col>
+      <v-col v-else cols="12" class="pt-10 pb-6">
+        <div id="account_from">
+          {{ accountFrom | truncate(9) }}
+          <span style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px">
+            You
+          </span>
+        </div>
       </v-col>
 
       <v-col cols="12" sm="12">
         <v-img
-          contain
           class="project_logo mx-auto"
-          :src="'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403'"
+          height="120"
+          :src="value.base_img"
         />
-        <div id="project_from">{{ item.project_name }}</div>
-      </v-col>
-      <v-col cols="12" sm="12" class="d-flex justify-center pb-1">
-        <p class="item-quantity mr-1">{{ item.item_quantity }}</p>
+        <p>Choose a project</p>
 
-        <p class="item-name">{{ item.item_name }}</p>
-        <v-img
-          contain
-          class="mx-auto"
-          max-width="30px"
-          :src="item.item_logo_url"
+        <v-select
+          solo
+          dense
+          hide-details
+          :items="projects"
+          item-value="project_name"
+          item-text="project_name"
+          :value="value.project_name"
+          @input="update('project_name', $event)"
+        >
+        </v-select>
+      </v-col>
+
+      <v-col cols="12" sm="12">
+        <p>Choose an asset</p>
+        <v-select
+          solo
+          dense
+          hide-details
+          elevation="0"
+          :items="projectItems"
+          item-text="item_name"
+          :value="value.item_name"
+          @input="update('item_name', $event)"
+        >
+          <template #prepend-inner="item">
+            <v-img
+              class="project_logo mx-auto"
+              height="120"
+              :src="item.item_logo_url"
+            />
+          </template>
+          <template #selection="{ item }">
+            <div class="d-flex simple-text">
+              <v-img
+                class="project_logo mx-auto mr-2"
+                height="20"
+                width="20"
+                :src="item.item_logo_url"
+              />
+              {{ item.item_name }}
+            </div>
+          </template>
+          <template #item="{ item }">
+            <div class="d-flex simple-text">
+              <v-img
+                class="project_logo mx-auto mr-2"
+                height="20"
+                width="20"
+                :src="item.item_logo_url"
+              />
+              {{ item.item_name }}
+            </div>
+          </template>
+        </v-select>
+      </v-col>
+      <v-col cols="12" sm="12">
+        <p>Amount</p>
+        <v-text-field
+          solo
+          dense
+          hide-details
+          :value="value.item_quantity"
+          @input="update('item_quantity', $event)"
         />
       </v-col>
     </v-row>
@@ -31,9 +126,39 @@
 <script>
 export default {
   props: {
-    item: {
+    accountFrom: {
+      type: String,
+      default: '',
+    },
+    projects: {
+      type: Array,
+      default: () => [],
+    },
+    projectItems: {
+      type: Array,
+      default: () => [],
+    },
+    value: {
       type: Object,
       default: () => {},
+    },
+    newTrade: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    async update(key, value) {
+      this.$emit('input', { ...this.value, [key]: value })
+      await this.$nextTick()
+      if (key === 'project_name') {
+        console.log('change base_url')
+        this.$emit('input', {
+          ...this.value,
+          base_img: this.projects.find((p) => p.project_name === value)
+            .base_img,
+        })
+      }
     },
   },
 }
