@@ -96,6 +96,7 @@ export default {
     projectFrom(val) {
       console.log('projectFrom', val)
       // TODO: fetch list of items
+      this.$store.dispatch('trader/listOwnedIds', val);
     },
     projectTo(val) {
       console.log('projectTo', val)
