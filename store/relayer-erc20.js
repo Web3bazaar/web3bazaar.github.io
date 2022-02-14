@@ -9,6 +9,8 @@ const ERC721_USERS = '/api?module=account&action=tokennfttx&address=$WA&startblo
 //   https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address=0xA7Cc2E2050A607c813437C1c074f82322Cc0C8aE&startblock=0&endblock=999999999&sort=desc&apikey=CAS5V4SCSESCT1IDDG3IG5SU31XU81MYE3
 
 
+
+
 export const actions = {
 
     /**
@@ -47,7 +49,7 @@ export const actions = {
                                               tx.to.toUpperCase()  === wa.toUpperCase() &&
                                               tx.contractAddress.toUpperCase() === CONTRACT.toUpperCase()
                                           ).map(tx => tx.tokenID);
-        console.log('Full received : ', toAsReceiver );
+        console.log('Full received : ', toAsReceiver )
 
         // all tokens ids sent by user
         const fromAsSender = result.filter(tx =>  
@@ -55,7 +57,7 @@ export const actions = {
                                     tx.contractAddress.toUpperCase() === CONTRACT.toUpperCase()
                                 ).map(tx => tx.tokenID);
     
-        console.log('Full fromAsSender : ', fromAsSender );
+        console.log('Full fromAsSender : ', fromAsSender )
 
         // subtract all tokens recevied from the tokens sended by the wallet
         ids = toAsReceiver.filter(x => !fromAsSender.includes(x));
