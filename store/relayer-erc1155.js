@@ -14,7 +14,6 @@ const ERC1155_LOGS = '/api?module=logs&action=getLogs&fromBlock=379224&toBlock=l
 const singleTransfer = 'TransferSingle(address,address,address,uint256,uint256)';
 const batchTranfer   = 'TransferBatch(address,address,address,uint256[],uint256[])';
 
-
 const getEventLogFromContract = async function(query)
 {
   try{
