@@ -84,4 +84,5 @@ export const getters = {
   getActiveChain: (state) =>
     state.networks.find((item) => item.chainId === state.activeNetwork),
   account: (state) => state.account,
+  signer: (state) => state.signer,
 }

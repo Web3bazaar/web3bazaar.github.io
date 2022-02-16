@@ -106,8 +106,8 @@ export const actions = {
     const project = state.projects.find(p => p.project_name === projectName);
 
     // const ownedIds =  await dispatch('relayer-erc721/listERC721Ids', {...project , wa : rootState.connector.account }, {root: true} );
-    //const ownedIds =  await dispatch('relayer-erc1155/listERC1155', {...project , wa : rootState.connector.account }, {root: true} );
-    const ownedIds =  await dispatch('relayer-erc20/listERC20', {...project , wa : rootState.connector.account }, {root: true} );
+    // const ownedIds =  await dispatch('relayer-erc1155/listERC1155', {...project , wa : rootState.connector.account }, {root: true} );
+    const ownedIds =  await dispatch('web3-utils/allowERC1155', {...project , wa : rootState.connector.account }, {root: true} );
 
     console.log('Owned ids from trader store : ' , ownedIds );
   
