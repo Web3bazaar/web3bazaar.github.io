@@ -3,7 +3,7 @@
     {{ itemTo }}
     <v-row :class="{ 'new-trade': newTrade }" justify="center">
       <!-- From -->
-      <v-col cols="12" sm="3" class="item-col">
+      <v-col cols="12" sm="4" class="item-col">
         <p>From</p>
         <v-card class="item-card">
           <trade-list-item
@@ -25,7 +25,7 @@
         />
       </v-col>
       <!-- To -->
-      <v-col cols="12" sm="3" class="item-col">
+      <v-col cols="12" sm="4" class="item-col">
         <p>To</p>
 
         <v-card class="item-card">
@@ -94,13 +94,20 @@ export default {
   },
   watch: {
     projectFrom(val) {
-      console.log('projectFrom list-wrapper:' , val)
+      console.log('projectFrom list-wrapper:', val)
       // TODO: fetch list of items
-      this.$store.dispatch('trader/listOwnedIds', val);
+      // this.$store.dispatch('trader/listOwnedIds', {
+      //   selectedProjects: val,
+      //   from: true,
+      // })
     },
     projectTo(val) {
       console.log('projectTo list-wrapper: ', val)
       // TODO: fetch list of items
+      this.$store.dispatch('trader/listOwnedIds', {
+        selectedProjects: val,
+        to: true,
+      })
     },
   },
   created() {
@@ -109,12 +116,17 @@ export default {
       ...this.itemFrom,
       address: this.account,
     })
+
+    this.$store.dispatch('trader/listOwnedIds', {
+      selectedProjects: this.projects,
+      from: true,
+    })
   },
 }
 </script>
 
 <style lang="scss">
-.trade-item {
+.trade-wrapper {
   .item-col:first-child .item-card .container {
     left: 3px;
   }

@@ -46,68 +46,38 @@
       </v-col>
 
       <v-col cols="12" sm="12">
-        <v-img
-          class="project_logo mx-auto"
-          height="120"
-          :src="value.base_img"
-        />
-        <p>Choose a project</p>
+        <p>Choose projects</p>
 
         <v-select
+          v-model="selectedProjects"
           solo
           dense
           hide-details
+          multiple
+          label="Choose projects"
           :items="projects"
-          item-value="project_name"
+          return-object
           item-text="project_name"
           :value="value.project_name"
           @input="update('project_name', $event)"
         >
+          <template #selection="{ item, index }">
+            <v-chip v-if="index < maxProjectsToShow">
+              <span>{{ item.project_name | truncate(8, 'start') }}</span>
+            </v-chip>
+            <span
+              v-if="index === maxProjectsToShow"
+              class="grey--text text-caption"
+            >
+              (+{{ value.length - maxProjectsToShow }} others)
+            </span>
+          </template>
         </v-select>
       </v-col>
 
       <v-col cols="12" sm="12">
         <p>Choose an asset</p>
-        <v-select
-          solo
-          dense
-          hide-details
-          elevation="0"
-          :items="projectItems"
-          item-text="item_name"
-          :value="value.item_name"
-          @input="update('item_name', $event)"
-        >
-          <template #prepend-inner="item">
-            <v-img
-              class="project_logo mx-auto"
-              height="120"
-              :src="item.item_logo_url"
-            />
-          </template>
-          <template #selection="{ item }">
-            <div class="d-flex simple-text">
-              <v-img
-                class="project_logo mx-auto mr-2"
-                height="20"
-                width="20"
-                :src="item.item_logo_url"
-              />
-              {{ item.item_name }}
-            </div>
-          </template>
-          <template #item="{ item }">
-            <div class="d-flex simple-text">
-              <v-img
-                class="project_logo mx-auto mr-2"
-                height="20"
-                width="20"
-                :src="item.item_logo_url"
-              />
-              {{ item.item_name }}
-            </div>
-          </template>
-        </v-select>
+        <trade-asset-selection-grid v-model="selectedProjectsAssets" />
       </v-col>
       <v-col cols="12" sm="12">
         <p>Amount</p>
@@ -115,8 +85,8 @@
           solo
           dense
           hide-details
-          :value="value.item_quantity"
-          @input="update('item_quantity', $event)"
+          :value="value.amount"
+          @input="update('amount', $event)"
         />
       </v-col>
     </v-row>
@@ -147,17 +117,37 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      maxProjectsToShow: 3,
+      selectedProjects: [],
+      selectedProjectsAssets: [],
+    }
+  },
+  computed: {},
   methods: {
+    updateSelectedProjectsAssets() {
+      const selectedProjectsAssets = []
+      if (this.accountFrom) {
+        this.selectedProjects.forEach((p) => {
+          selectedProjectsAssets.push(...(p.projectFromItems || []))
+        })
+      }
+      selectedProjectsAssets.forEach((a) => (a.selected = false))
+      return selectedProjectsAssets
+    },
     async update(key, value) {
       this.$emit('input', { ...this.value, [key]: value })
       await this.$nextTick()
       if (key === 'project_name') {
-        console.log('change base_url')
-        this.$emit('input', {
-          ...this.value,
-          base_img: this.projects.find((p) => p.project_name === value)
-            .base_img,
-        })
+        console.log('project_name', key, value)
+        console.log('update projects list')
+        this.selectedProjectsAssets = this.updateSelectedProjectsAssets()
+        // this.$emit('input', {
+        //   ...this.value,
+        //   base_img: this.projects.find((p) => p.project_name === value)
+        //     .base_img,
+        // })
       }
     },
   },
