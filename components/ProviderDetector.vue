@@ -13,7 +13,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('networks', ['networks']),
+    ...mapState('networks', ['networksData']),
     ...mapState('connector', ['isWalletConnected', 'chainId']),
   },
   watch: {
@@ -83,7 +83,7 @@ export default {
       this.$emit('checkSuccess')
     },
     compareNetworkSupport(chainId) {
-      const networkObject = this.networks.find(
+      const networkObject = this.networksData.find(
         (network) => network.chainId === chainId
       )
       // if (chainId !== '0xa86a') {

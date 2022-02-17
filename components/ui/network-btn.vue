@@ -1,16 +1,14 @@
 <template>
   <button class="btn mini login-btn network-btn" @click="clickHandler">
-    <img :src="activeNetwork.icon" alt="" />
+    <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
 
-    {{ activeNetwork.title }}
+    {{ activeNetwork.name }}
   </button>
 </template>
 
 <script>
-import avaxIcon from '@/assets/img/pixel-logos/avalanche-pixel.png'
-import binanceIcon from '@/assets/img/pixel-logos/binance-pixel.png'
-import fantomIcon from '@/assets/img/pixel-logos/fantom-pixel.png'
-import polygonIcon from '@/assets/img/pixel-logos/polygon-pixel.png'
+import { mapState } from 'vuex'
+
 export default {
   props: {
     networkType: {
@@ -19,39 +17,24 @@ export default {
     },
   },
   data() {
-    return {
-      networks: [
-        {
-          chainId: '0xa86a',
-          title: 'Avalanche',
-          icon: avaxIcon,
-        },
-        {
-          chainId: '0x38',
-          title: 'BSC',
-          icon: binanceIcon,
-        },
-        {
-          chainId: '0xfa',
-          title: 'FANTOM',
-          icon: fantomIcon,
-        },
-        {
-          chainId: '0x89',
-          title: 'POLYGON',
-          icon: polygonIcon,
-        },
-      ],
-    }
+    return {}
   },
   computed: {
+    ...mapState('networks', ['networksData']),
+
     activeNetwork() {
-      return this.networks.find((item) => item.chainId === this.networkType)
+      console.log(this.networkType)
+      return this.networksData.find((item) => item.chainId === this.networkType)
     },
   },
   methods: {
     clickHandler() {
       this.$emit('click')
+    },
+    getNetworkIcon(network) {
+      if (network && network !== 'rinkeby') {
+        return require(`@/assets/img/pixel-logos/${network.toLowerCase()}-pixel.png`)
+      }
     },
   },
 }

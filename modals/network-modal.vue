@@ -7,7 +7,11 @@
     <p class="title">select your network</p>
 
     <div class="networks-wrap">
-      <div v-for="network in networks" :key="network.chainId" class="item-wrap">
+      <div
+        v-for="network in networksData"
+        :key="network.chainId"
+        class="item-wrap"
+      >
         <ui-network-btn
           :network-type="network.chainId"
           @click="switchNetwork(network.chainId)"
@@ -31,72 +35,10 @@ export default {
     CloseButton,
   },
   data() {
-    return {
-      networksData: [
-        {
-          chainId: '0x38',
-          chainName: 'Binance Smart Chain',
-          nativeCurrency: {
-            name: 'BNB',
-            symbol: 'BNB',
-            decimals: 18,
-          },
-          rpcUrls: [
-            'https://bsc-dataseed.binance.org/',
-            'https://bsc-dataseed1.defibit.io/',
-            'https://bsc-dataseed1.ninicoin.io/',
-          ],
-          blockExplorerUrls: ['https://bscscan.com'],
-          iconUrls: [
-            'https://s2.coinmarketcap.com/static/img/coins/200x200/1839.png',
-          ],
-        },
-        {
-          chainId: '0xfa',
-          chainName: 'Fantom Opera Mainnet',
-          rpcUrls: [
-            'https://rpcapi.fantom.network/',
-            'https://rpc.fantom.network/',
-          ],
-          iconUrls: ['https://ftmscan.com/images/logo-ftmscan.svg?v=0.0.2'],
-          blockExplorerUrls: ['https://ftmscan.com/'],
-          nativeCurrency: {
-            name: 'Fantom',
-            symbol: 'FTM',
-            decimals: 18,
-          },
-        },
-        {
-          chainId: '0xa86a',
-          chainName: 'Avalanche Network',
-          rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-          iconUrls: [
-            'https://snowtrace.io/images/svg/brands/mainbrand-1.svg?v=23.1.3.0',
-          ],
-          blockExplorerUrls: ['https://snowtrace.io/'],
-          nativeCurrency: {
-            name: 'Avalanche',
-            symbol: 'AVAX',
-            decimals: 18,
-          },
-        },
-        {
-          chainId: '0x89',
-          chainName: 'Polygon Mainnet',
-          rpcUrls: ['https://polygon-rpc.com/'],
-          iconUrls: ['https://polygonscan.com/images/logo.svg?v=0.0.3'],
-          blockExplorerUrls: ['https://polygonscan.com/'],
-          nativeCurrency: {
-            name: 'Matic',
-            symbol: 'MATIC',
-            decimals: 18,
-          },
-        },
-      ],
-    }
+    return {}
   },
   computed: {
-    ...mapState('networks', ['networks']),
+    ...mapState('networks', ['networksData']),
     currentNetwork() {
       const activeNetwork = this.$store.state.networks.activeNetwork
       console.log(activeNetwork)
@@ -118,7 +60,13 @@ export default {
           alert('Change in Metamask:(')
           return false
         }
-        const data = this.networksData.find((item) => item.chainId === chainId)
+        const data = Object.assign(
+          {},
+          this.networksData.find((item) => item.chainId === chainId)
+        )
+        delete data.apiURL
+        delete data.code
+        delete data.name
         const resp = await window.ethereum.request({
           method: 'wallet_addEthereumChain',
           params: [data],

@@ -207,7 +207,7 @@
               class="mx-auto"
               contain
               max-width="80"
-              :src="require('@/assets/img/pixel-logos/binance-pixel.png')"
+              :src="require('@/assets/img/pixel-logos/bsc-pixel.png')"
             />
           </v-col>
           <v-col cols="6" sm="3">
