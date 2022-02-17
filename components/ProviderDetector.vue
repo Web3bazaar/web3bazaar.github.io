@@ -48,6 +48,7 @@ export default {
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
       const userSigner = userProvider.getSigner()
       console.log(userSigner)
+      // this.$store.commit('connector/setSigner', userSigner)
 
       this.$store.commit('connector/setMetamaskActive', true)
       await this.checkConnection()
