@@ -16,7 +16,7 @@
           />
         </v-col>
         <v-col cols="12" class="text-center">
-          <button type="submit" class="more-btn mb-15">Add trade</button>
+          <button  v-on:click="newTrade" type="submit" class="more-btn mb-15">Add trade</button>
         </v-col>
       </v-row>
     </v-container>
@@ -34,7 +34,21 @@ export default {
     ...mapState('connector', ['isWalletConnected', 'account']),
     ...mapState('trader', ['projectFromItems', 'projectToItems', 'projects']),
   },
+  methods: {
+    newTrade: async function (event) {
+      // `this` inside methods points to the Vue instance
+      console.log(' ***** newTrade **** ')
+      console.log('event.target.tagName : ', event.target.tagName);
+
+      let project = {}
+      const ownedIds =  await this.$store.dispatch('bazaar-connector/getTradeInfo', {...project , wa : 'rootState.connector.account' }, {root: true} );
+
+      console.log('Owned ID ', ownedIds)
+
+    }
+  }
 }
+
 </script>
 
 <style></style>

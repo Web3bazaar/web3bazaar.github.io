@@ -39,6 +39,7 @@ export const actions = {
     {
         // samples 
         contractAddress = "0xbB18df3ca10583Daa4327161d10F65B1A7c63282";
+
         creatorAssetContract = "0x02390dBA46A107F0728DAA98f920aec171502B22"
         creatorAssetId = 1;
         creatorAmount = 2;
@@ -66,12 +67,12 @@ export const actions = {
         const _executorAmount = new BN(executorAmount).mul(new BN(EtherUnit));
         
         const approveReturn = await bazaarInstance.startTrade(
-            Web3ABI.encodeParameter('address', creatorAssetContract), 
+            creatorAssetContract , // Web3ABI.encodeParameter('address', creatorAssetContract), 
             Web3ABI.encodeParameter('uint256', creatorAssetId) ,
             Web3ABI.encodeParameter('uint256', _creatorAmount) ,
             Web3ABI.encodeParameter('uint8',   creatorAssetType) ,
-            Web3ABI.encodeParameter('address', executorWalletAdd),
-            Web3ABI.encodeParameter('address', executorAssetContract), 
+            executorWalletAdd , // Web3ABI.encodeParameter('address', executorWalletAdd),
+            executorAssetContract, // Web3ABI.encodeParameter('address', executorAssetContract), 
             Web3ABI.encodeParameter('uint256', executorAssetId), 
             Web3ABI.encodeParameter('uint256', _executorAmount),
             Web3ABI.encodeParameter('uint8',   executorAssetType),
@@ -84,96 +85,137 @@ export const actions = {
 
     async claimBack({ commit }, { wa, contractAddress  }) 
     {
+        console.log('******* Claim Back *******')
 
-        contractAddress = "0x0ab1dc6500d0F1507dACbbA7AEDb9F44551B398A";
-        const erc721ABI = require('../const/abis/erc721.json');
-        console.log('ERC721 ', erc721ABI);
+        // webazaar contract address
+        contractAddress = "0xbB18df3ca10583Daa4327161d10F65B1A7c63282";
+        // tradeID
+        tradeId = 2;
+
+        const webazaarABI = require('../const/abis/webazaar.json');
+        console.log('webazaarABI :  ', webazaarABI);
 
         const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
         // const gasPrice = await estimate(userProvider);
 
-        const erc721Instance = new ethers.Contract(
+        const webazaarInstance = new ethers.Contract(
             contractAddress,
-            erc721ABI,
+            webazaarABI,
             userProvider.getSigner()
         );
 
-        const approveReturn = await erc721Instance.setApprovalForAll(contractAddress, Web3ABI.encodeParameter('bool', true ) , {})  
-        console.log('result from approval ', Web3ABI.decodeParameter('bool', approveReturn.data ));
+        const claimBackResult = await webazaarInstance.claimBlack( tradeId , 0 , {})
 
-        return approveReturn;        
+        return claimBackResult;        
     },
 
     async claim({ commit }, { wa, contractAddress  }) 
     {
         
-        contractAddress = "0x15051D1Fcf470b976c600b43B735f96aF311c6eE";
-        const erc1155ABI = require('../const/abis/erc1155.json');
-        console.log('ERC1155 ', erc1155ABI);
+        console.log('******* Claim Back *******')
+
+        // webazaar contract address
+        contractAddress = "0xbB18df3ca10583Daa4327161d10F65B1A7c63282";
+        // tradeID
+        tradeId = 2;
+
+        const webazaarABI = require('../const/abis/webazaar.json');
+        console.log('webazaarABI :  ', webazaarABI);
 
         const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
         // const gasPrice = await estimate(userProvider);
 
-        const erc1155Instance = new ethers.Contract(
+        const webazaarInstance = new ethers.Contract(
             contractAddress,
-            erc1155ABI,
+            webazaarABI,
             userProvider.getSigner()
         );
 
-        const approveReturn = await erc1155Instance.setApprovalForAll(contractAddress, Web3ABI.encodeParameter('bool', true ) , {})  
-        console.log('result from approval ', Web3ABI.decodeParameter('bool', approveReturn.data ));
+        const claimResult = await webazaarInstance.claim( tradeId , 0 , {})
 
-        return approveReturn;
+        return claimResult;
 
     },
 
-    async getTradeInfo({ commit }, { wa, tradeId  }) 
+    async getTradeInfo({ commit }, { wa, contractAddress, tradeId  }) 
     {
-        
-        contractAddress = "0x15051D1Fcf470b976c600b43B735f96aF311c6eE";
-        const erc1155ABI = require('../const/abis/erc1155.json');
-        console.log('ERC1155 ', erc1155ABI);
+        // webazaar contract address
+        contractAddress = "0xbB18df3ca10583Daa4327161d10F65B1A7c63282";
+        // tradeID
+        tradeId = 2;
+
+        const webazaarABI = require('../const/abis/webazaar.json');
+        console.log('webazaarABI :  ', webazaarABI);
 
         const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
         // const gasPrice = await estimate(userProvider);
 
-        const erc1155Instance = new ethers.Contract(
+        const webazaarInstance = new ethers.Contract(
             contractAddress,
-            erc1155ABI,
+            webazaarABI,
             userProvider.getSigner()
         );
 
-        const approveReturn = await erc1155Instance.setApprovalForAll(contractAddress, Web3ABI.encodeParameter('bool', true ) , {})  
-        console.log('result from approval ', Web3ABI.decodeParameter('bool', approveReturn.data ));
+        const creatorTradeInfo = await webazaarInstance.getTradeInfoCreator( tradeId , {})
+        const executerTradeInfo = await webazaarInstance.getTradeInfoExecutor( tradeId , {})
 
-        return approveReturn;
+        const tradeInfo = {
+            creator : {
+                address : creatorTradeInfo[0],
+                contractAddress : creatorTradeInfo[1],
+                idAsset : creatorTradeInfo[2].toString(),
+                amount : creatorTradeInfo[3].toString(),
+                traderStatus :  creatorTradeInfo[4],
+                traderType :  creatorTradeInfo[5]
+            },
+            executer : {
+                address : executerTradeInfo[0],
+                contractAddress : executerTradeInfo[1],
+                idAsset : executerTradeInfo[2].toString(),
+                amount : executerTradeInfo[3].toString(),
+                traderStatus :  executerTradeInfo[4],
+                traderType :  executerTradeInfo[5]
+            },
+            tradeStatus : creatorTradeInfo[6]
+        }
+
+        
+        console.log('getTradeInfoCreator :  ',  tradeInfo );
+
+        return tradeInfo;
 
     },
 
     async getOpenTrades({ commit }, { wa }) 
     {
         
-        contractAddress = "0x15051D1Fcf470b976c600b43B735f96aF311c6eE";
-        const erc1155ABI = require('../const/abis/erc1155.json');
-        console.log('ERC1155 ', erc1155ABI);
+        console.log('******* getOpenTrades *******')
+
+        // webazaar contract address
+        contractAddress = "0xbB18df3ca10583Daa4327161d10F65B1A7c63282";
+        // tradeID
+        tradeId = 2;
+
+        const webazaarABI = require('../const/abis/webazaar.json');
+        console.log('webazaarABI :  ', webazaarABI);
 
         const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
         // const gasPrice = await estimate(userProvider);
 
-        const erc1155Instance = new ethers.Contract(
+        const webazaarInstance = new ethers.Contract(
             contractAddress,
-            erc1155ABI,
+            webazaarABI,
             userProvider.getSigner()
         );
 
-        const approveReturn = await erc1155Instance.setApprovalForAll(contractAddress, Web3ABI.encodeParameter('bool', true ) , {})  
-        console.log('result from approval ', Web3ABI.decodeParameter('bool', approveReturn.data ));
+        const openTrades = await webazaarInstance.tradePerUser( wa , 0 , {})
+        console.log('Open trades for users ', openTrades);
 
-        return approveReturn;
+        return openTrades;
 
     }
 
