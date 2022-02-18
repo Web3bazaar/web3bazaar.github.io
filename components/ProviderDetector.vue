@@ -44,12 +44,12 @@ export default {
         this.$emit('checkError', 'Do you have multiple wallets installed?')
         return false
       }
-      console.log(provider)
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
       const userSigner = userProvider.getSigner()
       console.log(userSigner)
       // this.$store.commit('connector/setSigner', userSigner)
 
+      // this.$store.commit('connector/setSigner', Object.freeze(userSigner))
       this.$store.commit('connector/setMetamaskActive', true)
       await this.checkConnection()
     },

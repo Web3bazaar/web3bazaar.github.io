@@ -116,13 +116,13 @@ export const actions = {
           let ownedIds
 
           switch (project.contractType) {
-            case 'ERC20':
-              ownedIds = await dispatch(
-                'relayer-erc20/listERC20',
-                { ...project, wa: rootState.connector.account },
-                { root: true }
-              )
-              break
+            // case 'ERC20':
+            //   ownedIds = await dispatch(
+            //     'relayer-erc20/listERC20',
+            //     { ...project, wa: rootState.connector.account },
+            //     { root: true }
+            //   )
+            //   break
             case 'ERC721':
               ownedIds = await dispatch(
                 'relayer-erc721/listERC721',

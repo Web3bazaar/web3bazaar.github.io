@@ -18,6 +18,7 @@
     "@metamask/detect-provider": "^1.2.0",
     "@nuxtjs/axios": "^5.13.6",
     "core-js": "^3.19.3",
+    "debug": "^4.3.3",
     "ethers": "^5.5.4",
     "nuxt": "^2.15.8",
     "vue": "^2.6.14",

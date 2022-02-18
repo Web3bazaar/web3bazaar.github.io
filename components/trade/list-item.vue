@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="list-item">
     <v-row v-if="!newTrade" class="justify-space-evenly">
       <v-col cols="12">
         <div id="account_from">{{ value.address | truncate(9) }}</div>
@@ -133,7 +133,10 @@ export default {
           selectedProjectsAssets.push(...(p.projectFromItems || []))
         })
       }
-      selectedProjectsAssets.forEach((a) => (a.selected = false))
+      selectedProjectsAssets.forEach(
+        (a) => (a.selected = false),
+        (a) => (a.chosenAmount = 0)
+      )
       return selectedProjectsAssets
     },
     async update(key, value) {

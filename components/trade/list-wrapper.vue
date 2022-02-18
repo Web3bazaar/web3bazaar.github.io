@@ -1,10 +1,18 @@
 <template>
   <v-container class="trade-wrapper">
-    {{ itemTo }}
+    <!-- {{ itemTo }} -->
     <v-row :class="{ 'new-trade': newTrade }" justify="center">
       <!-- From -->
+      <v-col cols="12" sm="5">
+        <p class="mb-0">From</p>
+      </v-col>
+      <v-col cols="12" sm="1"> </v-col>
+      <v-col cols="12" sm="5">
+        <p class="mb-0">To</p>
+      </v-col>
+    </v-row>
+    <v-row :class="{ 'new-trade': newTrade }" justify="center">
       <v-col cols="12" sm="4" class="item-col">
-        <p>From</p>
         <v-card class="item-card">
           <trade-list-item
             v-model="itemFrom"
@@ -26,8 +34,6 @@
       </v-col>
       <!-- To -->
       <v-col cols="12" sm="4" class="item-col">
-        <p>To</p>
-
         <v-card class="item-card">
           <trade-list-item
             v-model="itemTo"
@@ -127,10 +133,10 @@ export default {
 
 <style lang="scss">
 .trade-wrapper {
-  .item-col:first-child .item-card .container {
+  .item-col:first-child .item-card .container.list-item {
     left: 3px;
   }
-  .item-col:last-child .item-card .container {
+  .item-col:last-child .item-card .container.list-item {
     right: 3px;
   }
 }
@@ -158,7 +164,7 @@ export default {
     text-align: center;
   }
 
-  .container {
+  > .container {
     height: 100%;
 
     border-radius: 10px;
