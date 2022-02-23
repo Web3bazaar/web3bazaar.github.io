@@ -16,7 +16,9 @@
           />
         </v-col>
         <v-col cols="12" class="text-center">
-          <button  v-on:click="newTrade" type="submit" class="more-btn mb-15">Add trade</button>
+          <button type="submit" class="more-btn mb-15" @click="newTrade">
+            Add trade
+          </button>
         </v-col>
       </v-row>
     </v-container>
@@ -32,23 +34,72 @@ export default {
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
-    ...mapState('trader', ['projectFromItems', 'projectToItems', 'projects']),
+    ...mapState('trader', [
+      'projectFromItems',
+      'projectToItems',
+      'projects',
+      'itemTo',
+      'tradeSelectedItemFrom',
+      'tradeSelectedItemTo',
+    ]),
   },
   methods: {
-    newTrade: async function (event) {
-      // `this` inside methods points to the Vue instance
-      console.log(' ***** newTrade **** ')
-      console.log('event.target.tagName : ', event.target.tagName);
+    async newTrade() {
+      // console.log('***** newTrade ****')
+      this.$logger('tradeSelectedItemFrom', this.tradeSelectedItemFrom)
+      this.$logger('tradeSelectedItemTo', this.tradeSelectedItemTo)
 
-      let project = {}
-      const ownedIds =  await this.$store.dispatch('bazaar-connector/getTradeInfo', {...project , wa : 'rootState.connector.account' }, {root: true} );
+      if (!this.tradeSelectedItemFrom) return
+      if (!this.tradeSelectedItemTo) return
 
-      console.log('Owned ID ', ownedIds)
+      const {
+        contractAddress: creatorAssetContract,
+        id: creatorAssetId,
+        chosenAmount: creatorAmount,
+        contractType: creatorAssetType,
+      } = this.tradeSelectedItemFrom.find((asset) => asset.selected > 0)
 
-    }
-  }
+      const creatorObject = {
+        creatorAssetContract,
+        creatorAssetId,
+        creatorAmount,
+        creatorAssetType,
+      }
+
+      this.$logger(creatorObject)
+
+      const {
+        contractAddress: executorAssetContract,
+        id: executorAssetId,
+        chosenAmount: executorAmount,
+        contractType: executorAssetType,
+      } = this.tradeSelectedItemTo.find((asset) => asset.selected > 0)
+
+      const executorWalletAdd = this.itemTo.address
+
+      const executorObject = {
+        executorAssetContract,
+        executorAssetId,
+        executorAmount,
+        executorAssetType,
+        executorWalletAdd,
+      }
+
+      this.$logger(executorObject)
+      const ownedIds = await this.$store
+        .dispatch('bazaar-connector/startTrade', {
+          ...creatorObject,
+          ...executorObject,
+          wa: 'rootState.connector.account',
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+
+      this.$logger('Owned ID ', ownedIds)
+    },
+  },
 }
-
 </script>
 
 <style></style>

@@ -4,12 +4,20 @@ import Web3Utils from 'web3-utils'
 import Web3ABI from 'web3-eth-abi'
 
 // replace for the contract address
-const CONTRACT = '0x2D71052c0f9861C82807703F2e586De040833E17'
-const ETHERSCAN_KEY = 'CAS5V4SCSESCT1IDDG3IG5SU31XU81MYE3'
+// const CONTRACT = '0x2D71052c0f9861C82807703F2e586De040833E17'
+
+const API_KEYS = {
+  ETHERSCAN: 'CAS5V4SCSESCT1IDDG3IG5SU31XU81MYE3',
+  MUMBAI: '2XSDG5S2EBJ8SDMXU9YJ7B7N75I6V8HPGW',
+}
 // base url
-const BASE_URL = 'https://api-rinkeby.etherscan.io'
-const ERC1155_LOGS =
-  '/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&sort=desc&address=$CONTRACT&apikey=$API_KEY'
+// const BASE_URL = 'https://api-rinkeby.etherscan.io'
+
+// const ERC1155_LOGS =
+//   '/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&sort=desc&address=$CONTRACT&apikey=$API_KEY'
+
+const getQuery = (BASE_URL, CONTRACT, API_KEY) =>
+  `${BASE_URL}/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&sort=desc&address=${CONTRACT}&apikey=${API_KEY}`
 
 const singleTransfer = 'TransferSingle(address,address,address,uint256,uint256)'
 const batchTranfer =
@@ -17,7 +25,7 @@ const batchTranfer =
 
 const getEventLogFromContract = async function (query) {
   try {
-    console.log('******* retriveEventsFromContract ***** ')
+    console.log('******* retriveEventsFromContract ***** ', query)
 
     const response = await axios.get(query)
     return response.data.result
@@ -59,10 +67,6 @@ const decodedDataEvent = async function (query) {
       }
     })
 
-    logIds.push({ id: '1', amount: 120000 })
-    logIds.push({ id: '1', amount: 620000 })
-    logIds.push({ id: '104', amount: 620000 })
-
     return logIds
   } catch (ex) {
     console.error('Error decodedDataEvent ', ex)
@@ -99,23 +103,25 @@ export const actions = {
    * @param {*} param1
    * @returns
    */
-  async listERC1155({ commit }, { wa, contractAddress }) {
+  async listERC1155({ commit }, { wa, contractAddress, network, baseUrl }) {
     // let ids = [1,2,4,8,5,6,7,8];
-    console.log('************  listERC1155 ****************')
+    console.log('************  listERC1155 ****************', wa)
 
     // hardcode wallet address
-    wa = '0x02390dBA46A107F0728DAA98f920aec171502B22'
+    // wa = '0x02390dBA46A107F0728DAA98f920aec171502B22'
 
     // build query replace contract and appKey
-    let toQuery = ERC1155_LOGS.replace('$CONTRACT', CONTRACT)
-    toQuery = toQuery.replace('$API_KEY', ETHERSCAN_KEY)
+    let toQuery = getQuery(baseUrl, contractAddress, API_KEYS[network])
+
+    // let toQuery = ERC1155_LOGS.replace('$CONTRACT', CONTRACT)
+    // toQuery = toQuery.replace('$API_KEY', ETHERSCAN_KEY)
 
     // encoding WA in format
     const encodedWA = Web3ABI.encodeParameter('address', wa)
     console.log('Encoded WA USER : ', encodedWA)
     // filter by topic3 to address
     toQuery += '&topic3=' + encodedWA
-    toQuery = BASE_URL + toQuery
+
     console.log('ToQuery : ', toQuery)
 
     let toAsReceiver = await decodedDataEvent(toQuery)
@@ -123,11 +129,13 @@ export const actions = {
     console.log('toAsReceiver : ', toAsReceiver)
 
     // From query replace contract and apiKey
-    let fromQuery = ERC1155_LOGS.replace('$CONTRACT', CONTRACT)
-    fromQuery = fromQuery.replace('$API_KEY', ETHERSCAN_KEY)
+    let fromQuery = getQuery(baseUrl, contractAddress, API_KEYS[network])
+
+    // let fromQuery = ERC1155_LOGS.replace('$CONTRACT', CONTRACT)
+    // fromQuery = fromQuery.replace('$API_KEY', ETHERSCAN_KEY)
     // replace topic 2 from address!
     fromQuery += '&topic2=' + encodedWA
-    fromQuery = BASE_URL + fromQuery
+
     console.log('From Query : ', fromQuery)
 
     let fromAsSender = await decodedDataEvent(fromQuery)

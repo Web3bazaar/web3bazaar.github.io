@@ -3,11 +3,11 @@
     <!-- {{ itemTo }} -->
     <v-row :class="{ 'new-trade': newTrade }" justify="center">
       <!-- From -->
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="4">
         <p class="mb-0">From</p>
       </v-col>
       <v-col cols="12" sm="1"> </v-col>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="4">
         <p class="mb-0">To</p>
       </v-col>
     </v-row>
@@ -20,6 +20,9 @@
             :new-trade="newTrade"
             :projects="projects"
             :project-items="projectFromItems"
+            @selectedProjectsAssets:update="
+              updateSelectedProjectsAssets($event, 'From')
+            "
           />
         </v-card>
       </v-col>
@@ -40,6 +43,9 @@
             :new-trade="newTrade"
             :projects="projects"
             :project-items="projectToItems"
+            @selectedProjectsAssets:update="
+              updateSelectedProjectsAssets($event, 'To')
+            "
           />
         </v-card>
       </v-col>
@@ -49,6 +55,8 @@
 
 <script>
 import { mapState } from 'vuex'
+
+import { ethers } from 'ethers'
 
 export default {
   props: {
@@ -100,7 +108,7 @@ export default {
   },
   watch: {
     projectFrom(val) {
-      console.log('projectFrom list-wrapper:', val)
+      this.$logger('projectFrom list-wrapper:', val)
       // TODO: fetch list of items
       // this.$store.dispatch('trader/listOwnedIds', {
       //   selectedProjects: val,
@@ -108,12 +116,25 @@ export default {
       // })
     },
     projectTo(val) {
-      console.log('projectTo list-wrapper: ', val)
+      this.$logger('projectTo list-wrapper: ', val)
       // TODO: fetch list of items
-      this.$store.dispatch('trader/listOwnedIds', {
-        selectedProjects: val,
-        to: true,
-      })
+      // this.$store.dispatch('trader/listOwnedIds', {
+      //   selectedProjects: val,
+      //   to: true,
+      // })
+    },
+    itemTo(val, oldVal) {
+      this.$logger('itemTo list-wrapper: ', val?.address !== oldVal?.address)
+      if (
+        val?.address !== oldVal?.address &&
+        ethers.utils.isAddress(val.address)
+      ) {
+        this.$store.dispatch('trader/listOwnedIds', {
+          selectedProjects: this.projects,
+          wa: val.address,
+          to: true,
+        })
+      }
     },
   },
   created() {
@@ -125,8 +146,14 @@ export default {
 
     this.$store.dispatch('trader/listOwnedIds', {
       selectedProjects: this.projects,
+      wa: this.account,
       from: true,
     })
+  },
+  methods: {
+    updateSelectedProjectsAssets(value, destination) {
+      this.$store.commit(`trader/tradeSelectedItem${destination}`, value)
+    },
   },
 }
 </script>

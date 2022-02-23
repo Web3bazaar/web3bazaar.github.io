@@ -24,7 +24,7 @@ export const actions = {
     // const ids = [1,2,4,8,5,6,7,8];
 
     // hardcode wallet address
-    wa = '0xa7cc2e2050a607c813437c1c074f82322cc0c8ae'
+    // wa = '0xa7cc2e2050a607c813437c1c074f82322cc0c8ae'
 
     // build query!
     let query = ERC721_USERS.replace('$WA', wa)

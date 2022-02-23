@@ -117,11 +117,11 @@ export default {
       // this.audio = null
     },
     metamaskCheckSuccess() {
-      console.log('CHECK COMPLETE')
+      this.$logger('CHECK COMPLETE')
       // load data now
     },
     metamaskCheckError(message) {
-      console.log('CHECK COMPLETE')
+      this.$logger('CHECK COMPLETE')
       if (message) alert(message)
     },
   },

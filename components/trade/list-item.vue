@@ -121,10 +121,17 @@ export default {
     return {
       maxProjectsToShow: 3,
       selectedProjects: [],
+
       selectedProjectsAssets: [],
     }
   },
   computed: {},
+  watch: {
+    selectedProjectsAssets(val) {
+      this.$logger(val)
+      this.$emit('selectedProjectsAssets:update', val)
+    },
+  },
   methods: {
     updateSelectedProjectsAssets() {
       const selectedProjectsAssets = []
@@ -132,11 +139,15 @@ export default {
         this.selectedProjects.forEach((p) => {
           selectedProjectsAssets.push(...(p.projectFromItems || []))
         })
+      } else {
+        this.selectedProjects.forEach((p) => {
+          selectedProjectsAssets.push(...(p.projectToItems || []))
+        })
       }
-      selectedProjectsAssets.forEach(
-        (a) => (a.selected = false),
-        (a) => (a.chosenAmount = 0)
-      )
+      // selectedProjectsAssets.forEach(
+      //   (a) => (a.selected = false),
+      //   (a) => (a.chosenAmount = 0)
+      // )
       return selectedProjectsAssets
     },
     async update(key, value) {

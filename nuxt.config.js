@@ -32,7 +32,9 @@ export default {
       // { src: '/script/script.js' },
     ],
   },
-
+  env: {
+    dev: process.env.NODE_ENV !== 'production',
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/bootstrap.min.css',
@@ -48,6 +50,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/filters.js' },
+    { src: '~/plugins/debug.js', mode: 'client' },
     // { src: '~/plugins/popper.min.js', mode: 'client' },
     // { src: '~/plugins/jquery.min.js', mode: 'client' },
     // { src: '~/plugins/bootstrap.min.js', mode: 'client' },
@@ -63,7 +66,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-   // '@nuxtjs/eslint-module',
+    '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
   ],
 

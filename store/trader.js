@@ -1,4 +1,9 @@
+const traderLog = require('debug')('w3b:store:trader')
+const traderError = require('debug')('w3b:store:trader:error')
+
 export const state = () => ({
+  tradeSelectedItemFrom: null,
+  tradeSelectedItemTo: null,
   itemFrom: {
     base_img:
       'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
@@ -38,11 +43,13 @@ export const state = () => ({
   ],
   projects: [
     {
-      project_name: 'Sunflower - bazaar721',
+      project_name: ' bazaar721',
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-      contractAddress: '',
+      contractAddress: '0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+      baseUrl: 'https://api-testnet.polygonscan.com/',
+      network: 'MUMBAI',
       contractType: 'ERC721',
       discord: '',
       twitter: '',
@@ -54,26 +61,13 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'Defi kingdoms - bazaar721',
-      description: 'Test contract for weebazaar ERC721',
-      base_img: 'https://picsum.photos/id/11/500/300',
-      contractAddress: '',
-      contractType: 'ERC721',
-      discord: '',
-      twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
-      api_metadata_sample: {
-        name: '',
-        description: '',
-        image: '',
-      },
-    },
-    {
-      project_name: 'Aavegotchi - bazaar1155',
+      project_name: 'bazaar1155',
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',
-      contractAddress: '',
+      contractAddress: '0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
+      baseUrl: 'https://api-testnet.polygonscan.com/',
+      network: 'MUMBAI',
       contractType: 'ERC1155',
       discord: '',
       twitter: '',
@@ -90,6 +84,8 @@ export const state = () => ({
       base_img:
         'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
       contractAddress: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
+      baseUrl: 'https://api-testnet.polygonscan.com/',
+      network: 'MUMBAI',
       contractType: 'ERC20',
       discord: '',
       twitter: '',
@@ -106,34 +102,34 @@ export const state = () => ({
 export const actions = {
   async listOwnedIds(
     { commit, dispatch, state, rootState },
-    { selectedProjects, to, from }
+    { wa, selectedProjects, to, from }
   ) {
     // const ownedIds =  await dispatch('relayer-erc721/listERC721Ids', {...project , wa : rootState.connector.account }, {root: true} );
 
     try {
       await Promise.all(
         selectedProjects.map(async (project) => {
-          let ownedIds
+          let ownedIds = []
 
           switch (project.contractType) {
             // case 'ERC20':
             //   ownedIds = await dispatch(
             //     'relayer-erc20/listERC20',
-            //     { ...project, wa: rootState.connector.account },
+            //     { ...project, wa },
             //     { root: true }
             //   )
             //   break
             case 'ERC721':
               ownedIds = await dispatch(
                 'relayer-erc721/listERC721',
-                { ...project, wa: rootState.connector.account },
+                { ...project, wa },
                 { root: true }
               )
               break
             case 'ERC1155':
               ownedIds = await dispatch(
                 'relayer-erc1155/listERC1155',
-                { ...project, wa: rootState.connector.account },
+                { ...project, wa },
                 { root: true }
               )
               break
@@ -145,21 +141,25 @@ export const actions = {
           const listDetails = (
             await dispatch(
               'details/getListDetails',
-              { listIds: ownedIds },
+              {
+                listIds: ownedIds,
+                contractAddress: project.contractAddress,
+                contractType: project.contractType,
+              },
               { root: true }
             )
           ).filter(Boolean)
 
           if (listDetails) {
             if (to) {
-              console.log('projectToItems : ', listDetails)
+              traderLog('projectToItems : ', listDetails)
               commit('updateProject', {
                 project_name: project.project_name,
                 projectToItems: listDetails,
               })
             }
             if (from) {
-              console.log('projectFromItems : ', listDetails)
+              traderLog('projectFromItems : ', listDetails)
               commit('updateProject', {
                 project_name: project.project_name,
                 projectFromItems: listDetails,
@@ -171,7 +171,7 @@ export const actions = {
 
       // TODO: get asst name from heruko api
     } catch (error) {
-      console.error('Error listing ids -> ', error)
+      traderError('Error listing ids -> ', error)
     }
   },
 }
@@ -182,6 +182,12 @@ export const mutations = {
   },
   itemTo(state, value) {
     state.itemTo = value
+  },
+  tradeSelectedItemTo(state, value) {
+    state.tradeSelectedItemTo = value
+  },
+  tradeSelectedItemFrom(state, value) {
+    state.tradeSelectedItemFrom = value
   },
   projectToItems(state, value) {
     state.projectToItems = value
