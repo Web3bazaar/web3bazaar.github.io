@@ -11,7 +11,7 @@
         <p class="mb-0">To</p>
       </v-col>
     </v-row>
-    <v-row :class="{ 'new-trade': newTrade }" justify="center">
+    <v-row v-if="newTrade" :class="{ 'new-trade': newTrade }" justify="center">
       <v-col cols="12" sm="4" class="item-col">
         <v-card class="item-card">
           <trade-list-item
@@ -50,6 +50,45 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-else :class="{ 'new-trade': newTrade }" justify="center">
+      <div v-for="trade in trades" :key="trade.id">
+        <v-col cols="12" sm="4" class="item-col">
+          <v-card class="item-card">
+            <trade-list-item
+              :value="trade.itemFrom"
+              :account-from="account"
+              :projects="projects"
+              :project-items="projectFromItems"
+              @selectedProjectsAssets:update="
+                updateSelectedProjectsAssets($event, 'From')
+              "
+            />
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" sm="1" class="d-flex align-center">
+          <v-img
+            contain
+            class="mx-auto"
+            max-width="40px"
+            :src="require('@/assets/img/icons/switch.png')"
+          />
+        </v-col>
+        <!-- To -->
+        <v-col cols="12" sm="4" class="item-col">
+          <v-card class="item-card">
+            <trade-list-item
+              :value="trade.itemTo"
+              :projects="projects"
+              :project-items="projectToItems"
+              @selectedProjectsAssets:update="
+                updateSelectedProjectsAssets($event, 'To')
+              "
+            />
+          </v-card>
+        </v-col>
+      </div>
+    </v-row>
   </v-container>
 </template>
 
@@ -60,6 +99,10 @@ import { ethers } from 'ethers'
 
 export default {
   props: {
+    trades: {
+      type: Array,
+      default: () => [],
+    },
     newTrade: {
       type: Boolean,
       default: false,

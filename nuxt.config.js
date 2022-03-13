@@ -1,5 +1,7 @@
 // import colors from 'vuetify/es5/util/colors'
 
+const BAZAAR_CONTRACT_ADDRESS = '0x670bc34b16e0994fd64D90F127fDe38c0f1Afb83'
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -34,6 +36,7 @@ export default {
   },
   env: {
     dev: process.env.NODE_ENV !== 'production',
+    BAZAAR_CONTRACT_ADDRESS,
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [

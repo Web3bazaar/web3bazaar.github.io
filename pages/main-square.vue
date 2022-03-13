@@ -16,7 +16,7 @@
       <v-row>
         <v-container class="trades submitted">
           <div class="trades--title">Trade submitted by you</div>
-          <trade-list-wrapper />
+          <trade-list-wrapper :trades="tradesSubmittedByYou" />
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
@@ -25,7 +25,7 @@
           <div class="trades--title">
             Trade submitted by your counter-parties
           </div>
-          <trade-list-wrapper />
+          <trade-list-wrapper :trades="tradesSubmittedByOthers" />
         </v-container>
       </v-row>
     </v-container>
@@ -33,7 +33,102 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+
+import { ethers } from 'ethers'
+
+const mainSquare = {
+  log: require('debug')('w3b:view:createNewTrade'),
+  error: require('debug')('w3b:view:error:createNewTrade'),
+}
+export default {
+  data() {
+    return {
+      tradesSubmittedByYou: [],
+      tradesSubmittedByOthers: [],
+    }
+  },
+  computed: {
+    ...mapState('connector', ['isWalletConnected', 'account']),
+  },
+  watch: {
+    async account(val) {
+      if (val) {
+        await this.getTradesInfo()
+      }
+    },
+  },
+  async mounted() {
+    if (this.isWalletConnected) {
+      await this.getTradesInfo()
+    }
+  },
+  methods: {
+    async getTradesInfo() {
+      this.loading = true
+
+      try {
+        const tradesIdsList = await this.getTradesIds()
+        mainSquare.log('tradesIdsList', tradesIdsList)
+
+        const promises = []
+
+        for (let i = 0; i < tradesIdsList.length; i++) {
+          const e = tradesIdsList[i]
+          promises.push(this.getSingleTradeInfo(e._hex))
+        }
+
+        const resolvedPromises = await Promise.all(promises)
+
+        //  resolvedPromises.map
+
+        console.log(resolvedPromises)
+
+        for (let i = 0; i < resolvedPromises.length; i++) {
+          const e = resolvedPromises[i]
+
+          if (e?.creator?.address === ethers.utils.getAddress(this.account)) {
+            this.tradesSubmittedByYou.push({
+              itemFrom: {
+                address: e.creator.address,
+                base_img: '',
+                project_name: 'getProjectName(e.creator.contractAddress)',
+                item_quantity: e.creator.contractAddress,
+                item_name: 'getItemName(e.creator.idAsset)',
+                ...e.creator,
+              },
+              itemTo: {
+                address: e.executer.address,
+                base_img: '',
+                project_name: 'getProjectName(e.executer.contractAddress)',
+                item_quantity: e.executer.contractAddress,
+                item_name: 'getItemName(e.executer.idAsset)',
+                ...e.executer,
+              },
+            })
+          }
+        }
+        console.log(this.tradesSubmittedByYou)
+      } catch (error) {
+        mainSquare.error('getTradesInfo error', error)
+
+        this.loading = false
+      }
+    },
+
+    async getTradesIds() {
+      return await this.$store.dispatch('bazaar-connector/getOpenTrades', {
+        walletAddress: this.account,
+      })
+    },
+    async getSingleTradeInfo(tradeId) {
+      return await this.$store.dispatch('bazaar-connector/getTradeInfo', {
+        walletAddress: this.account,
+        tradeId,
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss"></style>

@@ -1,5 +1,27 @@
-const traderLog = require('debug')('w3b:store:trader')
-const traderError = require('debug')('w3b:store:trader:error')
+import axios from 'axios'
+
+import { ethers } from 'ethers'
+
+const traderLogger = {
+  log: require('debug')('w3b:store:trader'),
+  error: require('debug')('w3b:store:error:trader'),
+}
+
+const getNFTListURL =
+  'https://nft-ownership-backend.herokuapp.com/api/v1/chainquery'
+
+const getNFTList = async function (params) {
+  try {
+    traderLogger.log('******* getNFTList ***** ', params)
+
+    const response = await axios.post(getNFTListURL, params)
+    traderLogger.log('******* response ***** ', response)
+
+    return response.data.data
+  } catch (ex) {
+    throw new Error('Not able to retrive data form event log : ', ex)
+  }
+}
 
 export const state = () => ({
   tradeSelectedItemFrom: null,
@@ -100,78 +122,134 @@ export const state = () => ({
 })
 
 export const actions = {
+  // const singleTransfer = 'TransferSingle(address,address,address,uint256,uint256)'
+  // const batchTranfer =
+  //   'TransferBatch(address,address,address,uint256[],uint256[])'
+
   async listOwnedIds(
-    { commit, dispatch, state, rootState },
+    { commit, dispatch, state, rootGetters },
     { wa, selectedProjects, to, from }
   ) {
     // const ownedIds =  await dispatch('relayer-erc721/listERC721Ids', {...project , wa : rootState.connector.account }, {root: true} );
 
     try {
-      await Promise.all(
-        selectedProjects.map(async (project) => {
-          let ownedIds = []
+      const activeChain = rootGetters['networks/getActiveChain']
+      traderLogger.log('activeChain : ', activeChain)
 
-          switch (project.contractType) {
-            // case 'ERC20':
-            //   ownedIds = await dispatch(
-            //     'relayer-erc20/listERC20',
-            //     { ...project, wa },
-            //     { root: true }
-            //   )
-            //   break
-            case 'ERC721':
-              ownedIds = await dispatch(
-                'relayer-erc721/listERC721',
-                { ...project, wa },
-                { root: true }
-              )
-              break
-            case 'ERC1155':
-              ownedIds = await dispatch(
-                'relayer-erc1155/listERC1155',
-                { ...project, wa },
-                { root: true }
-              )
-              break
+      const params = {
+        wallet: wa,
+        options: {
+          chain: 'mumbai',
+        },
+      }
+      const { nfts: nftsList } = await getNFTList(params)
+      traderLogger.log('getNFTList result:', nftsList)
 
-            default:
-              break
+      if (!nftsList || !nftsList.length || nftsList.length === 0) {
+        throw new Error("User hasn't got any NFTs")
+      }
+
+      traderLogger.log('nftsList:', nftsList)
+
+      selectedProjects.forEach((project) => {
+        const groupByProject = nftsList
+          .filter(
+            (e) =>
+              e.token_address.toLowerCase() ===
+              project.contractAddress.toLowerCase()
+          )
+          .map((e) => ({
+            ...e,
+            metadata: JSON.parse(e.metadata) || {},
+            amount:
+              e.contract_type === 'ERC1155'
+                ? ethers.utils.formatUnits(e.amount)
+                : e.amount,
+          }))
+
+        traderLogger.log('groupByProject : ', groupByProject)
+
+        if (groupByProject) {
+          if (to) {
+            commit('updateProject', {
+              project_name: project.project_name,
+              projectToItems: groupByProject,
+            })
           }
-
-          const listDetails = (
-            await dispatch(
-              'details/getListDetails',
-              {
-                listIds: ownedIds,
-                contractAddress: project.contractAddress,
-                contractType: project.contractType,
-              },
-              { root: true }
-            )
-          ).filter(Boolean)
-
-          if (listDetails) {
-            if (to) {
-              traderLog('projectToItems : ', listDetails)
-              commit('updateProject', {
-                project_name: project.project_name,
-                projectToItems: listDetails,
-              })
-            }
-            if (from) {
-              traderLog('projectFromItems : ', listDetails)
-              commit('updateProject', {
-                project_name: project.project_name,
-                projectFromItems: listDetails,
-              })
-            }
+          if (from) {
+            commit('updateProject', {
+              project_name: project.project_name,
+              projectFromItems: groupByProject,
+            })
           }
-        })
-      )
+        }
+      })
+
+      // await Promise.all(
+      //   selectedProjects.map(async (project) => {
+      //     let ownedIds = []
+
+      //     switch (project.contractType) {
+      //       // case 'ERC20':
+      //       //   ownedIds = await dispatch(
+      //       //     'relayer-erc20/listERC20',
+      //       //     { ...project, wa },
+      //       //     { root: true }
+      //       //   )
+      //       //   break
+      //       case 'ERC721':
+      //         ownedIds = await dispatch(
+      //           'relayer-erc721/listERC721',
+      //           { ...project, wa },
+      //           { root: true }
+      //         )
+      //         break
+      //       case 'ERC1155':
+      //         ownedIds = await dispatch(
+      //           'relayer-erc1155/listERC1155',
+      //           { ...project, wa },
+      //           { root: true }
+      //         )
+      //         break
+
+      //       default:
+      //         break
+      //     }
+
+      //     const listDetails = (
+      //       await dispatch(
+      //         'details/getListDetails',
+      //         {
+      //           listIds: ownedIds,
+      //           contractAddress: project.contractAddress,
+      //           contractType: project.contractType,
+      //         },
+      //         { root: true }
+      //       )
+      //     ).filter(Boolean)
+
+      //     if (listDetails) {
+      //       if (to) {
+      //         traderLogger.log('projectToItems : ', listDetails)
+      //         commit('updateProject', {
+      //           project_name: project.project_name,
+      //           projectToItems: listDetails,
+      //         })
+      //       }
+      //       if (from) {
+      //         traderLogger.log('projectFromItems : ', listDetails)
+      //         commit('updateProject', {
+      //           project_name: project.project_name,
+      //           projectFromItems: listDetails,
+      //         })
+      //       }
+      //     }
+      //   })
+      // )
 
       // TODO: get asst name from heruko api
     } catch (error) {
-      traderError('Error listing ids -> ', error)
+      traderLogger.error('Error listing ids -> ', error)
     }
   },
 }

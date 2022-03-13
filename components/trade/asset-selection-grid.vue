@@ -15,7 +15,7 @@
               <v-row no-gutters>
                 <v-col class="pa-0">
                   <div class="img-wrapper">
-                    <img :src="asset.image" />
+                    <img :src="asset.metadata.image" />
                   </div>
                   <v-fade-transition>
                     <v-overlay
@@ -26,7 +26,9 @@
                       <v-container class="pa-3">
                         <v-row justify="center">
                           <v-col cols="12" class="pa-0">
-                            <p class="text-center">{{ asset.name }}</p>
+                            <p class="text-center">
+                              {{ asset.metadata.name | truncate(10) }}
+                            </p>
                           </v-col>
                           <v-spacer />
                           <v-col cols="2" class="pa-0">

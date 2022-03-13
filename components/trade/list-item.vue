@@ -74,7 +74,7 @@
           </template>
         </v-select>
       </v-col>
-
+      <!-- 
       <v-col cols="12" sm="12">
         <p>Choose an asset</p>
         <trade-asset-selection-grid v-model="selectedProjectsAssets" />
@@ -88,7 +88,7 @@
           :value="value.amount"
           @input="update('amount', $event)"
         />
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>

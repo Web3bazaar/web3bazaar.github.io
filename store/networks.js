@@ -87,5 +87,5 @@ export const mutations = {
 }
 export const getters = {
   getActiveChain: (state) =>
-    state.networks.find((item) => item.chainId === state.activeNetwork),
+    state.networksData.find((item) => item.chainId === state.activeNetwork),
 }

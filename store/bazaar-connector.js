@@ -2,6 +2,13 @@ import { ethers } from 'ethers'
 import Web3Utils from 'web3-utils'
 import Web3ABI from 'web3-eth-abi'
 
+const bazaarConnectorLog = {
+  log: require('debug')('w3b:store:bazaarConnector'),
+  error: require('debug')('w3b:store:error:bazaarConnector'),
+}
+
+const BAZAAR_CONTRACT_ADDRESS = process.env.BAZAAR_CONTRACT_ADDRESS
+
 const BN = Web3Utils.BN
 const EtherUnit = Web3Utils.toWei('1')
 
@@ -35,8 +42,6 @@ export const actions = {
   async startTrade(
     { commit, rootState },
     {
-      wa,
-      contractAddress,
       creatorAssetContract,
       creatorAssetId,
       creatorAmount,
@@ -49,7 +54,6 @@ export const actions = {
     }
   ) {
     // samples
-    contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
 
     // creatorAssetContract = '0x02390dBA46A107F0728DAA98f920aec171502B22'
     // creatorAssetId = 1
@@ -63,44 +67,48 @@ export const actions = {
     // executorAmount = 5
     const executorAssetTypeParsed = TRADE_TYPE[executorAssetType]
 
-    const webazaarABI = require('../const/abis/webazaar.json')
-    console.log('webazaar abi : ', webazaarABI)
+    const webBazaarABI = require('../const/abis/webazaar.json')
+    bazaarConnectorLog.log('webazaar abi : ', webBazaarABI)
 
-    const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-    // const gasPrice = await estimate(userProvider);
+    try {
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+      // const gasPrice = await estimate(userProvider);
 
-    const bazaarInstance = new ethers.Contract(
-      contractAddress,
-      webazaarABI,
-      userProvider.getSigner()
-    )
+      const bazaarInstance = new ethers.Contract(
+        BAZAAR_CONTRACT_ADDRESS,
+        webBazaarABI,
+        userProvider.getSigner()
+      )
 
-    const _creatorAmount = new BN(creatorAmount).mul(new BN(EtherUnit))
-    const _executorAmount = new BN(executorAmount).mul(new BN(EtherUnit))
+      const _creatorAmount = new BN(creatorAmount).mul(new BN(EtherUnit))
+      const _executorAmount = new BN(executorAmount).mul(new BN(EtherUnit))
 
-    const approveReturn = await bazaarInstance.startTrade(
-      creatorAssetContract, // Web3ABI.encodeParameter('address', creatorAssetContract),
-      Web3ABI.encodeParameter('uint256', creatorAssetId),
-      Web3ABI.encodeParameter('uint256', _creatorAmount),
-      Web3ABI.encodeParameter('uint8', creatorAssetTypeParsed),
-      executorWalletAdd, // Web3ABI.encodeParameter('address', executorWalletAdd),
-      executorAssetContract, // Web3ABI.encodeParameter('address', executorAssetContract),
-      Web3ABI.encodeParameter('uint256', executorAssetId),
-      Web3ABI.encodeParameter('uint256', _executorAmount),
-      Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
-      {}
-    )
+      const approveReturn = await bazaarInstance.startTrade(
+        creatorAssetContract, // Web3ABI.encodeParameter('address', creatorAssetContract),
+        Web3ABI.encodeParameter('uint256', creatorAssetId),
+        Web3ABI.encodeParameter('uint256', _creatorAmount),
+        Web3ABI.encodeParameter('uint8', creatorAssetTypeParsed),
+        executorWalletAdd, // Web3ABI.encodeParameter('address', executorWalletAdd),
+        executorAssetContract, // Web3ABI.encodeParameter('address', executorAssetContract),
+        Web3ABI.encodeParameter('uint256', executorAssetId),
+        Web3ABI.encodeParameter('uint256', _executorAmount),
+        Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
+        {}
+      )
 
-    console.log(
-      'result from start Trade ',
-      Web3ABI.decodeParameter('bool', approveReturn.data)
-    )
+      bazaarConnectorLog.log(
+        'result from start Trade ',
+        Web3ABI.decodeParameter('bool', approveReturn.data)
+      )
 
-    return approveReturn
+      return approveReturn
+    } catch (error) {
+      throw error?.data || error
+    }
   },
 
   async claimBack({ commit }, { wa, contractAddress }) {
-    console.log('******* Claim Back *******')
+    bazaarConnectorLog.log('******* Claim Back *******')
 
     // webazaar contract address
     contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
@@ -108,7 +116,7 @@ export const actions = {
     const tradeId = 2
 
     const webazaarABI = require('../const/abis/webazaar.json')
-    console.log('webazaarABI :  ', webazaarABI)
+    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
@@ -126,7 +134,7 @@ export const actions = {
   },
 
   async claim({ commit }, { wa, contractAddress }) {
-    console.log('******* Claim Back *******')
+    bazaarConnectorLog.log('******* Claim Back *******')
 
     // webazaar contract address
     contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
@@ -134,7 +142,7 @@ export const actions = {
     const tradeId = 2
 
     const webazaarABI = require('../const/abis/webazaar.json')
-    console.log('webazaarABI :  ', webazaarABI)
+    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
@@ -151,21 +159,16 @@ export const actions = {
     return claimResult
   },
 
-  async getTradeInfo({ commit }, { wa, contractAddress, tradeId }) {
-    // webazaar contract address
-    contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
-    // tradeID
-    tradeId = 2
-
+  async getTradeInfo({ commit }, { walletAddress, tradeId }) {
     const webazaarABI = require('../const/abis/webazaar.json')
-    console.log('webazaarABI :  ', webazaarABI)
+    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
     // const gasPrice = await estimate(userProvider);
 
     const webazaarInstance = new ethers.Contract(
-      contractAddress,
+      BAZAAR_CONTRACT_ADDRESS,
       webazaarABI,
       userProvider.getSigner()
     )
@@ -199,35 +202,110 @@ export const actions = {
       tradeStatus: creatorTradeInfo[6],
     }
 
-    console.log('getTradeInfoCreator :  ', tradeInfo)
+    bazaarConnectorLog.log('getTradeInfoCreator :  ', tradeInfo)
 
     return tradeInfo
   },
 
-  async getOpenTrades({ commit }, { wa }) {
-    console.log('******* getOpenTrades *******')
+  async getOpenTrades({ commit }, { walletAddress }) {
+    bazaarConnectorLog.log('******* getOpenTrades *******')
 
     // webazaar contract address
-    const contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
     // tradeID
     // const tradeId = 2
 
     const webazaarABI = require('../const/abis/webazaar.json')
-    console.log('webazaarABI :  ', webazaarABI)
+    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
     // const gasPrice = await estimate(userProvider);
 
     const webazaarInstance = new ethers.Contract(
-      contractAddress,
+      BAZAAR_CONTRACT_ADDRESS,
       webazaarABI,
       userProvider.getSigner()
     )
 
-    const openTrades = await webazaarInstance.tradePerUser(wa, 0, {})
-    console.log('Open trades for users ', openTrades)
+    const openTrades = await webazaarInstance.tradePerUser(walletAddress)
+    bazaarConnectorLog.log('Open trades for users ', openTrades)
 
     return openTrades
+  },
+
+  async isApproved(
+    { commit },
+    { contractAddress, contractType, walletAddress }
+  ) {
+    bazaarConnectorLog.log(
+      '******* isApproved *******',
+      contractAddress,
+      contractType,
+      walletAddress
+    )
+    try {
+      const webazaarABI = require(`../const/abis/${contractType?.toUpperCase?.()}.json`)
+      bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
+
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+
+      // const gasPrice = await estimate(userProvider);
+
+      const webazaarInstance = new ethers.Contract(
+        contractAddress,
+        webazaarABI,
+        userProvider.getSigner()
+      )
+
+      const isApproved = await webazaarInstance.isApprovedForAll(
+        walletAddress,
+        BAZAAR_CONTRACT_ADDRESS
+      )
+      bazaarConnectorLog.log('is approved for all: ', isApproved)
+
+      return isApproved
+    } catch (error) {
+      bazaarConnectorLog.error('isApproved', error)
+      throw error?.data || error
+    }
+  },
+
+  async setApproval(
+    { commit },
+    { contractAddress, contractType, walletAddress, approveValue = true }
+  ) {
+    bazaarConnectorLog.log(
+      '******* setApproval *******',
+      contractAddress,
+      contractType,
+      walletAddress,
+      approveValue
+    )
+    try {
+      const webazaarABI = require(`../const/abis/${contractType?.toUpperCase?.()}.json`)
+      bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
+
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+
+      // const gasPrice = await estimate(userProvider);
+
+      const contractInstance = new ethers.Contract(
+        contractAddress,
+        webazaarABI,
+        userProvider.getSigner()
+      )
+
+      const isApproved = await contractInstance.setApprovalForAll(
+        BAZAAR_CONTRACT_ADDRESS,
+        Web3ABI.encodeParameter('bool', approveValue),
+        {}
+      )
+      bazaarConnectorLog.log('is approved for all: ', isApproved)
+
+      return isApproved
+    } catch (error) {
+      bazaarConnectorLog.error('isApproved', error)
+      throw error?.data || error
+    }
   },
 }
