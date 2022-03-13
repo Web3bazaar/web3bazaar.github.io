@@ -50,6 +50,7 @@ export default {
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
+    ...mapState('trader', ['projects']),
   },
   watch: {
     async account(val) {
@@ -92,17 +93,23 @@ export default {
               itemFrom: {
                 address: e.creator.address,
                 base_img: '',
-                project_name: 'getProjectName(e.creator.contractAddress)',
-                item_quantity: e.creator.contractAddress,
-                item_name: 'getItemName(e.creator.idAsset)',
+                project_name: this.getProjectName(e.creator.contractAddress),
+                item_quantity: e.creator.amount,
+                item_name: this.getItemName(
+                  e.creator.contractAddress,
+                  e.creator.idAsset
+                ),
                 ...e.creator,
               },
               itemTo: {
                 address: e.executer.address,
                 base_img: '',
-                project_name: 'getProjectName(e.executer.contractAddress)',
-                item_quantity: e.executer.contractAddress,
-                item_name: 'getItemName(e.executer.idAsset)',
+                project_name: this.getProjectName(e.executer.contractAddress),
+                item_quantity: e.executer.amount,
+                item_name: this.getItemName(
+                  e.creator.contractAddress,
+                  e.executer.idAsset
+                ),
                 ...e.executer,
               },
             })
@@ -114,6 +121,15 @@ export default {
 
         this.loading = false
       }
+    },
+
+    getProjectName(contractAddress) {
+      return this.projects.find((p) => p.contractAddress === contractAddress)
+        .project_name
+    },
+
+    getItemName(contractAddress, idAsset) {
+      return idAsset
     },
 
     async getTradesIds() {
