@@ -11,52 +11,14 @@
         <p class="mb-0">To</p>
       </v-col>
     </v-row>
-    <v-row v-if="newTrade" :class="{ 'new-trade': newTrade }" justify="center">
-      <v-col cols="12" sm="4" class="item-col">
-        <v-card class="item-card">
-          <trade-list-item
-            v-model="itemFrom"
-            :account-from="account"
-            :new-trade="newTrade"
-            :projects="projects"
-            :project-items="projectFromItems"
-            @selectedProjectsAssets:update="
-              updateSelectedProjectsAssets($event, 'From')
-            "
-          />
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="1" class="d-flex align-center">
-        <v-img
-          contain
-          class="mx-auto"
-          max-width="40px"
-          :src="require('@/assets/img/icons/switch.png')"
-        />
-      </v-col>
-      <!-- To -->
-      <v-col cols="12" sm="4" class="item-col">
-        <v-card class="item-card">
-          <trade-list-item
-            v-model="itemTo"
-            :new-trade="newTrade"
-            :projects="projects"
-            :project-items="projectToItems"
-            @selectedProjectsAssets:update="
-              updateSelectedProjectsAssets($event, 'To')
-            "
-          />
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-else :class="{ 'new-trade': newTrade }" justify="center">
-      <div v-for="trade in trades" :key="trade.id">
+    <v-container v-if="newTrade" class="pa-0">
+      <v-row :class="{ 'new-trade': newTrade }" justify="center">
         <v-col cols="12" sm="4" class="item-col">
           <v-card class="item-card">
             <trade-list-item
-              :value="trade.itemFrom"
+              v-model="itemFrom"
               :account-from="account"
+              :new-trade="newTrade"
               :projects="projects"
               :project-items="projectFromItems"
               @selectedProjectsAssets:update="
@@ -78,6 +40,57 @@
         <v-col cols="12" sm="4" class="item-col">
           <v-card class="item-card">
             <trade-list-item
+              v-model="itemTo"
+              :new-trade="newTrade"
+              :projects="projects"
+              :project-items="projectToItems"
+              @selectedProjectsAssets:update="
+                updateSelectedProjectsAssets($event, 'To')
+              "
+            />
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container v-else class="pa-0">
+      <v-row
+        v-for="trade in trades"
+        :key="trade.id"
+        :class="{ 'new-trade': newTrade }"
+        justify="center"
+      >
+        <v-col cols="12" sm="4" class="item-col">
+          <v-card class="item-card">
+            <trade-list-item
+              :value="trade.itemFrom"
+              :account-from="account"
+              :projects="projects"
+              :project-items="projectFromItems"
+              @selectedProjectsAssets:update="
+                updateSelectedProjectsAssets($event, 'From')
+              "
+            />
+          </v-card>
+        </v-col>
+
+        <v-col
+          cols="12"
+          sm="1"
+          class="d-flex flex-column align-center text-center"
+        >
+          {{ getTradeStatus(trade) }}
+
+          <v-img
+            contain
+            class="mx-auto"
+            max-width="40px"
+            :src="require('@/assets/img/icons/switch.png')"
+          />
+        </v-col>
+        <!-- To -->
+        <v-col cols="12" sm="4" class="item-col">
+          <v-card class="item-card">
+            <trade-list-item
               :value="trade.itemTo"
               :projects="projects"
               :project-items="projectToItems"
@@ -87,8 +100,18 @@
             />
           </v-card>
         </v-col>
-      </div>
-    </v-row>
+        <v-col cols="12" sm="12" class="item-col d-flex justify-center">
+          <v-btn
+            type="submit"
+            class="more-btn mb-15"
+            :loading="loadingBtn"
+            @click="handleTrade(trade)"
+          >
+            {{ tradeBtn(trade) }}
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 
@@ -97,11 +120,18 @@ import { mapState } from 'vuex'
 
 import { ethers } from 'ethers'
 
+const CLAIM_BACK = 'Claim back'
+const EXECUTE = 'Execute Trade'
+
 export default {
   props: {
     trades: {
       type: Array,
       default: () => [],
+    },
+    creator: {
+      type: Boolean,
+      default: false,
     },
     newTrade: {
       type: Boolean,
@@ -122,7 +152,21 @@ export default {
   },
 
   data() {
-    return {}
+    return {
+      EXECUTE,
+      CLAIM_BACK,
+      loadingBtn: false,
+      contractTypes: ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE'],
+      TradeStatus: [
+        'NON',
+        'TRADE_CREATED',
+        'TRADE_CP_DEPOSITED',
+        'PARTIAL_CLAIM',
+        'TRADE_COMPLETED',
+      ],
+      UserStatus: ['NON', 'Execute Trade', 'DEPOSIT', 'CLAIM'],
+      // UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
+    }
   },
   computed: {
     ...mapState('connector', ['account']),
@@ -194,6 +238,63 @@ export default {
     })
   },
   methods: {
+    getTradeStatus(trade) {
+      return this.TradeStatus[trade?.tradeStatus].split('_').join(' ')
+    },
+    tradeBtn(trade) {
+      if (this.creator && trade.tradeStatus === 1) {
+        return CLAIM_BACK
+      } else if (this.creator && trade.tradeStatus === 3) {
+        return this.UserStatus[3]
+      } else if (this.creator) {
+        return this.UserStatus[trade?.itemFrom?.traderStatus]
+      } else {
+        return this.UserStatus[trade?.itemTo?.traderStatus]
+      }
+    },
+    async handleTrade(trade) {
+      this.loadingBtn = true
+
+      // const res =
+      if (this.creator && trade.tradeStatus === 3) {
+        await this.$store.dispatch('bazaar-connector/claim', {
+          walletAddress: this.account,
+          tradeId: trade.tradeId,
+        })
+      } else if (this.creator) {
+        await this.$store.dispatch('bazaar-connector/claimBack', {
+          walletAddress: this.account,
+          tradeId: trade.tradeId,
+        })
+      } else {
+        const isApproved = await this.$store.dispatch(
+          'bazaar-connector/isApproved',
+          {
+            contractAddress: trade.itemTo.contractAddress,
+            contractType: this.contractTypes[trade.itemTo.traderType],
+            walletAddress: this.account,
+          }
+        )
+        if (!isApproved) {
+          await this.$store.dispatch('bazaar-connector/setApproval', {
+            contractAddress: trade.itemTo.contractAddress,
+            contractType: this.contractTypes[trade.itemTo.traderType],
+            walletAddress: this.account,
+          })
+        }
+        await this.$store.dispatch('bazaar-connector/executeTrade', {
+          tradeId: trade.tradeId,
+        })
+        // TODO: check if transaction is approved
+        await this.$store.dispatch('bazaar-connector/claim', {
+          walletAddress: this.account,
+          tradeId: trade.tradeId,
+        })
+      }
+      // console.log(res)
+      this.loadingBtn = false
+      this.$emit('updateDashboard')
+    },
     updateSelectedProjectsAssets(value, destination) {
       this.$store.commit(`trader/tradeSelectedItem${destination}`, value)
     },
@@ -221,7 +322,7 @@ export default {
   }
 }
 .v-card.item-card {
-  height: 260px;
+  height: 100%;
   position: relative;
   background-image: linear-gradient(
     130deg,

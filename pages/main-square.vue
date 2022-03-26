@@ -16,7 +16,17 @@
       <v-row>
         <v-container class="trades submitted">
           <div class="trades--title">Trade submitted by you</div>
-          <trade-list-wrapper :trades="tradesSubmittedByYou" />
+          <trade-list-wrapper
+            v-if="tradesSubmittedByYou.length > 0"
+            :trades="tradesSubmittedByYou"
+            :creator="true"
+            @updateDashboard="getTradesInfo"
+          />
+          <v-col v-else cols="12" lg="12" class="d-flex justify-center">
+            <nuxt-link :to="'/create-new-trade'">
+              <button class="more-btn mb-15">Create a new trade</button>
+            </nuxt-link>
+          </v-col>
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
@@ -25,7 +35,10 @@
           <div class="trades--title">
             Trade submitted by your counter-parties
           </div>
-          <trade-list-wrapper :trades="tradesSubmittedByOthers" />
+          <trade-list-wrapper
+            :trades="tradesSubmittedByOthers"
+            @updateDashboard="getTradesInfo"
+          />
         </v-container>
       </v-row>
     </v-container>
@@ -66,6 +79,8 @@ export default {
   },
   methods: {
     async getTradesInfo() {
+      const tradesSubmittedByYou = []
+      const tradesSubmittedByOthers = []
       this.loading = true
 
       try {
@@ -88,11 +103,18 @@ export default {
         for (let i = 0; i < resolvedPromises.length; i++) {
           const e = resolvedPromises[i]
 
+          if (e.tradeStatus === 4) continue
+
           if (e?.creator?.address === ethers.utils.getAddress(this.account)) {
-            this.tradesSubmittedByYou.push({
+            tradesSubmittedByYou.push({
+              tradeStatus: e.tradeStatus,
+              tradeId: e.tradeId,
               itemFrom: {
                 address: e.creator.address,
-                base_img: '',
+                base_img: await this.getBaseImgUrl(
+                  e.creator.contractAddress,
+                  e.creator.idAsset
+                ),
                 project_name: this.getProjectName(e.creator.contractAddress),
                 item_quantity: e.creator.amount,
                 item_name: this.getItemName(
@@ -103,11 +125,49 @@ export default {
               },
               itemTo: {
                 address: e.executer.address,
-                base_img: '',
+                base_img: await this.getBaseImgUrl(
+                  e.executer.contractAddress,
+                  e.executer.idAsset
+                ),
                 project_name: this.getProjectName(e.executer.contractAddress),
                 item_quantity: e.executer.amount,
                 item_name: this.getItemName(
+                  e.executer.contractAddress,
+                  e.executer.idAsset
+                ),
+                ...e.executer,
+              },
+            })
+          }
+
+          if (e?.executer?.address === ethers.utils.getAddress(this.account)) {
+            tradesSubmittedByOthers.push({
+              tradeStatus: e.tradeStatus,
+              tradeId: e.tradeId,
+              itemFrom: {
+                address: e.creator.address,
+                base_img: await this.getBaseImgUrl(
                   e.creator.contractAddress,
+                  e.creator.idAsset
+                ),
+                project_name: this.getProjectName(e.creator.contractAddress),
+                item_quantity: e.creator.amount,
+                item_name: this.getItemName(
+                  e.creator.contractAddress,
+                  e.creator.idAsset
+                ),
+                ...e.creator,
+              },
+              itemTo: {
+                address: e.executer.address,
+                base_img: await this.getBaseImgUrl(
+                  e.executer.contractAddress,
+                  e.executer.idAsset
+                ),
+                project_name: this.getProjectName(e.executer.contractAddress),
+                item_quantity: e.executer.amount,
+                item_name: this.getItemName(
+                  e.executer.contractAddress,
                   e.executer.idAsset
                 ),
                 ...e.executer,
@@ -115,7 +175,9 @@ export default {
             })
           }
         }
-        console.log(this.tradesSubmittedByYou)
+
+        this.tradesSubmittedByYou = tradesSubmittedByYou
+        this.tradesSubmittedByOthers = tradesSubmittedByOthers
       } catch (error) {
         mainSquare.error('getTradesInfo error', error)
 
@@ -130,6 +192,15 @@ export default {
 
     getItemName(contractAddress, idAsset) {
       return idAsset
+    },
+
+    async getBaseImgUrl(contractAddress, idAsset) {
+      const { image } = await this.$store.dispatch('details/getAssetDetails', {
+        walletAddress: this.account,
+        asset: { id: idAsset },
+      })
+      console.log(image)
+      return image
     },
 
     async getTradesIds() {

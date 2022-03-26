@@ -35,14 +35,14 @@
           >
             {{ APPROVE }}
           </v-btn>
-          <v-btn
+          <!-- <v-btn
             type="submit"
             class="more-btn mb-15"
             :loading="loadingBtn"
             @click="removeApprove"
           >
             REMOVE
-          </v-btn>
+          </v-btn> -->
         </v-col>
       </v-row>
     </v-container>
@@ -202,6 +202,8 @@ export default {
       }
     },
     async newTrade() {
+      this.loadingBtn = true
+
       try {
         createNewTrade.log('tradeSelectedItemFrom', this.tradeSelectedItemFrom)
         createNewTrade.log('tradeSelectedItemTo', this.tradeSelectedItemTo)
@@ -227,7 +229,7 @@ export default {
 
         const {
           token_address: executorAssetContract,
-          token_address: executorAssetId,
+          token_id: executorAssetId,
           chosenAmount: executorAmount,
           contract_type: executorAssetType,
         } = this.tradeSelectedItemTo.find((asset) => asset.selected > 0)
@@ -264,6 +266,7 @@ export default {
       } catch (error) {
         createNewTrade.log('error', error)
       }
+      this.loadingBtn = false
     },
   },
 }

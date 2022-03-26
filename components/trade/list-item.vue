@@ -5,23 +5,17 @@
         <div id="account_from">{{ value.address | truncate(9) }}</div>
       </v-col>
       <v-col cols="12" sm="12">
-        <v-img
-          contain
-          class="project_logo mx-auto mb-1"
-          :src="value.base_img"
-        />
         <div id="project_from">{{ value.project_name }}</div>
       </v-col>
-      <v-col cols="12" sm="12" class="d-flex justify-center pb-1">
-        <v-img
-          contain
-          class="mr-1 ml-0"
-          max-width="20px"
-          :src="value.item_logo_url"
-        />
-        <p class="item-quantity mr-1">{{ value.item_quantity }}</p>
+      <v-col cols="12" sm="5" class="d-flex justify-center pb-1">
+        <v-img contain class="ml-0" max-height="150px" :src="value.base_img" />
+      </v-col>
+      <v-col cols="12" sm="6" class="text-left pb-1">
+        <p class="item-quantity text-left">
+          Item Quantity {{ value.item_quantity }}
+        </p>
 
-        <p class="item-name">{{ value.item_name }}</p>
+        <p class="item-name text-left">Item Name {{ value.item_name }}</p>
       </v-col>
     </v-row>
 
@@ -74,12 +68,11 @@
           </template>
         </v-select>
       </v-col>
-      <!-- 
       <v-col cols="12" sm="12">
         <p>Choose an asset</p>
         <trade-asset-selection-grid v-model="selectedProjectsAssets" />
       </v-col>
-      <v-col cols="12" sm="12">
+      <!--  <v-col cols="12" sm="12">
         <p>Amount</p>
         <v-text-field
           solo

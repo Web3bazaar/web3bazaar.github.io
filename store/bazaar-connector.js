@@ -107,65 +107,53 @@ export const actions = {
     }
   },
 
-  async claimBack({ commit }, { wa, contractAddress }) {
+  async claimBack({ commit }, { tradeId }) {
     bazaarConnectorLog.log('******* Claim Back *******')
 
-    // webazaar contract address
-    contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
-    // tradeID
-    const tradeId = 2
-
     const webazaarABI = require('../const/abis/webazaar.json')
-    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
     // const gasPrice = await estimate(userProvider);
 
     const webazaarInstance = new ethers.Contract(
-      contractAddress,
+      BAZAAR_CONTRACT_ADDRESS,
       webazaarABI,
       userProvider.getSigner()
     )
 
-    const claimBackResult = await webazaarInstance.claimBlack(tradeId, 0, {})
-
-    return claimBackResult
+    try {
+      const claimBackResult = await webazaarInstance.claimBlack(tradeId, 0, {})
+      return claimBackResult
+    } catch (err) {
+      bazaarConnectorLog.error(err)
+    }
   },
 
-  async claim({ commit }, { wa, contractAddress }) {
-    bazaarConnectorLog.log('******* Claim Back *******')
-
-    // webazaar contract address
-    contractAddress = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
-    // tradeID
-    const tradeId = 2
+  async claim({ commit }, { tradeId }) {
+    bazaarConnectorLog.log('******* Claim *******', tradeId)
 
     const webazaarABI = require('../const/abis/webazaar.json')
-    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
-    // const gasPrice = await estimate(userProvider);
-
     const webazaarInstance = new ethers.Contract(
-      contractAddress,
+      BAZAAR_CONTRACT_ADDRESS,
       webazaarABI,
       userProvider.getSigner()
     )
-
-    const claimResult = await webazaarInstance.claim(tradeId, 0, {})
-
-    return claimResult
+    try {
+      const claimResult = await webazaarInstance.claim(tradeId, 0, {})
+      return claimResult
+    } catch (err) {
+      bazaarConnectorLog.error(err)
+    }
   },
 
   async getTradeInfo({ commit }, { walletAddress, tradeId }) {
     const webazaarABI = require('../const/abis/webazaar.json')
-    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-
-    // const gasPrice = await estimate(userProvider);
 
     const webazaarInstance = new ethers.Contract(
       BAZAAR_CONTRACT_ADDRESS,
@@ -183,6 +171,7 @@ export const actions = {
     )
 
     const tradeInfo = {
+      tradeId,
       creator: {
         address: creatorTradeInfo[0],
         contractAddress: creatorTradeInfo[1],
@@ -206,20 +195,33 @@ export const actions = {
 
     return tradeInfo
   },
-
-  async getOpenTrades({ commit }, { walletAddress }) {
-    bazaarConnectorLog.log('******* getOpenTrades *******')
-
-    // webazaar contract address
-    // tradeID
-    // const tradeId = 2
+  async executeTrade({ commit }, { walletAddress, tradeId, contractType }) {
+    bazaarConnectorLog.log('******* executeTrade *******')
 
     const webazaarABI = require('../const/abis/webazaar.json')
-    bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
-    // const gasPrice = await estimate(userProvider);
+    const webazaarInstance = new ethers.Contract(
+      BAZAAR_CONTRACT_ADDRESS,
+      webazaarABI,
+      userProvider.getSigner()
+    )
+    try {
+      const executeTrade = await webazaarInstance.executeTrade(tradeId)
+
+      bazaarConnectorLog.log('Open trades for users ', executeTrade)
+      return executeTrade
+    } catch (err) {
+      bazaarConnectorLog.error(err)
+    }
+  },
+  async getOpenTrades({ commit }, { walletAddress }) {
+    bazaarConnectorLog.log('******* getOpenTrades *******')
+
+    const webazaarABI = require('../const/abis/webazaar.json')
+
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
     const webazaarInstance = new ethers.Contract(
       BAZAAR_CONTRACT_ADDRESS,
@@ -245,11 +247,8 @@ export const actions = {
     )
     try {
       const webazaarABI = require(`../const/abis/${contractType?.toUpperCase?.()}.json`)
-      bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-
-      // const gasPrice = await estimate(userProvider);
 
       const webazaarInstance = new ethers.Contract(
         contractAddress,
@@ -283,11 +282,8 @@ export const actions = {
     )
     try {
       const webazaarABI = require(`../const/abis/${contractType?.toUpperCase?.()}.json`)
-      bazaarConnectorLog.log('webazaarABI :  ', webazaarABI)
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-
-      // const gasPrice = await estimate(userProvider);
 
       const contractInstance = new ethers.Contract(
         contractAddress,
