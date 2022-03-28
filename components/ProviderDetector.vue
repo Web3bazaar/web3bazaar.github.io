@@ -79,8 +79,8 @@ export default {
 
       const routeName = this.$route.name
       console.log(routeName)
-      // if (routeName !== 'main-square')
-      //   this.$router.push({ name: 'main-square' })
+      if (routeName !== 'main-square')
+        this.$router.push({ name: 'main-square' })
       this.$emit('checkSuccess')
     },
     compareNetworkSupport(chainId) {
@@ -122,7 +122,7 @@ export default {
       this.$store.commit('connector/setAccount', null)
       this.$store.commit('connector/setWalletConnection', false)
       this.$store.commit('connector/setChainId', null)
-      this.$store.commit('networks/setActiveNetwork', '0x1')
+      // this.$store.commit('networks/setActiveNetwork', '0x1')
       // Clear data as well
 
       const routeName = this.$route.name

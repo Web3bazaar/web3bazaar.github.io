@@ -55,7 +55,7 @@ export const actions = {
   },
   async allowERC721({ commit }, { wa, contractAddress }) {
     contractAddress = '0x0ab1dc6500d0F1507dACbbA7AEDb9F44551B398A'
-    const erc721ABI = require('../const/abis/ERC721.json')
+    const erc721ABI = require('../const/abis/erc721.json')
     console.log('ERC721 ', erc721ABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)

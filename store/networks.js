@@ -76,6 +76,21 @@ export const state = () => ({
       },
       apiURL: 'https://api.polygonscan.com',
     },
+    {
+      chainId: '0x13881',
+      name: 'mumbai',
+      code: 137,
+      chainName: 'Polygon Mainnet',
+      rpcUrls: ['https://rpc-mumbai.matic.today'],
+      iconUrls: ['https://polygonscan.com/images/logo.svg?v=0.0.3'],
+      blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+      nativeCurrency: {
+        name: 'Matic',
+        symbol: 'MATIC',
+        decimals: 18,
+      },
+      apiURL: 'https://api.polygonscan.com',
+    },
   ],
   activeNetwork: '0xa86a', // Avalanche
 })
