@@ -249,7 +249,7 @@ export const actions = {
       walletAddress
     )
     try {
-      const webazaarABI = require(`../const/abis/${contractType?.toUpperCase?.()}.json`)
+      const webazaarABI = require(`../const/abis/${contractType?.toLowerCase?.()}.json`)
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
@@ -284,7 +284,7 @@ export const actions = {
       approveValue
     )
     try {
-      const webazaarABI = require(`../const/abis/${contractType?.toUpperCase?.()}.json`)
+      const webazaarABI = require(`../const/abis/${contractType?.toLowerCase?.()}.json`)
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 

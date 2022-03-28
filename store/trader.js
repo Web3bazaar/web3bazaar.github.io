@@ -84,7 +84,7 @@ export const state = () => ({
     },
     {
       project_name: 'bazaar1155',
-      description: 'Test contract for weebazaar ERC721',
+      description: 'Test contract for weebazaar ERC1155',
       base_img:
         'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',
       contractAddress: '0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
@@ -101,11 +101,11 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'Weenus - bazaarERC20',
+      project_name: 'bazaarERC20',
       description: 'Test contract for weebazaar ERC20',
       base_img:
         'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
-      contractAddress: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
+      contractAddress: '0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC20',
@@ -184,6 +184,50 @@ export const actions = {
           }
         }
       })
+
+      await Promise.all(
+        selectedProjects.map(async (project) => {
+          let ownedIds = []
+          // let listDetails
+          switch (project.contractType) {
+            case 'ERC20':
+              ownedIds = await dispatch(
+                'relayer-erc20/listERC20',
+                { ...project, wa, contractType: project.contractType },
+                { root: true }
+              )
+              traderLogger.log('******* ownedIds ***** ', ownedIds)
+              // listDetails = (
+              //   await dispatch(
+              //     'details/getListDetails',
+              //     {
+              //       listIds: ownedIds,
+              //       contractAddress: project.contractAddress,
+              //       contractType: project.contractType,
+              //     },
+              //     { root: true }
+              //   )
+              // ).filter(Boolean)
+              if (ownedIds) {
+                if (to) {
+                  traderLogger.log('projectToItems : ', ownedIds)
+                  commit('updateProject', {
+                    project_name: project.project_name,
+                    projectToItems: ownedIds,
+                  })
+                }
+                if (from) {
+                  traderLogger.log('projectFromItems : ', ownedIds)
+                  commit('updateProject', {
+                    project_name: project.project_name,
+                    projectFromItems: ownedIds,
+                  })
+                }
+              }
+              break
+          }
+        })
+      )
 
       // await Promise.all(
       //   selectedProjects.map(async (project) => {

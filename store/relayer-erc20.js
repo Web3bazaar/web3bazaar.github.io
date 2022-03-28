@@ -1,11 +1,13 @@
-import axios from 'axios'
+const ethers = require('ethers')
 
-const CONTRACT = '0xaFF4481D10270F50f203E0763e2597776068CBc5'
-const ETHERSCAN_KEY = 'CAS5V4SCSESCT1IDDG3IG5SU31XU81MYE3'
-// base url
-const BASE_URL = 'https://api-rinkeby.etherscan.io'
-const ERC20_USERS =
-  '/api?module=account&action=tokenbalance&contractaddress=$CONTRACT&address=$WA&tag=latest&apikey=$API_KEY'
+// import axios from 'axios'
+
+// const CONTRACT = '0xaFF4481D10270F50f203E0763e2597776068CBc5'
+// const ETHERSCAN_KEY = 'CAS5V4SCSESCT1IDDG3IG5SU31XU81MYE3'
+// // base url
+// const BASE_URL = 'https://api-rinkeby.etherscan.io'
+// const ERC20_USERS =
+//   '/api?module=account&action=tokenbalance&contractaddress=$CONTRACT&address=$WA&tag=latest&apikey=$API_KEY'
 
 //   https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address=0xA7Cc2E2050A607c813437C1c074f82322Cc0C8aE&startblock=0&endblock=999999999&sort=desc&apikey=CAS5V4SCSESCT1IDDG3IG5SU31XU81MYE3
 
@@ -20,31 +22,32 @@ export const actions = {
    * @param {*} param1
    * @returns
    */
-  async listERC20({ commit }, { wa, contractAddress }) {
-    // const ids = [1,2,4,8,5,6,7,8];
-
-    // hardcode wallet address
-    wa = '0xa7cc2e2050a607c813437c1c074f82322cc0c8ae'
-
-    // build query!
-    let query = ERC20_USERS.replace('$WA', wa)
-    query = query.replace('$CONTRACT', CONTRACT)
-    query = query.replace('$API_KEY', ETHERSCAN_KEY)
-    query = BASE_URL + query
-
-    let response
-
+  async listERC20({ commit }, { wa, contractAddress, contractType }) {
+    let balance
+    const metadata = {}
     try {
-      console.log('Getting token balance for wallet : ', query)
+      const genericErc20Abi = require(`../const/abis/${contractType?.toLowerCase?.()}.json`)
 
-      response = await axios.get(query)
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+      const contract = new ethers.Contract(
+        contractAddress,
+        genericErc20Abi,
+        userProvider.getSigner()
+      )
 
-      console.log('Result total : ', response.data.result)
+      balance = (
+        await contract.balanceOf((await userProvider.getSigner()).getAddress())
+      ).toString()
+
+      metadata.name = (await contract.symbol()).toString()
+      metadata.image = require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png')
+
+      console.log('Getting token balance for wallet : ', balance)
     } catch (ex) {
-      console.error('Error calling etherscan api -> ', ex)
+      console.error('Error listing listERC20 balance: ', ex)
       throw ex
     }
 
-    return response.data.result
+    return [{ amount: ethers.utils.formatUnits(balance), metadata }]
   },
 }
