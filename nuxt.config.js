@@ -54,6 +54,7 @@ export default {
   plugins: [
     { src: '~/plugins/filters.js' },
     { src: '~/plugins/debug.js', mode: 'client' },
+    { src: '~/plugins/utils.js', mode: 'client' },
     // { src: '~/plugins/popper.min.js', mode: 'client' },
     // { src: '~/plugins/jquery.min.js', mode: 'client' },
     // { src: '~/plugins/bootstrap.min.js', mode: 'client' },

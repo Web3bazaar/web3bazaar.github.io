@@ -246,7 +246,7 @@ export default {
 
         createNewTrade.log('executorObject', executorObject)
 
-        const ownedIds = await this.$store
+        const startTrade = await this.$store
           .dispatch('bazaar-connector/startTrade', {
             ...creatorObject,
             ...executorObject,
@@ -262,7 +262,7 @@ export default {
         // TODO: check is the contract is approved
         // TODO: remove token from the users lists (update list?? )
 
-        createNewTrade.log('Owned ID ', ownedIds)
+        createNewTrade.log('startTrade ', startTrade)
       } catch (error) {
         createNewTrade.log('error', error)
       }

@@ -127,6 +127,7 @@ export const actions = {
       return claimBackResult
     } catch (err) {
       bazaarConnectorLog.error(err)
+      throw err
     }
   },
 
@@ -147,6 +148,7 @@ export const actions = {
       return claimResult
     } catch (err) {
       bazaarConnectorLog.error(err)
+      throw err
     }
   },
 
@@ -214,6 +216,7 @@ export const actions = {
       return executeTrade
     } catch (err) {
       bazaarConnectorLog.error(err)
+      throw err
     }
   },
   async getOpenTrades({ commit }, { walletAddress }) {

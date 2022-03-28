@@ -100,7 +100,12 @@
             />
           </v-card>
         </v-col>
-        <v-col cols="12" sm="12" class="item-col d-flex justify-center">
+        <v-col
+          v-if="creator || trade.tradeStatus !== 3"
+          cols="12"
+          sm="12"
+          class="item-col d-flex justify-center"
+        >
           <v-btn
             type="submit"
             class="more-btn mb-15"
@@ -153,6 +158,7 @@ export default {
 
   data() {
     return {
+      numTries: 5,
       EXECUTE,
       CLAIM_BACK,
       loadingBtn: false,
@@ -254,49 +260,115 @@ export default {
     },
     async handleTrade(trade) {
       this.loadingBtn = true
-
-      // const res =
-      if (this.creator && trade.tradeStatus === 3) {
-        await this.$store.dispatch('bazaar-connector/claim', {
-          walletAddress: this.account,
-          tradeId: trade.tradeId,
-        })
-      } else if (this.creator) {
-        await this.$store.dispatch('bazaar-connector/claimBack', {
-          walletAddress: this.account,
-          tradeId: trade.tradeId,
-        })
-      } else {
-        const isApproved = await this.$store.dispatch(
-          'bazaar-connector/isApproved',
-          {
-            contractAddress: trade.itemTo.contractAddress,
-            contractType: this.contractTypes[trade.itemTo.traderType],
+      try {
+        // const res =
+        if (this.creator && trade.tradeStatus === 3) {
+          await this.$store.dispatch('bazaar-connector/claim', {
             walletAddress: this.account,
-          }
-        )
-        if (!isApproved) {
-          await this.$store.dispatch('bazaar-connector/setApproval', {
-            contractAddress: trade.itemTo.contractAddress,
-            contractType: this.contractTypes[trade.itemTo.traderType],
-            walletAddress: this.account,
+            tradeId: trade.tradeId,
           })
+          await this.checkForTrade(trade.tradeId, 4)
+
+          this.$emit('updateDashboard')
+        } else if (this.creator) {
+          await this.$store.dispatch('bazaar-connector/claimBack', {
+            walletAddress: this.account,
+            tradeId: trade.tradeId,
+          })
+        } else {
+          const isApproved = await this.$store.dispatch(
+            'bazaar-connector/isApproved',
+            {
+              contractAddress: trade.itemTo.contractAddress,
+              contractType: this.contractTypes[trade.itemTo.traderType],
+              walletAddress: this.account,
+            }
+          )
+          if (!isApproved) {
+            // not aproved do request and wait
+            await this.$store.dispatch('bazaar-connector/setApproval', {
+              contractAddress: trade.itemTo.contractAddress,
+              contractType: this.contractTypes[trade.itemTo.traderType],
+              walletAddress: this.account,
+            })
+            await this.checkIfContractIsApprovedForWallet()
+          }
+          if (trade.tradeStatus === 1) {
+            //  do executeTrade request and wait, check for transaction approved
+            await this.$store.dispatch('bazaar-connector/executeTrade', {
+              tradeId: trade.tradeId,
+            })
+            await this.checkForTrade(trade.tradeId, 2)
+          }
+
+          // TODO: check if transaction is approved
+          await this.$store.dispatch('bazaar-connector/claim', {
+            walletAddress: this.account,
+            tradeId: trade.tradeId,
+          })
+
+          await this.checkForTrade(trade.tradeId, 3)
         }
-        await this.$store.dispatch('bazaar-connector/executeTrade', {
-          tradeId: trade.tradeId,
-        })
-        // TODO: check if transaction is approved
-        await this.$store.dispatch('bazaar-connector/claim', {
-          walletAddress: this.account,
-          tradeId: trade.tradeId,
-        })
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loadingBtn = false
+        this.$emit('updateDashboard')
       }
-      // console.log(res)
-      this.loadingBtn = false
-      this.$emit('updateDashboard')
     },
     updateSelectedProjectsAssets(value, destination) {
       this.$store.commit(`trader/tradeSelectedItem${destination}`, value)
+    },
+    async checkForTrade(tradeId, status) {
+      const res = await this.$store.dispatch('bazaar-connector/getTradeInfo', {
+        walletAddress: this.account,
+        tradeId,
+      })
+
+      if (res.tradeStatus === status) {
+        return true
+      }
+
+      await this.$sleeper(4 * 1000)
+
+      return await this.checkForTrade(tradeId, status)
+    },
+    checkIfContractIsApprovedForWallet(
+      contractAddress,
+      contractType,
+      walletAddress
+    ) {
+      try {
+        return new Promise((resolve) => {
+          resolve(
+            this.$store.dispatch('bazaar-connector/isApproved', {
+              contractAddress,
+              contractType,
+              walletAddress,
+            })
+          )
+        }).then((result) => {
+          if (result) return result
+          else {
+            const t = setInterval(() => {
+              this.numTries--
+              if (this.numTries === 0) clearInterval(t)
+              return this.checkIfContractIsApprovedForWallet(
+                contractAddress,
+                contractType,
+                this.account
+              ).then((res) => {
+                if (res) {
+                  clearInterval(t)
+                  return res
+                }
+              })
+            }, 4 * 1000)
+          }
+        })
+      } catch (error) {
+        console.error('error', error)
+      }
     },
   },
 }

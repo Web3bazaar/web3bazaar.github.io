@@ -30,7 +30,7 @@
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
-      <v-row>
+      <v-row v-if="tradesSubmittedByOthers.length > 0">
         <v-container class="trades offered">
           <div class="trades--title">
             Trade submitted by your counter-parties
