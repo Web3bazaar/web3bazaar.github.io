@@ -147,8 +147,9 @@ export default {
       this.$emit('input', { ...this.value, [key]: value })
       await this.$nextTick()
       if (key === 'project_name') {
-        console.log('project_name', key, value)
-        console.log('update projects list')
+        // console.log('project_name', key, value, oldVal)
+        // console.log('update projects list')
+
         this.selectedProjectsAssets = this.updateSelectedProjectsAssets()
         // this.$emit('input', {
         //   ...this.value,

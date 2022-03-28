@@ -71,6 +71,7 @@
 </template>
 
 <script>
+// asset = {metadata.image, metadata.name}
 export default {
   props: {
     value: {
@@ -82,6 +83,7 @@ export default {
     return {
       previousIndex: -1,
       lazyValue: this.value,
+      previousSelectedProjectsAssets: [],
     }
   },
   computed: {
@@ -104,11 +106,26 @@ export default {
         ) {
           this.previousIndex = -1
         }
+        this.clearSelection(value)
       },
       deep: true,
     },
   },
   methods: {
+    clearSelection(value) {
+      // const added = value.filter(
+      //   (val) => !this.previousSelectedProjectsAssets.includes(val)
+      // )
+      const removed = this.previousSelectedProjectsAssets.filter(
+        (val) => !value.includes(val)
+      )
+
+      removed.forEach((r) => {
+        r.selected = false
+      })
+
+      this.previousSelectedProjectsAssets = value
+    },
     getAmount(index) {
       return this.value[index].chosenAmount
     },
@@ -124,15 +141,11 @@ export default {
     increaseAmount(index) {
       const internalValue = this.value.slice()
 
-      console.log(internalValue[index])
-
       if (
         internalValue[index].chosenAmount >= 0 &&
         internalValue[index].chosenAmount < internalValue[index].amount
       ) {
         internalValue[index].chosenAmount++
-      } else {
-        internalValue[index].chosenAmount = 0
       }
 
       this.setValue(internalValue)
@@ -149,7 +162,13 @@ export default {
     },
     changeSelection(index) {
       const internalValue = this.value.slice()
+
       if (index > internalValue.length) return
+
+      internalValue.forEach((e) => {
+        e.selected = false
+      })
+
       if (index === this.previousIndex) {
         internalValue[index].selected = !internalValue[index].selected
         if (!internalValue[index].selected) {
