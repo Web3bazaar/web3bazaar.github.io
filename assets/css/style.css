@@ -717,13 +717,13 @@ ol {
   color: #fff;
   font-size: 18px;
   text-transform: uppercase;
-  line-height: 34px;
+  /* line-height: 34px; */
   padding: 0 20px;
   min-width: 100px;
   color: #fff !important;
   background: rgba(116, 80, 254, 0.7);
   height: 35px;
-  border-radius: 50px;
+  border-radius: 0;
   letter-spacing: 1px;
 }
 
@@ -871,10 +871,10 @@ nav {
   .shrink {
     animation: none;
   }
-  .login-btn {
+  /* .login-btn {
     margin-left: 15px !important;
     margin-top: 15px !important;
-  }
+  } */
   .navbar-collapse .navbar-nav .nav-item .nav-link {
     padding: 5px 12px;
     color: #333;

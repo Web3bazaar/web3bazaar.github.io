@@ -6,15 +6,10 @@
         <Nuxt />
       </div>
     </div>
-    <footer class="main-footer text-center">
-      <!--Footer Bottom-->
-      <div class="footer-bottom">
-        <div class="auto-container">
-          <div class="copyright-text">Copyright ©{{ getYear }} Web3 Bazaar</div>
-          <button @click="toggleSound">Toggle my sound preferences!</button>
-        </div>
-      </div>
-    </footer>
+
+    <layout-donations-section />
+    <layout-footer-app />
+
     <!-- ##### Footer Area End ##### -->
 
     <modal-wrapper v-if="showModal" />
@@ -67,9 +62,6 @@ export default {
     }
   },
   computed: {
-    getYear() {
-      return new Date().getFullYear()
-    },
     ...mapState('modals', ['showModal', 'modalType']),
     ...mapState('sound', ['isSoundEnabled']),
   },
@@ -104,17 +96,6 @@ export default {
 
         this.audio.play()
       }
-    },
-    toggleSound() {
-      this.$store.commit('sound/toggleSound')
-      if (!this.audio) {
-        this.playSound()
-      } else if (this.audio.paused) {
-        this.audio.play()
-      } else {
-        this.audio.pause()
-      }
-      // this.audio = null
     },
     metamaskCheckSuccess() {
       this.$logger('CHECK COMPLETE')

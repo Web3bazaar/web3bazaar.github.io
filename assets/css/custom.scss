@@ -1,24 +1,25 @@
 $bgDark: #03091f;
+$bgPurple: rgba(116, 80, 254, 0.7);
 
 /* width */
-::-webkit-scrollbar {
-  width: 30px;
-}
+// ::-webkit-scrollbar {
+//   width: 30px;
+// }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: rgba(116, 80, 254, 0.7);
-}
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background: rgba(116, 80, 254, 0.7);
+// }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: #888;
+// }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #555;
+// }
 
 #web3_bazaar {
   * {
@@ -26,6 +27,103 @@ $bgDark: #03091f;
   }
   &.theme--dark.v-application {
     background: none;
+  }
+
+  .w3b-c-purple,
+  .w3b-c-purple *,
+  .w3b-c-purple::after,
+  .w3b-c-purple::before {
+    background: $bgPurple !important;
+  }
+
+  .w3b-bg-gradient {
+    & *,
+    &::after,
+    &::before {
+      background-size: 200% auto !important;
+      background-image: linear-gradient(
+        130deg,
+        #eb3fa9 0%,
+        #395ff6 50%,
+        #eb3fa9 100%
+      ) !important;
+    }
+    &:hover {
+      &::after,
+      &::before {
+        background-position: right center;
+      }
+    }
+  }
+
+  // #######################
+  // PIXEL ART BUTTONS (https://codepen.io/YoannM/pen/yyExEO)
+  // #######################
+
+  .pixel2 {
+    font-size: 15px;
+    color: white;
+    height: auto;
+    margin: 10px;
+
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .pixel:active,
+  .pixel2:active {
+    top: 2px;
+  }
+
+  .pixel2 {
+    position: relative;
+    display: block;
+    margin: 10px;
+    text-transform: uppercase;
+
+    font-size: 18px;
+    color: white;
+  }
+
+  .pixel2::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: -10px;
+    right: -10px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: -1;
+  }
+  .pixel2::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: -6px;
+    right: -6px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: -1;
+  }
+  .pixel2 {
+    padding: 10px 10px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    width: auto;
+    z-index: 2;
   }
 
   // #######################
@@ -80,7 +178,12 @@ $bgDark: #03091f;
     background-size: 200% auto;
     color: #fff;
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 0px;
+  }
+
+  .more-btn,
+  .more-btn::before,
+  .more-btn::after {
     background-image: linear-gradient(
       130deg,
       #eb3fa9 0%,

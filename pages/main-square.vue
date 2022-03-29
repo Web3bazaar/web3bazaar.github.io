@@ -1,30 +1,51 @@
 <template>
-  <section class="main-square section-padding-100 darker">
+  <section
+    class="main-square section-padding-100 darker"
+    style="min-height: 70vh"
+  >
     <v-container>
       <!-- Tittle -->
-      <v-row justify="end">
+      <v-row justify="center">
         <v-col cols="12" lg="6" class="d-flex justify-center">
           <h1 class="gradient-text">Main Square</h1>
         </v-col>
-        <v-col cols="12" lg="3" class="d-flex justify-center">
+        <v-col
+          v-if="tradesSubmittedByYou.length > 0"
+          cols="12"
+          lg="3"
+          class="d-flex justify-center"
+        >
           <nuxt-link :to="'/create-new-trade'">
-            <button class="more-btn mb-15">Create a new trade</button>
+            <button class="more-btn mb-15 w3b-bg-gradient">
+              Create a new trade
+            </button>
           </nuxt-link>
         </v-col>
       </v-row>
       <!-- Trades submitted by you -->
       <v-row>
         <v-container class="trades submitted">
-          <div class="trades--title">Trade submitted by you</div>
+          <div v-if="tradesSubmittedByYou.length > 0" class="trades--title">
+            Trade submitted by you
+          </div>
           <trade-list-wrapper
             v-if="tradesSubmittedByYou.length > 0"
             :trades="tradesSubmittedByYou"
             :creator="true"
             @updateDashboard="getTradesInfo"
           />
-          <v-col v-else cols="12" lg="12" class="d-flex justify-center">
-            <nuxt-link :to="'/create-new-trade'">
-              <button class="more-btn mb-15">Create a new trade</button>
+          <v-col
+            v-else
+            cols="12"
+            lg="12"
+            class="d-flex flex-column align-center"
+          >
+            <h3 class="d-flex">There are no active trades listed for you</h3>
+            <v-spacer />
+            <nuxt-link :to="'/create-new-trade'" class="">
+              <button class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
+                Create a new trade
+              </button>
             </nuxt-link>
           </v-col>
         </v-container>

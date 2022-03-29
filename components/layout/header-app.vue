@@ -10,29 +10,30 @@
             alt="logo"
           />
         </span>
-        Web3Bazaar
+        <span> Web3Bazaar </span>
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <li class="lh-55px">
+
+    <v-col cols="auto" class="">
       <ui-network-btn
         :network-type="activeNetwork"
         @click="networkClickHandler"
       />
-    </li>
-    <li class="lh-55px">
+    </v-col>
+    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
       <a
         href="http://docs.web3bazaar.org/"
         target="_blank"
-        class="btn login-btn ml-50"
+        class="btn login-btn ml-50 pixel2 w3b-c-purple"
         >Wiki</a
       >
-    </li>
-    <li class="lh-55px">
-      <div class="ml-50">
+    </v-col>
+    <v-col cols="auto" class="lh-55px m">
+      <div>
         <ui-connect-btn />
       </div>
-    </li>
+    </v-col>
   </v-app-bar>
 </template>
 

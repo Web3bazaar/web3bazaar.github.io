@@ -79,8 +79,8 @@ export default {
 
       const routeName = this.$route.name
       console.log(routeName)
-      if (routeName !== 'main-square')
-        this.$router.push({ name: 'main-square' })
+      // if (routeName !== 'main-square')
+      //   this.$router.push({ name: 'main-square' })
       this.$emit('checkSuccess')
     },
     compareNetworkSupport(chainId) {

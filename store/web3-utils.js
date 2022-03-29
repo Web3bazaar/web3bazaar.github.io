@@ -24,7 +24,7 @@ const estimate = async function (signer, incr) {
 export const actions = {
   async allowERC20({ commit, rootState }, { wa, contractAddress, amount }) {
     contractAddress = '0x08Cb52035F0884F3e508D4d852c516D1755BCD50'
-    const erc20ABI = require('../const/abis/ERC20.json')
+    const erc20ABI = require('../const/abis/erc20.json')
     console.log('ERC20 ', erc20ABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)

@@ -46,6 +46,8 @@ export default {
       if (activeNetwork === '0xfa') return 'Fantom Opera'
       if (activeNetwork === '0xa86a') return 'Avalanche'
       if (activeNetwork === '0x89') return 'Polygon Mainnet'
+      // testnet
+      if (activeNetwork === '0x13881') return 'Polygon Mumbai'
 
       return ''
     },

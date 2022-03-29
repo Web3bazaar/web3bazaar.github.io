@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$headerHeight: '60px';
+$headerHeight: 80px;
 
 .modal-wrap {
   position: fixed;

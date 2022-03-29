@@ -1,6 +1,6 @@
 <template>
   <button
-    class="btn mini login-btn"
+    class="btn login-btn pixel2 w3b-c-purple"
     :class="{ load: connectLoader }"
     @click="walletBtnHandler"
     @mouseenter="itsHover = true"
@@ -55,7 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 .login-btn {
-  width: 176px;
+  width: 176px !important;
   font-size: 16px;
 }
 </style>
