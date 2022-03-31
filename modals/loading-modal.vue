@@ -23,6 +23,8 @@ export default {
 <style lang="scss">
 .modal-wrap.loading {
   background: rgba($color: #03091f, $alpha: 0.6);
+  padding-top: 0;
+  z-index: 9999;
 }
 </style>
 <style lang="scss" scoped>

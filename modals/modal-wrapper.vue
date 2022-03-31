@@ -11,7 +11,6 @@
       :modal-data="modalData"
       @close="closeModal"
     />
-    -->
 
     <!-- <TokenStakeModal
       v-if="modalType === 'token-stake'"

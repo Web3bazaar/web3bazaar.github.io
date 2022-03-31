@@ -16,9 +16,9 @@
           class="d-flex justify-center"
         >
           <nuxt-link :to="'/create-new-trade'">
-            <button class="more-btn mb-15 pixel2 w3b-bg-gradient">
+            <v-btn class="more-btn mb-15 pixel2 w3b-bg-gradient">
               Create a new trade
-            </button>
+            </v-btn>
           </nuxt-link>
         </v-col>
       </v-row>
@@ -43,9 +43,9 @@
             <h3 class="d-flex">There are no active trades listed for you</h3>
             <v-spacer />
             <nuxt-link :to="'/create-new-trade'" class="">
-              <button class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
+              <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
                 Create a new trade
-              </button>
+              </v-btn>
             </nuxt-link>
           </v-col>
         </v-container>

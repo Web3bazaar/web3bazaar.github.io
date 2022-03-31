@@ -37,7 +37,6 @@ $bgPurple: rgba(116, 80, 254, 0.7);
   }
 
   .w3b-bg-gradient {
-    & *,
     &::after,
     &::before {
       background-size: 200% auto !important;

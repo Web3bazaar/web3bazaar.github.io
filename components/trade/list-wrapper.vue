@@ -108,7 +108,7 @@
         >
           <v-btn
             type="submit"
-            class="more-btn mb-15"
+            class="more-btn mb-15 pixel2 w3b-bg-gradient"
             :loading="loadingBtn"
             @click="handleTrade(trade)"
           >
@@ -265,6 +265,10 @@ export default {
     },
     async handleTrade(trade) {
       this.loadingBtn = true
+      this.$store.commit('modals/setPopupState', {
+        type: 'loading',
+        isShow: true,
+      })
       try {
         // const res =
         if (this.creator && trade.tradeStatus === 3) {
@@ -314,11 +318,13 @@ export default {
 
           await this.checkForTrade(trade.tradeId, 3)
         }
+        this.$emit('updateDashboard')
       } catch (error) {
         console.error(error)
+        this.$store.commit('modals/closeModal')
       } finally {
         this.loadingBtn = false
-        this.$emit('updateDashboard')
+        // this.$store.commit('modals/closeModal')
       }
     },
     updateSelectedProjectsAssets(value, destination) {

@@ -264,7 +264,6 @@ export default {
             }
           })
 
-        // TODO: check is the contract is approved
         // TODO: remove token from the users lists (update list?? )
         createNewTrade.log('startTrade ', startTrade)
         if (startTrade) {
