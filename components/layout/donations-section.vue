@@ -11,13 +11,13 @@
         <h3 class="mb-0">Donate:</h3>
       </v-col>
       <v-col
-        v-for="amount in donateBtns"
-        :key="amount"
+        v-for="percentage in percentages"
+        :key="percentage"
         cols="auto"
         class="py-0"
       >
-        <button class="pixel2" @click="callDonateAmount(amount)">
-          {{ getCurrentChainValue(amount) }}
+        <button class="pixel2" @click="callDonateAmount(percentage)">
+          {{ getCurrentChainValue(percentage) }}
         </button>
       </v-col>
       <v-col cols="12" md="5" offset-md="7" class="pt-0">
@@ -32,7 +32,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      donateBtns: [1, 10, 100],
+      percentages: [1, 10, 100],
     }
   },
   computed: {
@@ -41,13 +41,13 @@ export default {
   },
   methods: {
     ...mapActions('donations', { donateAmount: 'donateAmount' }),
-    async callDonateAmount(amount) {
-      console.log(amount)
-      await this.donateAmount({ amount })
+    async callDonateAmount(percentage) {
+      const finalAmount =
+        this.getBaseValue(this.activeNetwork?.chainId) * (percentage / 100)
+
+      await this.donateAmount({ amount: finalAmount })
     },
     getCurrentChainValue(percentage) {
-      console.log(this.activeNetwork)
-
       const finalAmount =
         this.getBaseValue(this.activeNetwork?.chainId) * (percentage / 100)
 
