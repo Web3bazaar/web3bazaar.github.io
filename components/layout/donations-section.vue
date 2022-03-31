@@ -21,7 +21,7 @@
         </button>
       </v-col>
       <v-col cols="12" md="5" offset-md="7" class="pt-0">
-        <p>or send us any gift to: {walletaddress}</p></v-col
+        <p>or send us any gift to: {{ w3bDonationAddress }}</p></v-col
       >
     </v-row>
   </v-container>
@@ -37,7 +37,10 @@ export default {
   },
   computed: {
     ...mapGetters('networks', { activeNetwork: 'getActiveChain' }),
-    ...mapGetters('donations', ['getBaseValue']),
+    ...mapGetters('donations', ['getBaseValue', 'getW3BDonationAddress']),
+    w3bDonationAddress() {
+      return this.getW3BDonationAddress(this.activeNetwork?.chainId)
+    },
   },
   methods: {
     ...mapActions('donations', { donateAmount: 'donateAmount' }),

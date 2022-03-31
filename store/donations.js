@@ -10,10 +10,16 @@ export const state = () => ({
     '0x13881': {
       amount: 1000,
       tokenAddress: '0x0000000000000000000000000000000000001010',
+      w3bChainWalletAddress: '0xE68A8D60bAD90B5142901b89eCEbE248de42d5a1',
     },
     '0x38': {
       amount: 5,
       tokenAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    },
+    '0x89': {
+      amount: 1000,
+      tokenAddress: '0x0000000000000000000000000000000000001010',
+      w3bChainWalletAddress: '0xE68A8D60bAD90B5142901b89eCEbE248de42d5a1',
     },
   },
 })
@@ -39,7 +45,7 @@ export const actions = {
       const {
         w3bChainWalletAddress,
         tokenAddress: nativeTokenContractAddress,
-      } = rootGetters['networks/getActiveChain']
+      } = state[rootGetters['networks/getActiveChain']?.chainId]
       donationsLogger.log('w3bWalletAddress', w3bChainWalletAddress)
       donationsLogger.log(
         'nativeTokenContractAddress',
@@ -90,4 +96,6 @@ export const actions = {
 
 export const getters = {
   getBaseValue: (state) => (chainId) => state.baseValue[chainId]?.amount,
+  getW3BDonationAddress: (state) => (chainId) =>
+    state.baseValue[chainId]?.w3bChainWalletAddress,
 }

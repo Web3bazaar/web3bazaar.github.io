@@ -125,7 +125,7 @@ export const actions = {
 
     try {
       const claimBackResult = await webazaarInstance.claimBlack(tradeId, 0, {})
-      return claimBackResult
+      return await claimBackResult.wait()
     } catch (err) {
       bazaarConnectorLog.error(err)
       throw err
@@ -214,7 +214,7 @@ export const actions = {
       const executeTrade = await webazaarInstance.executeTrade(tradeId)
 
       bazaarConnectorLog.log('Open trades for users ', executeTrade)
-      return executeTrade
+      return await executeTrade.wait()
     } catch (err) {
       bazaarConnectorLog.error(err)
       throw err
