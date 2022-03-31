@@ -16,25 +16,25 @@
           />
         </v-col>
         <v-col cols="12" class="text-center">
-          <v-btn
+          <button
             v-if="isSelectedContractApproved"
             type="submit"
-            class="more-btn mb-15"
-            :loading="loadingBtn"
+            class="more-btn mb-15 pixel2 w3b-bg-gradient"
+            :aria-disabled="loadingBtn"
             @click="newTrade"
           >
             {{ ADD_TRADE }}
-          </v-btn>
+          </button>
 
-          <v-btn
+          <button
             v-else
             type="submit"
-            class="more-btn mb-15"
-            :loading="loadingBtn"
+            class="more-btn mb-15 pixel2 w3b-bg-gradient"
+            :aria-disabled="loadingBtn"
             @click="approveSelectedContract"
           >
             {{ APPROVE }}
-          </v-btn>
+          </button>
           <!-- <v-btn
             type="submit"
             class="more-btn mb-15"
@@ -204,6 +204,11 @@ export default {
     async newTrade() {
       this.loadingBtn = true
 
+      this.$store.commit('modals/setPopupState', {
+        type: 'loading',
+        isShow: true,
+      })
+
       try {
         createNewTrade.log('tradeSelectedItemFrom', this.tradeSelectedItemFrom)
         createNewTrade.log('tradeSelectedItemTo', this.tradeSelectedItemTo)
@@ -261,8 +266,20 @@ export default {
 
         // TODO: check is the contract is approved
         // TODO: remove token from the users lists (update list?? )
-
         createNewTrade.log('startTrade ', startTrade)
+        if (startTrade) {
+          createNewTrade.log('Trade successfully created')
+
+          // this.$store.commit('modals/closeModal')
+
+          this.$store.commit('modals/setPopupState', {
+            type: 'success',
+            isShow: true,
+            modalData: {
+              message: 'Trade successfully created',
+            },
+          })
+        }
       } catch (error) {
         createNewTrade.log('error', error)
       }

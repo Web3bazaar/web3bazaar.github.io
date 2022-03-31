@@ -83,7 +83,7 @@ export const actions = {
   },
   async allowERC1155({ commit }, { wa, contractAddress }) {
     contractAddress = '0x15051D1Fcf470b976c600b43B735f96aF311c6eE'
-    const erc1155ABI = require('../const/abis/ERC1155.json')
+    const erc1155ABI = require('../const/abis/erc1155.json')
     console.log('ERC1155 ', erc1155ABI)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)

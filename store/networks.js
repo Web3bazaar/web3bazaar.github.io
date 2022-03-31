@@ -1,10 +1,10 @@
 export const state = () => ({
   networksData: [
-    {
-      chainId: '0x4',
-      name: 'rinkeby',
-      apiURL: 'https://api-rinkeby.etherscan.io',
-    },
+    // {
+    //   chainId: '0x4',
+    //   name: 'rinkeby',
+    //   apiURL: 'https://api-rinkeby.etherscan.io',
+    // },
     {
       chainId: '0x38',
       name: 'BSC',
@@ -25,6 +25,8 @@ export const state = () => ({
       iconUrls: [
         'https://s2.coinmarketcap.com/static/img/coins/200x200/1839.png',
       ],
+      tokenAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+      w3bChainWalletAddress: '0xC133C9B5AD1c36F6726699d106a400cA51b41bF5',
     },
     {
       chainId: '0xfa',
@@ -90,6 +92,8 @@ export const state = () => ({
         decimals: 18,
       },
       apiURL: 'https://api.polygonscan.com',
+      tokenAddress: '0x0000000000000000000000000000000000001010',
+      w3bChainWalletAddress: '0xC133C9B5AD1c36F6726699d106a400cA51b41bF5',
     },
   ],
   activeNetwork: '0xa86a', // Avalanche

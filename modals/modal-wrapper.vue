@@ -1,6 +1,17 @@
 <template>
-  <div v-if="modalType" class="modal-wrap">
+  <div
+    v-if="modalType"
+    class="modal-wrap"
+    :class="{ loading: modalType === 'loading' }"
+  >
     <NetworkModal v-if="modalType === 'network'" @close="closeModal" />
+    <LoadingModal v-if="modalType === 'loading'" @close="closeModal" />
+    <SuccessModal
+      v-if="modalType === 'success'"
+      :modal-data="modalData"
+      @close="closeModal"
+    />
+    -->
 
     <!-- <TokenStakeModal
       v-if="modalType === 'token-stake'"
@@ -17,16 +28,20 @@ import { mapState } from 'vuex'
 // const DepositModal = () => import('@/modals/deposit-modal')
 
 const NetworkModal = () => import('@/modals/network-modal.vue')
+const LoadingModal = () => import('@/modals/loading-modal.vue')
+const SuccessModal = () => import('@/modals/success-modal.vue')
 
 export default {
   components: {
     NetworkModal,
+    LoadingModal,
+    SuccessModal,
 
     // TokenStakeModal,
     // DepositModal,
   },
   computed: {
-    ...mapState('modals', ['modalType']),
+    ...mapState('modals', ['modalType', 'modalData']),
   },
   methods: {
     closeModal() {

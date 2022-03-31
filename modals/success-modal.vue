@@ -1,95 +1,52 @@
 <template>
-  <div class="network-popup">
+  <div class="loading-popup">
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
-
-    <p class="title">select your network</p>
+    <h3 class="title">Hurray 👏</h3>
 
     <div class="networks-wrap">
-      <div
-        v-for="network in networksData"
-        :key="network.chainId"
-        class="item-wrap"
-      >
-        <ui-network-btn
-          :network-type="network.chainId"
-          @click="switchNetwork(network.chainId)"
-        />
-      </div>
+      <v-img :src="successImg" max-height="300" />
     </div>
-
-    <div class="info-wrap">
-      <p class="block-title">Your MetaMask current network</p>
-      <p class="network-name">{{ currentNetwork }}</p>
-    </div>
+    <p class="title">{{ message }}</p>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import CloseButton from '~/assets/img/svg/CloseButton.vue'
 
 export default {
-  components: {
-    CloseButton,
+  components: { CloseButton },
+  props: {
+    modalData: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
-    return {}
+    return {
+      successImg: require('../assets/img/core-img/Web3Bazaar_1080x1080_FINAL.png'),
+    }
   },
   computed: {
-    ...mapState('networks', ['networksData']),
-    currentNetwork() {
-      const activeNetwork = this.$store.state.networks.activeNetwork
-      console.log(activeNetwork)
-      if (activeNetwork === '0x38') return 'Binance Smart Chain'
-      if (activeNetwork === '0xfa') return 'Fantom Opera'
-      if (activeNetwork === '0xa86a') return 'Avalanche'
-      if (activeNetwork === '0x89') return 'Polygon Mainnet'
-      // testnet
-      if (activeNetwork === '0x13881') return 'Polygon Mumbai'
-
-      return ''
+    message() {
+      return this.modalData?.message
     },
   },
   methods: {
     closePopup() {
       this.$emit('close')
     },
-    async switchNetwork(chainId) {
-      try {
-        if (chainId === '0x1') {
-          alert('Change in Metamask:(')
-          return false
-        }
-        const data = Object.assign(
-          {},
-          this.networksData.find((item) => item.chainId === chainId)
-        )
-        delete data.apiURL
-        delete data.code
-        delete data.name
-        delete data.w3bChainWalletAddress
-        delete data.tokenAddress
-        const resp = await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [data],
-        })
-        if (resp === null) {
-          this.$store.commit('networks/setActiveNetwork', chainId)
-          this.closePopup()
-        }
-        console.log(resp)
-      } catch (error) {
-        console.log(error)
-      }
-    },
   },
 }
 </script>
-
+<style lang="scss">
+.modal-wrap.loading {
+  background: rgba($color: #03091f, $alpha: 0.6);
+}
+</style>
 <style lang="scss" scoped>
-.network-popup {
+.loading-popup {
   padding: 20px;
   background: #03091f;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);

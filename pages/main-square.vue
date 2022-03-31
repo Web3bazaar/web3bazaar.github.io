@@ -16,7 +16,7 @@
           class="d-flex justify-center"
         >
           <nuxt-link :to="'/create-new-trade'">
-            <button class="more-btn mb-15 w3b-bg-gradient">
+            <button class="more-btn mb-15 pixel2 w3b-bg-gradient">
               Create a new trade
             </button>
           </nuxt-link>
@@ -100,6 +100,11 @@ export default {
   },
   methods: {
     async getTradesInfo() {
+      this.$store.commit('modals/setPopupState', {
+        type: 'loading',
+        isShow: true,
+      })
+
       const tradesSubmittedByYou = []
       const tradesSubmittedByOthers = []
       this.loading = true
@@ -199,6 +204,8 @@ export default {
 
         this.tradesSubmittedByYou = tradesSubmittedByYou
         this.tradesSubmittedByOthers = tradesSubmittedByOthers
+
+        this.$store.commit('modals/closeModal')
       } catch (error) {
         mainSquare.error('getTradesInfo error', error)
 

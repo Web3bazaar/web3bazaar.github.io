@@ -83,7 +83,7 @@ export const actions = {
       const _creatorAmount = new BN(creatorAmount).mul(new BN(EtherUnit))
       const _executorAmount = new BN(executorAmount).mul(new BN(EtherUnit))
 
-      const approveReturn = await bazaarInstance.startTrade(
+      const startTradeTx = await bazaarInstance.startTrade(
         creatorAssetContract, // Web3ABI.encodeParameter('address', creatorAssetContract),
         Web3ABI.encodeParameter('uint256', creatorAssetId),
         Web3ABI.encodeParameter('uint256', _creatorAmount),
@@ -95,13 +95,14 @@ export const actions = {
         Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
         {}
       )
+      await startTradeTx.wait()
 
       bazaarConnectorLog.log(
         'result from start Trade ',
-        Web3ABI.decodeParameter('bool', approveReturn.data)
+        Web3ABI.decodeParameter('bool', startTradeTx.data)
       )
 
-      return approveReturn
+      return Web3ABI.decodeParameter('bool', startTradeTx.data)
     } catch (error) {
       throw error?.data || error
     }

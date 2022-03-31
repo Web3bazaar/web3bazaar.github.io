@@ -236,12 +236,17 @@ export default {
       ...this.itemFrom,
       address: this.account,
     })
-
-    this.$store.dispatch('trader/listOwnedIds', {
-      selectedProjects: this.projects,
-      wa: this.account,
-      from: true,
+    this.$store.commit('modals/setPopupState', {
+      type: 'loading',
+      isShow: true,
     })
+    this.$store
+      .dispatch('trader/listOwnedIds', {
+        selectedProjects: this.projects,
+        wa: this.account,
+        from: true,
+      })
+      .then(() => this.$store.commit('modals/closeModal'))
   },
   methods: {
     getTradeStatus(trade) {
