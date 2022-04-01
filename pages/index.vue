@@ -7,7 +7,13 @@
           <!-- Welcome Content -->
           <v-col cols="12" class="text-center">
             <div class="dream-btn-group fadeInUp" data-wow-delay="0.4s">
-              <a href="#" class="btn more-btn"> Coming soon </a>
+              <v-btn
+                type="submit"
+                class="more-btn mb-15 pixel2 w3b-bg-gradient"
+                @click="openBetaModal"
+              >
+                {{ 'Enter the Bazaar' }}
+              </v-btn>
             </div>
           </v-col>
         </v-row>
@@ -239,6 +245,14 @@ export default {
     return {
       title: 'Home - ',
     }
+  },
+  methods: {
+    openBetaModal() {
+      this.$store.commit('modals/setPopupState', {
+        type: 'beta',
+        isShow: true,
+      })
+    },
   },
 }
 </script>

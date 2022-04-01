@@ -92,7 +92,7 @@ export const state = () => ({
       apiURL: 'https://api.polygonscan.com',
     },
   ],
-  activeNetwork: '0xa86a', // Avalanche
+  activeNetwork: '0x13881', // mumbai
 })
 
 export const mutations = {

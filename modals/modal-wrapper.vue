@@ -6,6 +6,7 @@
   >
     <NetworkModal v-if="modalType === 'network'" @close="closeModal" />
     <LoadingModal v-if="modalType === 'loading'" @close="closeModal" />
+    <BetaModal v-if="modalType === 'beta'" @close="closeModal" />
     <SuccessModal
       v-if="modalType === 'success'"
       :modal-data="modalData"
@@ -27,14 +28,16 @@ import { mapState } from 'vuex'
 // const DepositModal = () => import('@/modals/deposit-modal')
 
 const NetworkModal = () => import('@/modals/network-modal.vue')
-const LoadingModal = () => import('@/modals/loading-modal.vue')
 const SuccessModal = () => import('@/modals/success-modal.vue')
+const LoadingModal = () => import('@/modals/loading-modal.vue')
+const BetaModal = () => import('@/modals/beta-modal.vue')
 
 export default {
   components: {
     NetworkModal,
     LoadingModal,
     SuccessModal,
+    BetaModal,
 
     // TokenStakeModal,
     // DepositModal,

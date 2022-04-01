@@ -1,39 +1,49 @@
 <template>
   <div class="loading-popup">
-    <p class="title text-center">Loading...</p>
-
-    <div class="networks-wrap">
-      <v-img :src="loadingGif" max-height="300" />
+    <div class="close-btn" @click="closePopup">
+      <CloseButton />
     </div>
+    <h3 class="title">Beta</h3>
+
+    <div class="networks-wrap"></div>
+    <p class="title">this is a beta version of the site</p>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import CloseButton from '~/assets/img/svg/CloseButton.vue'
+
 export default {
-  components: {},
+  components: { CloseButton },
+  props: {},
   data() {
-    return {
-      loadingGif: require('../assets/gifs/MinerAnimation.gif'),
-    }
+    return {}
   },
-  computed: {},
-  methods: {},
+  computed: {
+    ...mapState('connector', ['isWalletConnected']),
+  },
+  methods: {
+    closePopup() {
+      //    if (routeName !== 'main-square')
+      if (this.isWalletConnected) {
+        this.$router.push({ name: 'main-square' })
+      }
+      this.$emit('close')
+    },
+  },
 }
 </script>
 <style lang="scss">
 .modal-wrap.loading {
-  background: rgba($color: #03091f, $alpha: 0.8);
-  padding-top: 0;
-  z-index: 9999;
+  background: rgba($color: #03091f, $alpha: 0.6);
 }
 </style>
 <style lang="scss" scoped>
 .loading-popup {
   padding: 20px;
   background: #03091f;
-  background: none !important;
-  box-shadow: none;
-  // box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   width: 95%;
   max-width: 590px;
@@ -62,10 +72,9 @@ export default {
     font-size: 24px;
     line-height: 1.7;
     text-transform: uppercase;
-    margin-bottom: 0px;
+    margin-bottom: 50px;
     position: relative;
     z-index: 2;
-    color: #ffffff;
   }
   .networks-wrap {
     display: flex;

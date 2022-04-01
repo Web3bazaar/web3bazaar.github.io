@@ -7,7 +7,9 @@
     @mouseleave="itsHover = false"
   >
     <ui-btn-loader v-if="connectLoader" />
-    <template v-else-if="itsHover"> dashboard </template>
+    <template v-else-if="itsHover && isWalletConnected && false">
+      dashboard
+    </template>
     <template v-else>
       {{ getAccount }}
     </template>
@@ -44,6 +46,13 @@ export default {
       this.connectLoader = true
       try {
         await this.$store.dispatch('connector/connectAccount', window.ethereum)
+        if (this.isWalletConnected) {
+          this.$store.commit('modals/setPopupState', {
+            type: 'beta',
+            isShow: true,
+          })
+          // this.$router.push({ name: 'main-square' })
+        }
       } catch (e) {
         console.log('e:', e)
       }
@@ -56,6 +65,7 @@ export default {
 <style lang="scss" scoped>
 .login-btn {
   width: 176px !important;
+  height: 48px !important;
   font-size: 16px;
 }
 </style>

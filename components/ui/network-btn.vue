@@ -29,7 +29,8 @@ export default {
   },
   methods: {
     clickHandler() {
-      this.$emit('click')
+      // disable network change for now
+      // this.$emit('click')
     },
     getNetworkIcon(network) {
       if (network && network !== 'rinkeby') {

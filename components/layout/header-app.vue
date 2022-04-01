@@ -57,9 +57,6 @@ export default {
         type: 'network',
         isShow: true,
       })
-
-      console.log(this.showModal)
-      console.log(this.modalType)
     },
   },
 }
