@@ -208,7 +208,7 @@ export default {
         this.$store.commit('modals/closeModal')
       } catch (error) {
         mainSquare.error('getTradesInfo error', error)
-
+        this.$store.commit('modals/closeModal')
         this.loading = false
       }
     },

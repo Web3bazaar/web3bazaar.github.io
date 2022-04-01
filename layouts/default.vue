@@ -63,40 +63,9 @@ export default {
   },
   computed: {
     ...mapState('modals', ['showModal', 'modalType']),
-    ...mapState('sound', ['isSoundEnabled']),
   },
-  mounted() {
-    this.$store.commit('sound/initializeSound')
-    this.playSound()
-  },
+
   methods: {
-    playSound() {
-      if (this.isSoundEnabled) {
-        this.audio = new Audio(
-          require('~/assets/audio/background/Life-at-the-bazaar.mp3').default
-        )
-
-        this.audio.volume = 0
-        const interval = 400 // 200ms interval
-
-        const fadeout = () =>
-          setInterval(() => {
-            // Reduce volume by 0.05 as long as it is above 0
-            // This works as long as you start with a multiple of 0.05!
-            if (this.audio.volume < 0.6) {
-              this.audio.volume += 0.03
-            } else {
-              // Stop the setInterval when 0 is reached
-              clearInterval(fadeout)
-            }
-          }, interval)
-
-        fadeout()
-        this.audio.loop = true
-
-        this.audio.play()
-      }
-    },
     metamaskCheckSuccess() {
       this.$logger('CHECK COMPLETE')
       // load data now
@@ -111,22 +80,22 @@ export default {
 <style lang="scss">
 /* width */
 ::-webkit-scrollbar {
-  width: 30px;
+  width: 6px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(116, 80, 254, 0.7);
+  background: #888;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgba(116, 80, 254, 0.7);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgba(116, 80, 254, 1);
 }
 // #main-b {
 //   max-height: 100vh;

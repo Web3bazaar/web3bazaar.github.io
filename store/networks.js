@@ -80,7 +80,7 @@ export const state = () => ({
       chainId: '0x13881',
       name: 'mumbai',
       code: 137,
-      chainName: 'Polygon Mainnet',
+      chainName: 'Polygon Mumbai',
       rpcUrls: ['https://rpc-mumbai.matic.today'],
       iconUrls: ['https://polygonscan.com/images/logo.svg?v=0.0.3'],
       blockExplorerUrls: ['https://mumbai.polygonscan.com/'],

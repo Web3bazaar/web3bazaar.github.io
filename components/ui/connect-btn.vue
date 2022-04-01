@@ -30,6 +30,8 @@ export default {
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
+    ...mapState('networks', ['networksData']),
+
     getAccount() {
       return this.account
         ? this.$options.filters.truncate(this.account, 9)
@@ -37,6 +39,25 @@ export default {
     },
   },
   methods: {
+    async switchNetwork(chainId) {
+      const data = Object.assign(
+        {},
+        this.networksData.find((item) => item.chainId === chainId)
+      )
+      delete data.apiURL
+      delete data.code
+      delete data.name
+      delete data.w3bChainWalletAddress
+      delete data.tokenAddress
+      const resp = await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [data],
+      })
+      if (resp === null) {
+        this.$store.commit('networks/setActiveNetwork', chainId)
+        this.closePopup()
+      }
+    },
     async walletBtnHandler() {
       if (this.isWalletConnected) {
         this.$router.push({ name: 'main-square' })
@@ -47,6 +68,9 @@ export default {
       try {
         await this.$store.dispatch('connector/connectAccount', window.ethereum)
         if (this.isWalletConnected) {
+          // switch to mumbai
+          this.switchNetwork('0x13881')
+
           this.$store.commit('modals/setPopupState', {
             type: 'beta',
             isShow: true,
