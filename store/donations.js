@@ -45,7 +45,7 @@ export const actions = {
       const {
         w3bChainWalletAddress,
         tokenAddress: nativeTokenContractAddress,
-      } = state[rootGetters['networks/getActiveChain']?.chainId]
+      } = state.baseValue[rootGetters['networks/getActiveChain']?.chainId]
       donationsLogger.log('w3bWalletAddress', w3bChainWalletAddress)
       donationsLogger.log(
         'nativeTokenContractAddress',
