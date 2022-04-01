@@ -3,8 +3,8 @@
     <v-row align="center">
       <v-col cols="12" md="12"> <h3>Are you enjoying the Bazaar?</h3> </v-col>
       <v-col cols="12" md="4" class="">
-        The Bazaar is open to all aand free to use. Help the team keeping it
-        this way forever by donating in your favorite network
+        The Bazaar is open to all and free to use. Help the team keeping it this
+        way forever by donating in your favorite network
       </v-col>
       <v-spacer />
       <v-col cols="12" sm="auto" class="py-0">

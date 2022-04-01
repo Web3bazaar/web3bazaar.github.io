@@ -12,7 +12,7 @@
       </v-col>
       <v-col cols="12" sm="6" class="text-left pb-1">
         <p class="item-quantity text-left">
-          Item Quantity {{ value.item_quantity }}
+          Item Quantity {{ formattedQuantity }}
         </p>
 
         <p class="item-name text-left">Item Name {{ value.item_name }}</p>
@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import { ethers } from 'ethers'
+
 export default {
   props: {
     accountFrom: {
@@ -118,7 +120,11 @@ export default {
       selectedProjectsAssets: [],
     }
   },
-  computed: {},
+  computed: {
+    formattedQuantity() {
+      return ethers.utils.formatUnits(this.value?.item_quantity + '', 'ether')
+    },
+  },
   watch: {
     selectedProjectsAssets(val) {
       this.$logger(val)
