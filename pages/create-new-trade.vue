@@ -16,25 +16,25 @@
           />
         </v-col>
         <v-col cols="12" class="text-center">
-          <button
+          <v-btn
             v-if="isSelectedContractApproved"
             type="submit"
             class="more-btn mb-15 pixel2 w3b-bg-gradient"
-            :aria-disabled="loadingBtn"
+            :loading="loadingBtn"
             @click="newTrade"
           >
             {{ ADD_TRADE }}
-          </button>
+          </v-btn>
 
-          <button
+          <v-btn
             v-else
             type="submit"
             class="more-btn mb-15 pixel2 w3b-bg-gradient"
-            :aria-disabled="loadingBtn"
+            :loading="loadingBtn"
             @click="approveSelectedContract"
           >
             {{ APPROVE }}
-          </button>
+          </v-btn>
           <!-- <v-btn
             type="submit"
             class="more-btn mb-15"
@@ -160,61 +160,66 @@ export default {
     },
 
     async approveSelectedContract() {
-      const {
-        token_address: creatorAssetContract,
-        contract_type: creatorAssetType,
-      } = this.tradeSelectedItemFrom.find((asset) => asset.selected > 0)
+      createNewTrade.log('approveSelectedContract', this.tradeSelectedItemFrom)
+      try {
+        if (!this.tradeSelectedItemFrom) return
 
-      const isApproved = await this.checkIfContractIsApprovedForWallet(
-        creatorAssetContract,
-        creatorAssetType,
-        this.account
-      )
-      createNewTrade.log('isApproved', isApproved)
+        const {
+          token_address: creatorAssetContract,
+          contract_type: creatorAssetType,
+        } =
+          this.tradeSelectedItemFrom.find((asset) => asset?.selected > 0) || {}
 
-      if (!isApproved) {
-        const res = await this.setApproval(
+        if (!creatorAssetContract || !creatorAssetType) return
+
+        this.loadingBtn = true
+
+        const isApproved = await this.checkIfContractIsApprovedForWallet(
           creatorAssetContract,
           creatorAssetType,
           this.account
         )
+        createNewTrade.log('isApproved', isApproved)
 
-        console.log(res)
-        if (res) {
-          this.loadingBtn = true
-          let numTries = 5
-          const t = setInterval(() => {
-            numTries--
-            if (numTries === 0) clearInterval(t)
-            this.checkIfContractIsApprovedForWallet(
-              creatorAssetContract,
-              creatorAssetType,
-              this.account
-            ).then((res) => {
-              if (res) {
-                this.isSelectedContractApproved = true
-                this.loadingBtn = false
-                clearInterval(t)
-              }
-            })
-          }, 4 * 1000)
+        if (!isApproved) {
+          const res = await this.setApproval(
+            creatorAssetContract,
+            creatorAssetType,
+            this.account
+          )
+
+          console.log(res)
+          if (res) {
+            this.loadingBtn = true
+            let numTries = 5
+            const t = setInterval(() => {
+              numTries--
+              if (numTries === 0) clearInterval(t)
+              this.checkIfContractIsApprovedForWallet(
+                creatorAssetContract,
+                creatorAssetType,
+                this.account
+              ).then((res) => {
+                if (res) {
+                  this.isSelectedContractApproved = true
+                  this.loadingBtn = false
+                  clearInterval(t)
+                }
+              })
+            }, 4 * 1000)
+          }
         }
+      } catch (error) {
+        createNewTrade.error('approveSelectedContract error', error)
       }
     },
     async newTrade() {
-      this.loadingBtn = true
-
-      this.$store.commit('modals/setPopupState', {
-        type: 'loading',
-        isShow: true,
-      })
-
       try {
         createNewTrade.log('tradeSelectedItemFrom', this.tradeSelectedItemFrom)
         createNewTrade.log('tradeSelectedItemTo', this.tradeSelectedItemTo)
 
         if (!this.tradeSelectedItemFrom) return
-        if (!this.tradeSelectedItemTo) return
+        if (this.tradeSelectedItemTo?.length === 0) return
 
         const {
           token_address: creatorAssetContract,
@@ -250,6 +255,13 @@ export default {
         }
 
         createNewTrade.log('executorObject', executorObject)
+
+        this.loadingBtn = true
+
+        this.$store.commit('modals/setPopupState', {
+          type: 'loading',
+          isShow: true,
+        })
 
         const startTrade = await this.$store
           .dispatch('bazaar-connector/startTrade', {

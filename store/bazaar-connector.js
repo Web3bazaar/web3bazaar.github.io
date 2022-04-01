@@ -302,7 +302,7 @@ export const actions = {
       )
       bazaarConnectorLog.log('is approved for all: ', isApproved)
 
-      return isApproved
+      return await isApproved.wait()
     } catch (error) {
       bazaarConnectorLog.error('isApproved', error)
       throw error?.data || error

@@ -104,7 +104,7 @@
           v-if="creator || trade.tradeStatus !== 3"
           cols="12"
           sm="12"
-          class="item-col d-flex justify-center"
+          class="d-flex justify-center"
         >
           <v-btn
             type="submit"
@@ -390,7 +390,7 @@ export default {
   .item-col:first-child .item-card .container.list-item {
     left: 3px;
   }
-  .item-col:last-child .item-card .container.list-item {
+  .item-col:nth-child(3) .item-card .container.list-item {
     right: 3px;
   }
 }
