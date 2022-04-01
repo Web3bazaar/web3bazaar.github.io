@@ -12,7 +12,7 @@
         <v-col
           v-if="tradesSubmittedByYou.length > 0"
           cols="12"
-          lg="3"
+          lg="12"
           class="d-flex justify-center"
         >
           <nuxt-link :to="'/create-new-trade'">

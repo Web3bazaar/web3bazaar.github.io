@@ -387,10 +387,10 @@ export default {
 
 <style lang="scss">
 .trade-wrapper {
-  .item-col:first-child .item-card .container.list-item {
+  .item-col:first-child .item-card section.list-item {
     left: 3px;
   }
-  .item-col:nth-child(3) .item-card .container.list-item {
+  .item-col:nth-child(3) .item-card section.list-item {
     right: 3px;
   }
 }
@@ -418,7 +418,7 @@ export default {
     text-align: center;
   }
 
-  > .container {
+  > section {
     height: 100%;
 
     border-radius: 10px;

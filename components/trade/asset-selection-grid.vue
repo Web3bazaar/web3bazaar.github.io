@@ -15,7 +15,7 @@
               <v-row no-gutters>
                 <v-col class="pa-0">
                   <div class="img-wrapper">
-                    <img :src="asset.metadata.image" />
+                    <v-img :src="asset.metadata.image" contain />
                   </div>
                   <v-fade-transition>
                     <v-overlay
@@ -253,15 +253,15 @@ export default {
 
     display: flex;
     justify-content: center;
-    img {
+    height: 110px;
+    .v-image {
       border-radius: 5px;
 
-      height: 110px;
       outline: solid 2px purple;
     }
   }
   .selected > div .img-wrapper {
-    img {
+    .v-image {
       outline: solid 2px yellow;
       filter: grayscale(100%);
     }

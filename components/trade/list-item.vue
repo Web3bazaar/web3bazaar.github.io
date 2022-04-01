@@ -1,78 +1,89 @@
 <template>
-  <v-container class="list-item">
-    <v-row v-if="!newTrade" class="justify-space-evenly">
-      <v-col cols="12">
-        <div id="account_from">{{ value.address | truncate(9) }}</div>
-      </v-col>
-      <v-col cols="12" sm="12">
-        <div id="project_from">{{ value.project_name }}</div>
-      </v-col>
-      <v-col cols="12" sm="5" class="d-flex justify-center pb-1">
-        <v-img contain class="ml-0" max-height="150px" :src="value.base_img" />
-      </v-col>
-      <v-col cols="12" sm="6" class="text-left pb-1">
-        <p class="item-quantity text-left">
-          Item Quantity {{ formattedQuantity }}
-        </p>
+  <section class="list-item">
+    <v-container v-if="!newTrade">
+      <v-row class="justify-space-evenly">
+        <v-col cols="12">
+          <div id="account_from">{{ value.address | truncate(9) }}</div>
+        </v-col>
+        <v-col cols="5" class="d-flex justify-center">
+          <v-img
+            contain
+            class="ml-0"
+            max-height="150px"
+            :src="value.base_img"
+          />
+        </v-col>
 
-        <p class="item-name text-left">Item Name {{ value.item_name }}</p>
-      </v-col>
-    </v-row>
+        <v-col cols="7">
+          <div id="project_from" class="text-left pb-3">
+            {{ value.project_name }}
+          </div>
 
-    <v-row v-else class="justify-space-evenly">
-      <v-col v-if="!accountFrom" cols="12">
-        <p>Enter counter-party address</p>
-        <v-text-field
-          solo
-          dense
-          :value="value.address"
-          :hide-details="true"
-          @input="update('address', $event)"
-        />
-      </v-col>
-      <v-col v-else cols="12" class="pt-10 pb-6">
-        <div id="account_from">
-          {{ accountFrom | truncate(9) }}
-          <span style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px">
-            You
-          </span>
-        </div>
-      </v-col>
+          <p class="item-quantity text-left pb-0">
+            Item Quantity {{ formattedQuantity }}
+          </p>
 
-      <v-col cols="12" sm="12">
-        <p>Choose projects</p>
-
-        <v-select
-          v-model="selectedProjects"
-          solo
-          dense
-          hide-details
-          multiple
-          label="Choose projects"
-          :items="projects"
-          return-object
-          item-text="project_name"
-          :value="value.project_name"
-          @input="update('project_name', $event)"
-        >
-          <template #selection="{ item, index }">
-            <v-chip v-if="index < maxProjectsToShow">
-              <span>{{ item.project_name | truncate(8, 'start') }}</span>
-            </v-chip>
+          <p class="item-name text-left">Item Name {{ value.item_name }}</p>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container v-else>
+      <v-row class="justify-space-evenly">
+        <v-col v-if="!accountFrom" cols="12">
+          <p>Enter counter-party address</p>
+          <v-text-field
+            solo
+            dense
+            :value="value.address"
+            :hide-details="true"
+            @input="update('address', $event)"
+          />
+        </v-col>
+        <v-col v-else cols="12" class="pt-10 pb-6">
+          <div id="account_from">
+            {{ accountFrom | truncate(9) }}
             <span
-              v-if="index === maxProjectsToShow"
-              class="grey--text text-caption"
+              style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px"
             >
-              (+{{ value.length - maxProjectsToShow }} others)
+              You
             </span>
-          </template>
-        </v-select>
-      </v-col>
-      <v-col cols="12" sm="12">
-        <p>Choose an asset</p>
-        <trade-asset-selection-grid v-model="selectedProjectsAssets" />
-      </v-col>
-      <!--  <v-col cols="12" sm="12">
+          </div>
+        </v-col>
+
+        <v-col cols="12" sm="12">
+          <p>Choose projects</p>
+
+          <v-select
+            v-model="selectedProjects"
+            solo
+            dense
+            hide-details
+            multiple
+            label="Choose projects"
+            :items="projects"
+            return-object
+            item-text="project_name"
+            :value="value.project_name"
+            @input="update('project_name', $event)"
+          >
+            <template #selection="{ item, index }">
+              <v-chip v-if="index < maxProjectsToShow">
+                <span>{{ item.project_name | truncate(8, 'start') }}</span>
+              </v-chip>
+              <span
+                v-if="index === maxProjectsToShow"
+                class="grey--text text-caption"
+              >
+                (+{{ value.length - maxProjectsToShow }} others)
+              </span>
+            </template>
+          </v-select>
+        </v-col>
+        <v-col cols="12" sm="12">
+          <p>Choose an asset</p>
+          <trade-asset-selection-grid v-model="selectedProjectsAssets" />
+        </v-col>
+        <!--  <v-col cols="12" sm="12">
         <p>Amount</p>
         <v-text-field
           solo
@@ -82,8 +93,9 @@
           @input="update('amount', $event)"
         />
       </v-col> -->
-    </v-row>
-  </v-container>
+      </v-row>
+    </v-container>
+  </section>
 </template>
 
 <script>
