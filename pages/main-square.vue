@@ -15,7 +15,7 @@
             :to="'/create-new-trade'"
           >
             <v-btn class="more-btn mb-15 pixel2 w3b-bg-gradient">
-              Create a new trade
+              New Trade
             </v-btn>
           </nuxt-link>
         </v-col>
@@ -45,7 +45,7 @@
             <v-spacer />
             <nuxt-link :to="'/create-new-trade'" class="">
               <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
-                Create a new trade
+                New Trade
               </v-btn>
             </nuxt-link>
           </v-col>
@@ -124,8 +124,6 @@ export default {
         const resolvedPromises = await Promise.all(promises)
 
         //  resolvedPromises.map
-
-        console.log(resolvedPromises)
 
         for (let i = 0; i < resolvedPromises.length; i++) {
           const e = resolvedPromises[i]
@@ -228,7 +226,6 @@ export default {
         walletAddress: this.account,
         asset: { id: idAsset },
       })
-      console.log(image)
       return image
     },
 

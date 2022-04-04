@@ -40,7 +40,7 @@ export const state = () => ({
   itemTo: {
     base_img:
       'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-    address: '0x123...999',
+    address: '',
     project_name: 'SunFlower Farms',
     item_name: 'potato',
     item_quantity: 30,

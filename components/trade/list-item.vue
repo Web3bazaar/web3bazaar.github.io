@@ -19,11 +19,10 @@
             {{ value.project_name }}
           </div>
 
-          <p class="item-quantity text-left pb-0">
-            Item Quantity {{ formattedQuantity }}
+          <p class="item-name text-left pb-0">
+            Item Name {{ value.item_name }}
           </p>
-
-          <p class="item-name text-left">Item Name {{ value.item_name }}</p>
+          <p class="item-quantity text-left">Amount {{ formattedQuantity }}</p>
         </v-col>
       </v-row>
     </v-container>

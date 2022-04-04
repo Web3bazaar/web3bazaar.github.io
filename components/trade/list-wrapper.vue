@@ -146,7 +146,8 @@ import { mapState } from 'vuex'
 
 import { ethers } from 'ethers'
 
-const CLAIM_BACK = 'Claim back'
+const CLAIM_BACK = 'Claim back assets'
+const CLAIM = 'Claim assets'
 const EXECUTE = 'Execute Trade'
 
 export default {
@@ -277,7 +278,7 @@ export default {
       if (this.creator && trade.tradeStatus === 1) {
         return CLAIM_BACK
       } else if (this.creator && trade.tradeStatus === 3) {
-        return this.UserStatus[3]
+        return CLAIM
       } else if (this.creator) {
         return this.UserStatus[trade?.itemFrom?.traderStatus]
       } else {
