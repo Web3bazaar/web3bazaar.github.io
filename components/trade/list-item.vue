@@ -18,8 +18,7 @@
           <div id="project_from" class="text-left pb-3">
             {{ value.project_name }}
           </div>
-
-          <p class="item-name text-left pb-0">
+          <p v-if="value.traderType !== 1" class="item-name text-left pb-0">
             Item Name {{ value.item_name }}
           </p>
           <p class="item-quantity text-left">Amount {{ formattedQuantity }}</p>
