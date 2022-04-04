@@ -1,19 +1,9 @@
 <template>
   <v-container class="trade-wrapper">
-    <!-- {{ itemTo }} -->
-    <v-row :class="{ 'new-trade': newTrade }" justify="center">
-      <!-- From -->
-      <v-col cols="12" sm="4">
-        <p class="mb-0">From</p>
-      </v-col>
-      <v-col cols="12" sm="1"> </v-col>
-      <v-col cols="12" sm="4">
-        <p class="mb-0">To</p>
-      </v-col>
-    </v-row>
     <v-container v-if="newTrade" class="pa-0">
       <v-row :class="{ 'new-trade': newTrade }" justify="center">
         <v-col cols="12" sm="4" class="item-col">
+          <p class="">From</p>
           <v-card class="item-card">
             <trade-list-item
               v-model="itemFrom"
@@ -38,6 +28,7 @@
         </v-col>
         <!-- To -->
         <v-col cols="12" sm="4" class="item-col">
+          <p class="">To</p>
           <v-card class="item-card">
             <trade-list-item
               v-model="itemTo"
@@ -59,7 +50,23 @@
         :class="{ 'new-trade': newTrade }"
         justify="center"
       >
-        <v-col cols="12" sm="4" class="item-col">
+        <v-col cols="12" sm="4" class="d-flex flex-column item-col">
+          <div id="account_from">
+            <p class="">
+              <span style="color: #fff"> From </span>
+
+              {{ trade.itemFrom.address | truncate(9) }}
+              <span
+                v-if="
+                  account.toLowerCase() === trade.itemFrom.address.toLowerCase()
+                "
+                style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px"
+              >
+                You
+              </span>
+            </p>
+          </div>
+
           <v-card class="item-card">
             <trade-list-item
               :value="trade.itemFrom"
@@ -76,7 +83,7 @@
         <v-col
           cols="12"
           sm="1"
-          class="d-flex flex-column align-center text-center"
+          class="d-flex flex-column align-center text-center pt-8"
         >
           {{ getTradeStatus(trade) }}
 
@@ -88,7 +95,21 @@
           />
         </v-col>
         <!-- To -->
-        <v-col cols="12" sm="4" class="item-col">
+        <v-col cols="12" sm="4" class="d-flex flex-column item-col">
+          <div id="account_from">
+            <p class="">
+              <span style="color: #fff"> To </span>
+              {{ trade.itemTo.address | truncate(9) }}
+              <span
+                v-if="
+                  account.toLowerCase() === trade.itemTo.address.toLowerCase()
+                "
+                style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px"
+              >
+                You
+              </span>
+            </p>
+          </div>
           <v-card class="item-card">
             <trade-list-item
               :value="trade.itemTo"

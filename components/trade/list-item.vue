@@ -2,9 +2,9 @@
   <section class="list-item">
     <v-container v-if="!newTrade">
       <v-row class="justify-space-evenly">
-        <v-col cols="12">
+        <!-- <v-col cols="12">
           <div id="account_from">{{ value.address | truncate(9) }}</div>
-        </v-col>
+        </v-col> -->
         <v-col cols="5" class="d-flex justify-center">
           <v-img
             contain
