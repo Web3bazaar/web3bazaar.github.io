@@ -1,28 +1,38 @@
 <template>
   <v-container fluid class="donations-section">
-    <v-row align="center">
-      <v-col cols="12" md="12"> <h3>Are you enjoying the Bazaar?</h3> </v-col>
+    <v-row align="start" class="pt-4">
+      <v-col cols="12" md="12"> <h3>Want to help the Bazaar?</h3> </v-col>
       <v-col cols="12" md="4" class="">
-        The Bazaar is open to all and free to use. Help the team keeping it this
-        way forever by donating in your favorite network
+        Support us with a donation Bazaar so we can keep the Bazaar open to all
+        and free to use forever.
       </v-col>
       <v-spacer />
-      <v-col cols="12" sm="auto" class="py-0">
-        <h3 class="mb-0">Donate:</h3>
+
+      <v-col cols="12" md="6" class="">
+        <v-row>
+          <v-col cols="12" sm="auto" class="d-flex align-center">
+            <h3 class="mb-0">Donate:</h3>
+          </v-col>
+          <v-col
+            v-for="percentage in percentages"
+            :key="percentage"
+            cols="auto"
+            class="d-flex align-center"
+          >
+            <button class="pixel2" @click="callDonateAmount(percentage)">
+              {{ getCurrentChainValue(percentage) }}
+            </button>
+          </v-col>
+          <v-col cols="12" md="5" class="">
+            <h6>
+              or send us any gift to:
+              <span style="color: rgba(116, 80, 254, 0.7) !important"
+                >{{ w3bDonationAddress }}
+              </span>
+            </h6>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col
-        v-for="percentage in percentages"
-        :key="percentage"
-        cols="auto"
-        class="py-0"
-      >
-        <button class="pixel2" @click="callDonateAmount(percentage)">
-          {{ getCurrentChainValue(percentage) }}
-        </button>
-      </v-col>
-      <v-col cols="12" md="5" offset-md="7" class="pt-0">
-        <p>or send us any gift to: {{ w3bDonationAddress }}</p></v-col
-      >
     </v-row>
   </v-container>
 </template>
@@ -68,7 +78,6 @@ export default {
   justify-content: center;
   align-items: center;
   .row {
-    padding: 16px 0;
     max-width: 1200px;
 
     .donate-btn {
