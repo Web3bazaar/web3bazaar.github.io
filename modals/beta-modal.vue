@@ -3,10 +3,24 @@
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
-    <h3 class="title">Beta</h3>
+    <h3 class="title">Welcome to the Bazaar Beta test</h3>
 
     <div class="networks-wrap"></div>
-    <p class="title">this is a beta version of the site</p>
+    <p class="">
+      You'll interact with it only via Mumbai testnet and won't pay any real
+      fees or trade main net assets..
+    </p>
+    <p class="">
+      Thank you so much for helping us fine tune it before the main net
+      launches.
+    </p>
+    <v-btn
+      type="submit"
+      class="more-btn mb-5 pixel2 w3b-bg-gradient d-flex mx-auto mt-6"
+      @click="closePopup"
+    >
+      {{ 'Enter Bazaar' }}
+    </v-btn>
   </div>
 </template>
 
@@ -72,7 +86,7 @@ export default {
     font-size: 24px;
     line-height: 1.7;
     text-transform: uppercase;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     position: relative;
     z-index: 2;
   }
