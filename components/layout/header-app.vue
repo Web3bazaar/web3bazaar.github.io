@@ -80,10 +80,10 @@ export default {
       } catch (error) {
         console.log(error)
       }
-      this.$store.commit('modals/setPopupState', {
-        type: 'network',
-        isShow: true,
-      })
+      // this.$store.commit('modals/setPopupState', {
+      //   type: 'network',
+      //   isShow: true,
+      // })
     },
   },
 }
