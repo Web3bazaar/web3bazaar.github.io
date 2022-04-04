@@ -42,7 +42,7 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('networks', ['activeNetwork']),
+    ...mapState('networks', ['activeNetwork', 'networksData']),
     ...mapState('modals', ['showModal', 'modalType']),
   },
   methods: {
@@ -52,7 +52,34 @@ export default {
         isShow: true,
       })
     },
-    networkClickHandler() {
+    async networkClickHandler() {
+      // only use mumbai
+      const chainId = '0x13881'
+      try {
+        if (chainId === '0x1') {
+          alert('Change in Metamask:(')
+          return false
+        }
+        const data = Object.assign(
+          {},
+          this.networksData.find((item) => item.chainId === chainId)
+        )
+        delete data.apiURL
+        delete data.code
+        delete data.name
+        delete data.w3bChainWalletAddress
+        delete data.tokenAddress
+        const resp = await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [data],
+        })
+        if (resp === null) {
+          this.$store.commit('networks/setActiveNetwork', chainId)
+        }
+        console.log(resp)
+      } catch (error) {
+        console.log(error)
+      }
       this.$store.commit('modals/setPopupState', {
         type: 'network',
         isShow: true,

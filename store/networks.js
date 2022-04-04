@@ -81,7 +81,7 @@ export const state = () => ({
       name: 'mumbai',
       code: 137,
       chainName: 'Mumbai testnet',
-      rpcUrls: ['https://rpc-mumbai.matic.today'],
+      rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
       iconUrls: ['https://polygonscan.com/images/logo.svg?v=0.0.3'],
       blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
       nativeCurrency: {
