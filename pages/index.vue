@@ -33,7 +33,7 @@
           <v-col cols="12" lg="10" class="text-center">
             <div class="welcome-content">
               <h1 class="fadeInUp" data-wow-delay="0.2s">
-                A trustless p2p
+                A trustless P2P
                 <span class="gradient-text">asset exchange</span>
               </h1>
               <p class="w-text fadeInUp" data-wow-delay="0.3s">

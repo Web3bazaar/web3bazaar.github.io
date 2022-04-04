@@ -718,8 +718,8 @@ ol {
   font-size: 18px;
   text-transform: uppercase;
   /* line-height: 34px; */
-  padding: 0 20px;
-  min-width: 100px;
+  padding: 3px !important;
+  min-width: 90px;
   color: #fff !important;
   background: rgba(116, 80, 254, 0.7);
   height: 35px;

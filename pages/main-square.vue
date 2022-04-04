@@ -5,17 +5,15 @@
   >
     <v-container>
       <!-- Tittle -->
-      <v-row justify="center">
+      <v-row justify="end">
         <v-col cols="12" lg="6" class="d-flex justify-center">
           <h1 class="gradient-text">Main Square</h1>
         </v-col>
-        <v-col
-          v-if="tradesSubmittedByYou.length > 0"
-          cols="12"
-          lg="12"
-          class="d-flex justify-center"
-        >
-          <nuxt-link :to="'/create-new-trade'">
+        <v-col cols="12" lg="3" class="d-flex justify-center">
+          <nuxt-link
+            v-if="tradesSubmittedByYou.length > 0"
+            :to="'/create-new-trade'"
+          >
             <v-btn class="more-btn mb-15 pixel2 w3b-bg-gradient">
               Create a new trade
             </v-btn>
@@ -40,7 +38,10 @@
             lg="12"
             class="d-flex flex-column align-center"
           >
-            <h3 class="d-flex">There are no active trades listed for you</h3>
+            <h3 class="d-flex mb-4">
+              It seems like there's no active trades submitted by our for you at
+              the moment
+            </h3>
             <v-spacer />
             <nuxt-link :to="'/create-new-trade'" class="">
               <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
@@ -246,4 +247,22 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.trades--title {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  &::before {
+    content: '';
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(
+      130deg,
+      #eb3fa9 0%,
+      #395ff6 50%,
+      #eb3fa9 100%
+    ) !important;
+  }
+}
+</style>

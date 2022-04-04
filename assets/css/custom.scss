@@ -161,6 +161,10 @@ $bgPurple: rgba(116, 80, 254, 0.7);
   // #######################
   // UI
   // #######################
+
+  button:focus {
+    outline: none !important;
+  }
   .more-btn {
     position: relative;
     z-index: 1;

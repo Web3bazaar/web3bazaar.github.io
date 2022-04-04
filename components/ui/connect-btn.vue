@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 .login-btn {
   width: 176px !important;
-  height: 48px !important;
+  height: 35px !important;
   font-size: 16px;
 }
 </style>

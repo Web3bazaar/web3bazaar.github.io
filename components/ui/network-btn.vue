@@ -1,8 +1,8 @@
 <template>
-  <button class="btn mini login-btn network-btn" @click="clickHandler">
+  <button class="btn mini login-btn network-btn px-4" @click="clickHandler">
     <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
 
-    {{ activeNetwork.name }}
+    {{ activeNetwork.chainName }}
   </button>
 </template>
 
