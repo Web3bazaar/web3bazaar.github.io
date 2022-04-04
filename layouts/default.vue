@@ -59,6 +59,21 @@ export default {
       htmlAttrs: {
         // style: 'overflow-y:hidden',
       },
+      title: 'Web3 Bazaar | P2P asset exchange for all assets on-chain',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.  Swap any NFT or Token with someone you already agreed terms without needing to trust them.',
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content:
+            'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+        },
+      ],
     }
   },
   computed: {
