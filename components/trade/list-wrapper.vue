@@ -252,7 +252,7 @@ export default {
       }
     },
   },
-  created() {
+  mounted() {
     // just for testing
     this.$store.commit('trader/itemFrom', {
       ...this.itemFrom,

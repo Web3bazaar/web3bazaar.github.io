@@ -227,7 +227,6 @@ export default {
     },
 
     async getBaseImgUrl(contractAddress, idAsset, contractTypeIndex) {
-      console.log(contractTypeIndex)
       const { image, base_img: baseImg } = await this.$store.dispatch(
         'details/getAssetDetails',
         {

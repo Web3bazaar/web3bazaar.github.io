@@ -157,7 +157,7 @@ export default {
         this.account,
         false
       )
-      console.log(res)
+      return res
     },
 
     async approveSelectedContract() {
@@ -189,7 +189,6 @@ export default {
             this.account
           )
 
-          console.log(res)
           if (res) {
             this.loadingBtn = true
             let numTries = 5

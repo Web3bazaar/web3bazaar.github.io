@@ -76,7 +76,6 @@ export default {
         if (resp === null) {
           this.$store.commit('networks/setActiveNetwork', chainId)
         }
-        console.log(resp)
       } catch (error) {
         console.log(error)
       }

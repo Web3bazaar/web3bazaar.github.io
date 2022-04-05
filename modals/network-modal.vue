@@ -41,7 +41,6 @@ export default {
     ...mapState('networks', ['networksData']),
     currentNetwork() {
       const activeNetwork = this.$store.state.networks.activeNetwork
-      console.log(activeNetwork)
       if (activeNetwork === '0x38') return 'Binance Smart Chain'
       if (activeNetwork === '0xfa') return 'Fantom Opera'
       if (activeNetwork === '0xa86a') return 'Avalanche'
@@ -79,7 +78,6 @@ export default {
           this.$store.commit('networks/setActiveNetwork', chainId)
           this.closePopup()
         }
-        console.log(resp)
       } catch (error) {
         console.log(error)
       }

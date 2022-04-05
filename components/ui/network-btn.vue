@@ -23,7 +23,6 @@ export default {
     ...mapState('networks', ['networksData']),
 
     activeNetwork() {
-      console.log(this.networkType)
       return this.networksData.find((item) => item.chainId === this.networkType)
     },
   },
