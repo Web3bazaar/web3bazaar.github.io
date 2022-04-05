@@ -6,20 +6,28 @@
           <div id="account_from">{{ value.address | truncate(9) }}</div>
         </v-col> -->
         <v-col cols="5" class="d-flex justify-center">
-          <v-img
-            contain
-            class="ml-0"
-            max-height="150px"
-            :src="value.base_img"
-          />
+          <v-img contain class="ml-0" max-height="150px" :src="value.baseImg" />
         </v-col>
-
         <v-col cols="7">
           <div id="project_from" class="text-left pb-3">
-            {{ value.project_name }}
+            <a
+              :href="value.projectLink"
+              target="_blank"
+              class="item-quantity text-left small-links white--text"
+            >
+              {{ value.projectName }}
+              <img :width="16" :src="linkIcon" />
+            </a>
           </div>
           <p v-if="value.traderType !== 1" class="item-name text-left pb-0">
-            Item Name {{ value.item_name }}
+            <a
+              :href="value.externalUrl"
+              target="_blank"
+              class="item-quantity text-left small-links"
+            >
+              Item Name {{ value.itemName }}
+              <img :width="16" :src="linkIcon" />
+            </a>
           </p>
           <p class="item-quantity text-left">Amount {{ formattedQuantity }}</p>
         </v-col>
@@ -100,6 +108,7 @@
 import { ethers } from 'ethers'
 
 export default {
+  components: {},
   props: {
     accountFrom: {
       type: String,
@@ -128,11 +137,16 @@ export default {
       selectedProjects: [],
 
       selectedProjectsAssets: [],
+
+      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
   computed: {
     formattedQuantity() {
-      return ethers.utils.formatUnits(this.value?.item_quantity + '', 'ether')
+      return ethers.utils.formatUnits(
+        (this.value?.itemAmount || 0) + '',
+        'ether'
+      )
     },
   },
   watch: {

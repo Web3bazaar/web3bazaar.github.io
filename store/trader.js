@@ -65,7 +65,7 @@ export const state = () => ({
   ],
   projects: [
     {
-      project_name: 'bazaar721',
+      projectName: 'bazaar721',
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
@@ -75,7 +75,14 @@ export const state = () => ({
       contractType: 'ERC721',
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      api_metadata: 'https://webazaar-meta-api.herokuapp.com/721/detail/{id}',
+      blockExplorerUrl:
+        'https://mumbai.polygonscan.com/address/0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+      assetExternalLink:
+        'https://mumbai.polygonscan.com/token/0xb48342ff701ddff44c7a1eec9c0293b4f2947e53?a=',
+      projectLink:
+        'https://mumbai.polygonscan.com/address/0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+
       api_metadata_sample: {
         name: '',
         description: '',
@@ -83,7 +90,7 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'bazaar1155',
+      projectName: 'bazaar1155',
       description: 'Test contract for weebazaar ERC1155',
       base_img:
         'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',
@@ -93,7 +100,13 @@ export const state = () => ({
       contractType: 'ERC1155',
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      api_metadata: 'https://webazaar-meta-api.herokuapp.com/1155/detail/{id}',
+      blockExplorerUrl:
+        'https://mumbai.polygonscan.com/address/0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
+      assetExternalLink:
+        'https://mumbai.polygonscan.com/token/0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9?a=',
+      projectLink:
+        'https://mumbai.polygonscan.com/address/0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
       api_metadata_sample: {
         name: '',
         description: '',
@@ -101,9 +114,9 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'BAZCOIN',
+      projectName: 'BAZCOIN',
       description: 'Test contract for weebazaar ERC20',
-      base_img: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
+      tokenImage: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
       contractAddress: '0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
@@ -111,6 +124,8 @@ export const state = () => ({
       discord: '',
       twitter: '',
       api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      projectLink:
+        'https://mumbai.polygonscan.com/token/0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
       api_metadata_sample: {
         name: '',
         description: '',

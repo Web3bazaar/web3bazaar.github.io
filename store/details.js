@@ -3,7 +3,8 @@ import axios from 'axios'
 const detailsLog = require('debug')('w3b:store:details')
 const detailsError = require('debug')('w3b:store:details:error')
 
-const BASE_URL = (id) => `https://webazaar-meta-api.herokuapp.com/detail/${id}`
+// const BASE_URL_721 = (id) => `https://webazaar-meta-api.herokuapp.com/detail/${id}`
+// const BASE_URL_1155 = (id) => `https://webazaar-meta-api.herokuapp.com/detail/${id}`
 
 export const actions = {
   async getAssetDetails(
@@ -13,17 +14,21 @@ export const actions = {
     detailsLog('******* getAssetDetails ***** ')
     detailsLog(asset, contractAddress, contractType)
     try {
+      const project = rootState.trader.projects.find(
+        (p) => p.contractAddress === contractAddress
+      )
       if (contractType?.toLowerCase() === 'erc20') {
-        const project = rootState.trader.projects.find(
-          (p) => p.contractAddress === contractAddress
-        )
         return { ...project, ...asset, contractAddress, contractType }
       } else {
-        const response = await axios.get(BASE_URL(asset.id))
+        detailsLog(project.api_metadata)
+
+        const response = await axios.get(
+          project.api_metadata?.replace?.('{id}', asset.id)
+        )
         if (response.data.id) {
           return { ...response.data, ...asset, contractAddress, contractType }
         } else {
-          return null
+          return {}
         }
       }
     } catch (ex) {

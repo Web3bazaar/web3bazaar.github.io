@@ -162,6 +162,13 @@ $bgPurple: rgba(116, 80, 254, 0.7);
   // UI
   // #######################
 
+
+  a.small-links{
+
+    font-size: 12px;
+    display: block;
+
+  }
   button:focus {
     outline: none !important;
   }
