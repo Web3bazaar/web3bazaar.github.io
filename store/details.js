@@ -6,20 +6,32 @@ const detailsError = require('debug')('w3b:store:details:error')
 const BASE_URL = (id) => `https://webazaar-meta-api.herokuapp.com/detail/${id}`
 
 export const actions = {
-  async getAssetDetails({ commit }, { asset, contractAddress, contractType }) {
+  async getAssetDetails(
+    { commit, rootState },
+    { asset, contractAddress, contractType }
+  ) {
+    detailsLog('******* getAssetDetails ***** ')
+    detailsLog(asset, contractAddress, contractType)
     try {
-      const response = await axios.get(BASE_URL(asset.id))
-      if (response.data.id) {
-        return { ...response.data, ...asset, contractAddress, contractType }
+      if (contractType?.toLowerCase() === 'erc20') {
+        const project = rootState.trader.projects.find(
+          (p) => p.contractAddress === contractAddress
+        )
+        return { ...project, ...asset, contractAddress, contractType }
       } else {
-        return null
+        const response = await axios.get(BASE_URL(asset.id))
+        if (response.data.id) {
+          return { ...response.data, ...asset, contractAddress, contractType }
+        } else {
+          return null
+        }
       }
     } catch (ex) {
       throw new Error('Not able to retrieve data from heroku api: ', ex)
     }
   },
   getListDetails({ dispatch }, { listIds, contractAddress, contractType }) {
-    detailsLog('******* getAssetDetails ***** ')
+    detailsLog('******* getListDetails ***** ')
     detailsLog(listIds, contractType)
     const promises = []
     try {

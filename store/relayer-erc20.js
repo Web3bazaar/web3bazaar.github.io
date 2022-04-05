@@ -1,5 +1,4 @@
 const ethers = require('ethers')
-
 // import axios from 'axios'
 
 // const CONTRACT = '0xaFF4481D10270F50f203E0763e2597776068CBc5'
@@ -25,6 +24,7 @@ export const actions = {
   async listERC20({ commit }, { wa, contractAddress, contractType }) {
     let balance
     const metadata = {}
+    let assetData = {}
     try {
       const genericErc20Abi = require(`../const/abis/${contractType?.toLowerCase?.()}.json`)
 
@@ -40,7 +40,12 @@ export const actions = {
       ).toString()
 
       metadata.name = (await contract.symbol()).toString()
-      metadata.image = require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png')
+
+      assetData = {
+        token_address: contractAddress,
+        token_id: '1',
+        contract_type: contractType,
+      }
 
       console.log('Getting token balance for wallet : ', balance)
     } catch (ex) {
@@ -48,6 +53,8 @@ export const actions = {
       throw ex
     }
 
-    return [{ amount: ethers.utils.formatUnits(balance), metadata }]
+    return [
+      { amount: ethers.utils.formatUnits(balance), metadata, ...assetData },
+    ]
   },
 }

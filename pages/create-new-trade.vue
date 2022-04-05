@@ -115,6 +115,7 @@ export default {
           contractType,
           walletAddress,
         })
+        createNewTrade.log('isApproved', result)
       } catch (error) {
         createNewTrade.error('error', error)
       }
@@ -263,18 +264,20 @@ export default {
           isShow: true,
         })
 
-        const startTrade = await this.$store
-          .dispatch('bazaar-connector/startTrade', {
+        const startTrade = await this.$store.dispatch(
+          'bazaar-connector/startTrade',
+          {
             ...creatorObject,
             ...executorObject,
-          })
-          .catch((e) => {
-            createNewTrade.error(e)
+          }
+        )
+        // .catch((e) => {
+        //   createNewTrade.error(e)
 
-            if (e.code === 3) {
-              createNewTrade.error(e.message)
-            }
-          })
+        //   if (e.code === 3) {
+        //     createNewTrade.error(e.message)
+        //   }
+        // })
 
         // TODO: remove token from the users lists (update list?? )
         createNewTrade.log('startTrade ', startTrade)
@@ -293,6 +296,7 @@ export default {
         }
       } catch (error) {
         createNewTrade.log('error', error)
+        this.$store.commit('modals/closeModal')
       }
       this.loadingBtn = false
     },

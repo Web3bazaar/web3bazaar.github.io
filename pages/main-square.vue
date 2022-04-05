@@ -81,6 +81,7 @@ export default {
     return {
       tradesSubmittedByYou: [],
       tradesSubmittedByOthers: [],
+      contractTypes: ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE'],
     }
   },
   computed: {
@@ -138,7 +139,8 @@ export default {
                 address: e.creator.address,
                 base_img: await this.getBaseImgUrl(
                   e.creator.contractAddress,
-                  e.creator.idAsset
+                  e.creator.idAsset,
+                  e.creator.traderType
                 ),
                 project_name: this.getProjectName(e.creator.contractAddress),
                 item_quantity: e.creator.amount,
@@ -152,7 +154,8 @@ export default {
                 address: e.executer.address,
                 base_img: await this.getBaseImgUrl(
                   e.executer.contractAddress,
-                  e.executer.idAsset
+                  e.executer.idAsset,
+                  e.executer.traderType
                 ),
                 project_name: this.getProjectName(e.executer.contractAddress),
                 item_quantity: e.executer.amount,
@@ -173,7 +176,8 @@ export default {
                 address: e.creator.address,
                 base_img: await this.getBaseImgUrl(
                   e.creator.contractAddress,
-                  e.creator.idAsset
+                  e.creator.idAsset,
+                  e.creator.traderType
                 ),
                 project_name: this.getProjectName(e.creator.contractAddress),
                 item_quantity: e.creator.amount,
@@ -187,7 +191,8 @@ export default {
                 address: e.executer.address,
                 base_img: await this.getBaseImgUrl(
                   e.executer.contractAddress,
-                  e.executer.idAsset
+                  e.executer.idAsset,
+                  e.executer.traderType
                 ),
                 project_name: this.getProjectName(e.executer.contractAddress),
                 item_quantity: e.executer.amount,
@@ -221,12 +226,20 @@ export default {
       return idAsset
     },
 
-    async getBaseImgUrl(contractAddress, idAsset) {
-      const { image } = await this.$store.dispatch('details/getAssetDetails', {
-        walletAddress: this.account,
-        asset: { id: idAsset },
-      })
-      return image
+    async getBaseImgUrl(contractAddress, idAsset, contractTypeIndex) {
+      console.log(contractTypeIndex)
+      const { image, base_img: baseImg } = await this.$store.dispatch(
+        'details/getAssetDetails',
+        {
+          walletAddress: this.account,
+          asset: {
+            id: idAsset,
+          },
+          contractAddress,
+          contractType: this.contractTypes[contractTypeIndex],
+        }
+      )
+      return baseImg || image
     },
 
     async getTradesIds() {

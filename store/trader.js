@@ -65,7 +65,7 @@ export const state = () => ({
   ],
   projects: [
     {
-      project_name: ' bazaar721',
+      project_name: 'bazaar721',
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
@@ -101,10 +101,9 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'bazaarERC20',
+      project_name: 'BAZCOIN',
       description: 'Test contract for weebazaar ERC20',
-      base_img:
-        'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
+      base_img: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
       contractAddress: '0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
@@ -197,6 +196,9 @@ export const actions = {
                 { root: true }
               )
               traderLogger.log('******* ownedIds ***** ', ownedIds)
+
+              ownedIds[0].metadata.image = project.base_img
+
               // listDetails = (
               //   await dispatch(
               //     'details/getListDetails',
