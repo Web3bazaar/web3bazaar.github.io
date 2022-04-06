@@ -26,43 +26,10 @@ const getNFTList = async function (params) {
 export const state = () => ({
   tradeSelectedItemFrom: [],
   tradeSelectedItemTo: [],
-  itemFrom: {
-    base_img:
-      'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-    address: '0x999...123',
-    project_name: 'SunFlower Farms',
-    item_name: 'Sunflower',
-    item_quantity: 1,
-    type: 'ERC-721',
-    item_logo_url:
-      'https://aavegotchi.com/_next/image?url=%2Fimages%2Fitems%2F152.svg&w=128&q=75',
-  },
-  itemTo: {
-    base_img:
-      'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-    address: '',
-    project_name: 'SunFlower Farms',
-    item_name: 'potato',
-    item_quantity: 30,
-    item_logo_url:
-      'blob:https://aavegotchi.com/6419374b-3038-4ec6-a8f6-d2acaa172a98',
-  },
-  projectFromItems: [
-    {
-      item_name: 'Mythical Rofl',
-      item_logo_url:
-        'https://aavegotchi.com/_next/image?url=%2Fimages%2Fitems%2F155.svg&w=256&q=75',
-      item_quantity: '5',
-    },
-  ],
-  projectToItems: [
-    {
-      item_name: 'Aantenna Bot',
-      item_logo_url:
-        'https://aavegotchi.com/_next/image?url=%2Fimages%2Fitems%2F261.svg&w=256&q=75',
-      item_quantity: '3',
-    },
-  ],
+  itemFrom: {},
+  itemTo: {},
+  projectFromItems: [],
+  projectToItems: [],
   projects: [
     {
       projectName: 'bazaar721',
@@ -186,13 +153,13 @@ export const actions = {
         if (groupByProject) {
           if (to) {
             commit('updateProject', {
-              project_name: project.project_name,
+              projectName: project.projectName,
               projectToItems: groupByProject,
             })
           }
           if (from) {
             commit('updateProject', {
-              project_name: project.project_name,
+              projectName: project.projectName,
               projectFromItems: groupByProject,
             })
           }
@@ -212,7 +179,7 @@ export const actions = {
               )
               traderLogger.log('******* ownedIds ***** ', ownedIds)
 
-              ownedIds[0].metadata.image = project.base_img
+              ownedIds[0].metadata.image = project.tokenImage
 
               // listDetails = (
               //   await dispatch(
@@ -229,14 +196,14 @@ export const actions = {
                 if (to) {
                   traderLogger.log('projectToItems : ', ownedIds)
                   commit('updateProject', {
-                    project_name: project.project_name,
+                    projectName: project.projectName,
                     projectToItems: ownedIds,
                   })
                 }
                 if (from) {
                   traderLogger.log('projectFromItems : ', ownedIds)
                   commit('updateProject', {
-                    project_name: project.project_name,
+                    projectName: project.projectName,
                     projectFromItems: ownedIds,
                   })
                 }
@@ -337,7 +304,7 @@ export const mutations = {
   updateProject(state, updatedItem) {
     state.projects = [
       ...state.projects.map((item) =>
-        item.project_name !== updatedItem.project_name
+        item.projectName !== updatedItem.projectName
           ? item
           : { ...item, ...updatedItem }
       ),

@@ -68,13 +68,13 @@
             label="Choose projects"
             :items="projects"
             return-object
-            item-text="project_name"
-            :value="value.project_name"
-            @input="update('project_name', $event)"
+            item-text="projectName"
+            :value="value.projectName"
+            @input="update('projectName', $event)"
           >
             <template #selection="{ item, index }">
               <v-chip v-if="index < maxProjectsToShow">
-                <span>{{ item.project_name | truncate(8, 'start') }}</span>
+                <span>{{ item.projectName | truncate(8, 'start') }}</span>
               </v-chip>
               <span
                 v-if="index === maxProjectsToShow"
@@ -159,7 +159,9 @@ export default {
     updateSelectedProjectsAssets() {
       const selectedProjectsAssets = []
       if (this.accountFrom) {
+        console.log(this.selectedProjects)
         this.selectedProjects.forEach((p) => {
+          console.log(p)
           selectedProjectsAssets.push(...(p.projectFromItems || []))
         })
       } else {
@@ -176,7 +178,7 @@ export default {
     async update(key, value) {
       this.$emit('input', { ...this.value, [key]: value })
       await this.$nextTick()
-      if (key === 'project_name') {
+      if (key === 'projectName') {
         // console.log('project_name', key, value, oldVal)
         // console.log('update projects list')
 

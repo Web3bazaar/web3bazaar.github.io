@@ -199,10 +199,10 @@ export default {
   computed: {
     ...mapState('connector', ['account']),
     projectTo() {
-      return this.itemTo.project_name
+      return this.itemTo.projectName
     },
     projectFrom() {
-      return this.itemFrom.project_name
+      return this.itemFrom.projectName
     },
     itemTo: {
       get() {
