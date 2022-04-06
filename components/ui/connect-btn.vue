@@ -7,9 +7,7 @@
     @mouseleave="itsHover = false"
   >
     <ui-btn-loader v-if="connectLoader" />
-    <template v-else-if="itsHover && isWalletConnected && false">
-      dashboard
-    </template>
+    <template v-else-if="itsHover && isWalletConnected"> dashboard </template>
     <template v-else>
       {{ getAccount }}
     </template>

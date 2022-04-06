@@ -37,10 +37,9 @@
                 <span class="gradient-text">asset exchange</span>
               </h1>
               <p class="w-text fadeInUp" data-wow-delay="0.3s">
-                Web3 Bazaar is the peer-to-peer marketplace for web3 assets
-                supported by an escrow smart contract that allows you to swap
-                any ERC-20 or NFT token with someone you already agreed terms
-                with.
+                The Web3 Bazaar is the peer-to-peer exchange for web3 assets
+                supported by escrow smart contracts that enable swaps of any NFT
+                or ERC-20 token.
               </p>
             </div>
           </v-col>
