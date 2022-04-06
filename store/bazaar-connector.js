@@ -95,14 +95,15 @@ export const actions = {
         Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
         {}
       )
-      await startTradeTx.wait()
+      // await startTradeTx.wait()
 
       bazaarConnectorLog.log(
         'result from start Trade ',
-        Web3ABI.decodeParameter('bool', startTradeTx.data)
+        startTradeTx
+        // Web3ABI.decodeParameter('bool', startTradeTx.data)
       )
 
-      return Web3ABI.decodeParameter('bool', startTradeTx.data)
+      return startTradeTx // Web3ABI.decodeParameter('bool', startTradeTx.data)
     } catch (error) {
       console.error(error)
       bazaarConnectorLog.error(error)

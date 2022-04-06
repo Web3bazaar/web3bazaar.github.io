@@ -1,28 +1,59 @@
 <template>
   <div class="loading-popup">
-    <p class="title text-center">Loading...</p>
+    <p class="title text-center">{{ title }}</p>
 
     <div class="networks-wrap">
       <v-img :src="loadingGif" max-height="300" />
     </div>
+
+    <p class="title text-center">
+      {{ message }}
+    </p>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   components: {},
+  props: {},
   data() {
     return {
       loadingGif: require('../assets/gifs/MinerAnimation.gif'),
+
+      modalTexts: {
+        loading: {
+          title: 'Loading...',
+          message: 'Please wait while you fetch your trades on the blockchain',
+        },
+        mining: {
+          title: 'Hold tight...',
+          message:
+            'Miners are working hard to write your transaction on the blockchain.',
+        },
+      },
     }
   },
-  computed: {},
+  computed: {
+    ...mapState('modals', ['modalType', 'modalData']),
+
+    state() {
+      return this.modalData?.state
+    },
+    title() {
+      return this.modalTexts?.[this.state]?.title || 'Loading...'
+    },
+    message() {
+      return this.modalTexts?.[this.state]?.message
+    },
+  },
   methods: {},
 }
 </script>
 <style lang="scss">
 .modal-wrap.loading {
-  background: rgba($color: #03091f, $alpha: 0.8);
+  background: rgba($color: #03091f, $alpha: 0.9);
   padding-top: 0;
   z-index: 9999;
 }

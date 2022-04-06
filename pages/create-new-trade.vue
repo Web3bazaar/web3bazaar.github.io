@@ -57,7 +57,7 @@ const createNewTrade = {
   error: require('debug')('w3b:view:error:createNewTrade'),
 }
 
-const ADD_TRADE = 'Add trade'
+const ADD_TRADE = 'Create Trade'
 const APPROVE = 'Approve Contract'
 
 export default {
@@ -270,6 +270,17 @@ export default {
             ...executorObject,
           }
         )
+
+        this.$store.commit('modals/setPopupState', {
+          type: 'loading',
+          isShow: true,
+          data: {
+            state: 'mining',
+          },
+        })
+        await this.$nextTick()
+
+        await startTrade.wait()
         // .catch((e) => {
         //   createNewTrade.error(e)
 
@@ -288,9 +299,6 @@ export default {
           this.$store.commit('modals/setPopupState', {
             type: 'success',
             isShow: true,
-            modalData: {
-              message: 'Trade successfully created',
-            },
           })
         }
       } catch (error) {

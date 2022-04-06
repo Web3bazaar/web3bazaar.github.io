@@ -20,42 +20,37 @@
           </nuxt-link>
         </v-col>
       </v-row>
+
+      <v-row v-if="!(tradesSubmittedByYou.length > 0)" justify="center">
+        <v-col cols="12" lg="6" class="d-flex flex-column align-center">
+          <h4 class="d-flex mb-4">
+            It seems like there's no active trades submitted by or for you at
+            the moment
+          </h4>
+          <v-spacer />
+          <nuxt-link :to="'/create-new-trade'" class="">
+            <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
+              New Trade
+            </v-btn>
+          </nuxt-link>
+        </v-col>
+      </v-row>
       <!-- Trades submitted by you -->
-      <v-row>
+      <v-row v-if="tradesSubmittedByYou.length > 0" justify="center">
         <v-container class="trades submitted">
-          <div v-if="tradesSubmittedByYou.length > 0" class="trades--title">
-            Trade submitted by you
-          </div>
+          <div class="trades--title">Trades submitted by you</div>
           <trade-list-wrapper
-            v-if="tradesSubmittedByYou.length > 0"
             :trades="tradesSubmittedByYou"
             :creator="true"
             @updateDashboard="getTradesInfo"
           />
-          <v-col
-            v-else
-            cols="12"
-            lg="12"
-            class="d-flex flex-column align-center"
-          >
-            <h3 class="d-flex mb-4">
-              It seems like there's no active trades submitted by or for you at
-              the moment
-            </h3>
-            <v-spacer />
-            <nuxt-link :to="'/create-new-trade'" class="">
-              <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
-                New Trade
-              </v-btn>
-            </nuxt-link>
-          </v-col>
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
       <v-row v-if="tradesSubmittedByOthers.length > 0">
         <v-container class="trades offered">
           <div class="trades--title">
-            Trade submitted by your counter-parties
+            Trades submitted by your counterparties
           </div>
           <trade-list-wrapper
             :trades="tradesSubmittedByOthers"
@@ -105,6 +100,9 @@ export default {
       this.$store.commit('modals/setPopupState', {
         type: 'loading',
         isShow: true,
+        data: {
+          state: 'loading',
+        },
       })
 
       const tradesSubmittedByYou = []
