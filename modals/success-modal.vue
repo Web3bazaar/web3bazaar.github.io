@@ -3,7 +3,7 @@
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
-    <h3 class="title">Hurray</h3>
+    <h3 class="title">Hurray!</h3>
 
     <div class="networks-wrap">
       <v-img :src="successImg" max-height="300" />

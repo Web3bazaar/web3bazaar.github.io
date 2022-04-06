@@ -39,8 +39,8 @@
               <p class="w-text fadeInUp" data-wow-delay="0.3s">
                 Web3 Bazaar is the peer-to-peer marketplace for web3 assets
                 supported by an escrow smart contract that allows you to swap
-                between any ERC-20 token and NFT asset with someone you have
-                already agreed terms with.
+                any ERC-20 or NFT token with someone you already agreed terms
+                with.
               </p>
             </div>
           </v-col>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="author-info">
                   <h5 class="author-name">
-                    Safeguard your p2p trades with a trustless smart contract
+                    Safeguard your P2P trades with a trustless smart contract
                   </h5>
                 </div>
               </div>
@@ -94,8 +94,8 @@
                 </div>
                 <div class="author-info">
                   <h5 class="author-name">
-                    Keep full control over your assets until counter-party's are
-                    available
+                    Keep full control over your assets until counterparties make
+                    theirs available
                   </h5>
                 </div>
               </div>

@@ -23,7 +23,7 @@
 
       <v-row v-if="!(tradesSubmittedByYou.length > 0)" justify="center">
         <v-col cols="12" lg="6" class="d-flex flex-column align-center">
-          <h4 class="d-flex mb-4">
+          <h4 class="d-flex mb-4 text-center">
             It seems like there's no active trades submitted by or for you at
             the moment
           </h4>
@@ -47,7 +47,7 @@
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
-      <v-row v-if="tradesSubmittedByOthers.length > 0">
+      <v-row v-if="tradesSubmittedByOthers.length > 0" class="mt-8">
         <v-container class="trades offered">
           <div class="trades--title">
             Trades submitted by your counterparties
@@ -234,10 +234,6 @@ export default {
         this.projects.find((p) => p.contractAddress === contractAddress)
 
       const externalUrl = assetExternalLink + idAsset
-
-      if (contractAddress === '0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E') {
-        console.log(image, tokenImage, name)
-      }
 
       return {
         baseImg: image || tokenImage,

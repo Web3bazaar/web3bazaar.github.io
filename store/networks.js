@@ -98,6 +98,40 @@ export const state = () => ({
   activeNetwork: '0x13881', // mumbai
 })
 
+export const actions = {
+  // const singleTransfer = 'TransferSingle(address,address,address,uint256,uint256)'
+  // const batchTranfer =
+  //   'TransferBatch(address,address,address,uint256[],uint256[])'
+
+  async switchNetwork({ commit, dispatch, state, rootGetters }, { chainId }) {
+    try {
+      if (chainId === '0x1') {
+        alert('Change in Metamask:(')
+        return false
+      }
+      const data = Object.assign(
+        {},
+        state.networksData.find((item) => item.chainId === chainId)
+      )
+      delete data.apiURL
+      delete data.code
+      delete data.name
+      delete data.w3bChainWalletAddress
+      delete data.tokenAddress
+      const resp = await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [data],
+      })
+      if (resp === null) {
+        commit('networks/setActiveNetwork', chainId, { root: true })
+        return true
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+}
+
 export const mutations = {
   setActiveNetwork(state, payload) {
     state.activeNetwork = payload

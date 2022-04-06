@@ -53,7 +53,7 @@ export default {
 </script>
 <style lang="scss">
 .modal-wrap.loading {
-  background: rgba($color: #03091f, $alpha: 0.9);
+  background: rgba($color: #03091f, $alpha: 0.94);
   padding-top: 0;
   z-index: 9999;
 }
