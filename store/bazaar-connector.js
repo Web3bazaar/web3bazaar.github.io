@@ -128,7 +128,7 @@ export const actions = {
 
     try {
       const claimBackResult = await webazaarInstance.claimBlack(tradeId, 0, {})
-      return await claimBackResult.wait()
+      return claimBackResult
     } catch (err) {
       bazaarConnectorLog.error(err)
       throw err
@@ -217,7 +217,7 @@ export const actions = {
       const executeTrade = await webazaarInstance.executeTrade(tradeId)
 
       bazaarConnectorLog.log('Open trades for users ', executeTrade)
-      return await executeTrade.wait()
+      return executeTrade
     } catch (err) {
       bazaarConnectorLog.error(err)
       throw err
@@ -315,7 +315,7 @@ export const actions = {
           approveAmount
         )
 
-        return await tx.wait()
+        return tx
       } else {
         const tx = await contractInstance.setApprovalForAll(
           BAZAAR_CONTRACT_ADDRESS,
@@ -324,7 +324,7 @@ export const actions = {
         )
         bazaarConnectorLog.log('is approved for all: ', tx)
 
-        return await tx.wait()
+        return tx
       }
     } catch (error) {
       bazaarConnectorLog.error('isApproved', error)
