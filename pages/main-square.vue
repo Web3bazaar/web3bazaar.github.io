@@ -231,7 +231,7 @@ export default {
       )
 
       const { projectName, assetExternalLink, projectLink } =
-        this.projects.find((p) => p.contractAddress === contractAddress)
+        this.projects.find((p) => p.contractAddress === contractAddress) || {}
 
       const externalUrl = assetExternalLink + idAsset
 

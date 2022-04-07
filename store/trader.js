@@ -126,9 +126,9 @@ export const actions = {
       const { nfts: nftsList } = await getNFTList(params)
       traderLogger.log('getNFTList result:', nftsList)
 
-      if (!nftsList || !nftsList.length || nftsList.length === 0) {
-        throw new Error("User hasn't got any NFTs")
-      }
+      // if (!nftsList || !nftsList.length || nftsList.length === 0) {
+      //   throw new Error("User hasn't got any NFTs")
+      // }
 
       traderLogger.log('nftsList:', nftsList)
 

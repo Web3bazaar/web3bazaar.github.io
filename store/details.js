@@ -17,6 +17,9 @@ export const actions = {
       const project = rootState.trader.projects.find(
         (p) => p.contractAddress === contractAddress
       )
+
+      if (!project) return {}
+
       if (contractType?.toLowerCase() === 'erc20') {
         return { ...project, ...asset, contractAddress, contractType }
       } else {
@@ -32,6 +35,7 @@ export const actions = {
         }
       }
     } catch (ex) {
+      console.error(ex)
       throw new Error('Not able to retrieve data from heroku api: ', ex)
     }
   },

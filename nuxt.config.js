@@ -6,7 +6,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s Web3 Bazaar',
-    title: 'web3bazaar',
+    title: 'Web3 Bazaar | P2P asset exchange for all assets on-chain',
     htmlAttrs: {
       lang: 'en',
     },
@@ -15,6 +15,18 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.  Swap any NFT or ERC-20 token with someone you already agreed terms without needing to trust them.',
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content:
+          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/fav.png' },
@@ -124,4 +136,5 @@ export default {
     },
   },
   ssr: false,
+  target: 'static',
 }
