@@ -3,6 +3,7 @@
     class="more-btn mb-15 pixel2 w3b-bg-gradient"
     type="submit"
     :loading="loading"
+    :ripple="false"
     @click="playSound"
   >
     {{ btnText }}

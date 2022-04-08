@@ -7,7 +7,9 @@
     @mouseleave="itsHover = false"
   >
     <ui-btn-loader v-if="connectLoader" />
-    <template v-else-if="itsHover && isWalletConnected"> dashboard </template>
+    <template v-else-if="itsHover && isWalletConnected && false">
+      Main Square
+    </template>
     <template v-else>
       {{ getAccount }}
     </template>
@@ -39,7 +41,7 @@ export default {
   methods: {
     async walletBtnHandler() {
       if (this.isWalletConnected) {
-        this.$router.push({ name: 'main-square' })
+        // this.$router.push({ name: 'main-square' })
         return false
       }
       if (!window.ethereum) return false

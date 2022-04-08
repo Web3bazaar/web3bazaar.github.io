@@ -29,6 +29,14 @@
         >Wiki</a
       >
     </v-col>
+    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
+      <router-link
+        to="/main-square"
+        target="_blank"
+        class="btn login-btn ml-50 pixel2 w3b-c-purple px-4"
+        >Main Square</router-link
+      >
+    </v-col>
     <v-col cols="auto" class="lh-55px m">
       <div>
         <ui-connect-btn />

@@ -3,8 +3,8 @@
     <v-row align="start" class="pt-4">
       <v-col cols="12" md="12"> <h3>Want to help the Bazaar?</h3> </v-col>
       <v-col cols="12" md="4" class="">
-        Support us with a donation Bazaar so we can keep the Bazaar open to all
-        and free to use forever.
+        Support us with a donation so we can keep the Bazaar open to all and
+        free to use forever.
       </v-col>
       <v-spacer />
 

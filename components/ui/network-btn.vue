@@ -2,7 +2,7 @@
   <button class="btn mini login-btn network-btn px-4" @click="clickHandler">
     <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
 
-    {{ activeNetwork.chainName }}
+    {{ getNetworkName }}
   </button>
 </template>
 
@@ -20,10 +20,16 @@ export default {
     return {}
   },
   computed: {
-    ...mapState('networks', ['networksData']),
+    ...mapState('networks', ['networksData', 'activeNetwork']),
 
     activeNetwork() {
       return this.networksData.find((item) => item.chainId === this.networkType)
+    },
+    getNetworkName() {
+      console.log(this.activeNetwork)
+      return this.activeNetwork?.chainId === '0x13881'
+        ? this.activeNetwork.name
+        : 'Switch to mumbai testnet'
     },
   },
   methods: {
