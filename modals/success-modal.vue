@@ -3,13 +3,12 @@
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
-    <h3 class="title">Hurray!</h3>
+    <h3 class="title text-center">Hurray!</h3>
 
     <div class="networks-wrap">
-      <v-img v-if="animated" :src="successGIF" max-height="300" />
-      <v-img :src="successImg" max-height="300" />
+      <v-img :src="successGIF" max-height="300" />
     </div>
-    <p class="title">{{ message }}</p>
+    <p class="title text-center">{{ message }}</p>
   </div>
 </template>
 
@@ -26,8 +25,7 @@ export default {
   },
   data() {
     return {
-      successImg: require('../assets/img/core-img/Web3Bazaar_1080x1080_FINAL.png'),
-      successGIF: require('../assets/img/core-img/Web3Bazaar_1080x1080_FINAL.png'),
+      successGIF: require('../assets/gifs/success-trade.gif'),
     }
   },
   computed: {
@@ -46,7 +44,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.modal-wrap.loading {
+.modal-wrap {
   background: rgba($color: #03091f, $alpha: 0.6);
 }
 </style>
@@ -54,7 +52,9 @@ export default {
 .loading-popup {
   padding: 20px;
   background: #03091f;
+  background: none;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
   border-radius: 20px;
   width: 95%;
   max-width: 590px;
@@ -73,17 +73,21 @@ export default {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     object-fit: contain;
     z-index: 3;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
   }
   .title {
     font-size: 24px;
     line-height: 1.7;
     text-transform: uppercase;
-    margin-bottom: 50px;
+    margin-bottom: 0px;
     position: relative;
     z-index: 2;
   }

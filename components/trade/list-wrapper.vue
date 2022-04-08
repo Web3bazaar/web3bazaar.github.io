@@ -275,6 +275,9 @@ export default {
     this.$store.commit('modals/setPopupState', {
       type: 'loading',
       isShow: true,
+      data: {
+        reading: true,
+      },
     })
     this.$store
       .dispatch('trader/listOwnedIds', {

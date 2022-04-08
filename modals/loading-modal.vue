@@ -3,7 +3,8 @@
     <p class="title text-center">{{ title }}</p>
 
     <div class="networks-wrap">
-      <v-img :src="loadingGif" max-height="300" />
+      <v-img v-if="reading" class="mb-16" :src="readingGif" max-height="300" />
+      <v-img v-else :src="miningGif" max-height="300" />
     </div>
 
     <p class="title text-center">
@@ -20,7 +21,8 @@ export default {
   props: {},
   data() {
     return {
-      loadingGif: require('../assets/gifs/MinerAnimation.gif'),
+      miningGif: require('../assets/gifs/MinerAnimation.gif'),
+      readingGif: require('../assets/gifs/reader.gif'),
 
       modalTexts: {
         loading: {
@@ -38,6 +40,9 @@ export default {
   computed: {
     ...mapState('modals', ['modalType', 'modalData']),
 
+    reading() {
+      return this.modalData?.reading
+    },
     state() {
       return this.modalData?.state
     },

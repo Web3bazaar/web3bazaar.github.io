@@ -104,6 +104,7 @@ export default {
         isShow: true,
         data: {
           state: 'loading',
+          reading: true,
         },
       })
 
