@@ -11,9 +11,14 @@
       You won't pay any real fees nor trade Mainnet assets.
     </p>
     <p class="">
-      <a :href="'/'" target="_blank"> Here's </a> a user guide to help you use
-      this test version. Thanks for helping us fine-tune the Bazaar before it
-      goes live on main nets.
+      <a
+        :href="'https://medium.com/@web3bazaar/the-web3-bazaar-opens-for-tests-on-polygon-83f0ed26625c'"
+        target="_blank"
+      >
+        Here's
+      </a>
+      a user guide to help you use this test version. Thanks for helping us
+      fine-tune the Bazaar before it goes live on main nets.
     </p>
     <ui-action-btn
       class="d-flex mx-auto mt-6 mb-5"
