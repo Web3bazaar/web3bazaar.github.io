@@ -35,9 +35,7 @@ export const actions = {
         userProvider.getSigner()
       )
 
-      balance = (
-        await contract.balanceOf((await userProvider.getSigner()).getAddress())
-      ).toString()
+      balance = (await contract.balanceOf(wa)).toString()
 
       metadata.name = (await contract.symbol()).toString()
 
