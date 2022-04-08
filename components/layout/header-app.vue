@@ -29,7 +29,11 @@
         >Wiki</a
       >
     </v-col>
-    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
+    <v-col
+      v-if="isWalletConnected && $route.path !== '/'"
+      cols="auto"
+      class="lh-55px d-none d-sm-flex"
+    >
       <router-link
         to="/main-square"
         class="btn login-btn ml-50 pixel2 w3b-c-purple px-4"
@@ -50,6 +54,8 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState('networks', ['activeNetwork', 'networksData']),
+    ...mapState('connector', ['isWalletConnected']),
+
     ...mapState('modals', ['showModal', 'modalType']),
   },
   methods: {
