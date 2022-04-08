@@ -125,6 +125,7 @@ export default {
           walletAddress,
           approveValue,
         })
+        await result.wait()
       } catch (error) {
         createNewTrade.error('error', error)
       }
@@ -176,7 +177,6 @@ export default {
             creatorAssetType,
             this.account
           )
-
           if (res) {
             this.loadingBtn = true
             let numTries = 5

@@ -28,7 +28,7 @@ export default {
     getNetworkName() {
       console.log(this.activeNetwork)
       return this.activeNetwork?.chainId === '0x13881'
-        ? this.activeNetwork.name
+        ? this.activeNetwork.chainName
         : 'Switch to mumbai testnet'
     },
   },

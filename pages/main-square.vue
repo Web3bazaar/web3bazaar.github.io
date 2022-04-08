@@ -21,10 +21,8 @@
 
       <v-row
         v-if="
-          !(
-            tradesSubmittedByYou.length > 0 &&
-            tradesSubmittedByOthers.length > 0
-          )
+          tradesSubmittedByYou.length === 0 &&
+          tradesSubmittedByOthers.length === 0
         "
         justify="center"
       >
