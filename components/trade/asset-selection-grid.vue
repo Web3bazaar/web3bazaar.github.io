@@ -174,11 +174,17 @@ export default {
         if (!internalValue[index].selected) {
           internalValue[index].chosenAmount = 0
         } else {
-          internalValue[index].chosenAmount = 1
+          internalValue[index].chosenAmount = Math.min(
+            1,
+            internalValue[index].amount
+          )
         }
       } else {
         internalValue[index].selected = true
-        internalValue[index].chosenAmount = 1
+        internalValue[index].chosenAmount = Math.min(
+          1,
+          internalValue[index].amount
+        )
 
         if (
           this.previousIndex > -1 &&

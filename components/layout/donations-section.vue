@@ -55,10 +55,18 @@ export default {
   methods: {
     ...mapActions('donations', { donateAmount: 'donateAmount' }),
     async callDonateAmount(percentage) {
+      // check if user is on mumbai then switch to polygon
+      // if (this.activeNetwork?.chainId === '0x13881') {
+      await this.$store.dispatch('networks/switchNetwork', {
+        chainId: '0x89',
+      })
+      // }
+
       const finalAmount =
         this.getBaseValue(this.activeNetwork?.chainId) * (percentage / 100)
-
-      await this.donateAmount({ amount: finalAmount })
+      if (this.activeNetwork?.chainId === '0x89') {
+        await this.donateAmount({ amount: finalAmount })
+      }
     },
     getCurrentChainValue(percentage) {
       const finalAmount =

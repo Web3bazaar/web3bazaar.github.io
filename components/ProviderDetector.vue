@@ -4,8 +4,14 @@
 
 <script>
 import detectEthereumProvider from '@metamask/detect-provider'
-import { ethers } from 'ethers'
+// import { ethers } from 'ethers'
 import { mapState } from 'vuex'
+
+const providerDetector = {
+  log: require('debug')('w3b:view:createNewTrade'),
+  error: require('debug')('w3b:view:error:createNewTrade'),
+}
+
 export default {
   data() {
     return {
@@ -30,7 +36,7 @@ export default {
   },
   methods: {
     async checkProvider() {
-      console.log('checkProvider')
+      providerDetector.log('checkProvider')
       const provider = await detectEthereumProvider()
       if (!provider) {
         this.$store.commit('setPopupState', {
@@ -44,9 +50,9 @@ export default {
         this.$emit('checkError', 'Do you have multiple wallets installed?')
         return false
       }
-      const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-      const userSigner = userProvider.getSigner()
-      console.log(userSigner)
+      // const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+      // const userSigner = userProvider.getSigner()
+      // console.log(userSigner)
       // this.$store.commit('connector/setSigner', userSigner)
 
       // this.$store.commit('connector/setSigner', Object.freeze(userSigner))
@@ -54,13 +60,13 @@ export default {
       await this.checkConnection()
     },
     async checkConnection() {
-      console.log('checkConnection')
+      providerDetector.log('checkConnection')
 
       const address = await this.$store.dispatch(
         'connector/fetchAccount',
         window.ethereum
       )
-      console.log(address)
+      providerDetector.log(address)
       if (!address) {
         this.$emit('checkError', '')
         this.checkInProgress = false
@@ -71,14 +77,14 @@ export default {
         'connector/fetchChainId',
         window.ethereum
       )
-      console.log(chainId)
+      // console.log(chainId)
 
       this.compareNetworkSupport(chainId)
       this.setAccountListeners()
       this.checkInProgress = false
 
-      const routeName = this.$route.name
-      console.log(routeName)
+      // const routeName = this.$route.name
+      // console.log(routeName)
       // if (routeName !== 'main-square')
       //   this.$router.push({ name: 'main-square' })
       this.$emit('checkSuccess')
@@ -100,14 +106,14 @@ export default {
         this.$store.commit('networks/setActiveNetwork', chainId)
     },
     setAccountListeners() {
-      console.log('SET METAMASK ACCOUNT LISTENERS FUNC')
+      providerDetector.log('SET METAMASK ACCOUNT LISTENERS FUNC')
       window.ethereum.on('chainChanged', this.onChainIdChange)
       window.ethereum.on('accountsChanged', this.onAccountChange)
     },
     onAccountChange(accounts) {
       if (accounts.length === 0) {
         // MetaMask is locked or the user has not connected any accounts
-        console.log('Please connect to MetaMask.')
+        providerDetector.log('Please connect to MetaMask.')
         this.disconnectHandler()
       } else {
         this.$store.commit('connector/setAccount', accounts[0])
@@ -117,7 +123,7 @@ export default {
       window.location.reload()
     },
     disconnectHandler() {
-      console.log('disconnectHandler')
+      providerDetector.log('disconnectHandler')
       this.$store.commit('modals/closeModal')
       this.$store.commit('connector/setAccount', null)
       this.$store.commit('connector/setWalletConnection', false)

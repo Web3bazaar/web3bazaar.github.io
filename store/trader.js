@@ -26,56 +26,30 @@ const getNFTList = async function (params) {
 export const state = () => ({
   tradeSelectedItemFrom: [],
   tradeSelectedItemTo: [],
-  itemFrom: {
-    base_img:
-      'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-    address: '0x999...123',
-    project_name: 'SunFlower Farms',
-    item_name: 'Sunflower',
-    item_quantity: 1,
-    type: 'ERC-721',
-    item_logo_url:
-      'https://aavegotchi.com/_next/image?url=%2Fimages%2Fitems%2F152.svg&w=128&q=75',
-  },
-  itemTo: {
-    base_img:
-      'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-    address: '',
-    project_name: 'SunFlower Farms',
-    item_name: 'potato',
-    item_quantity: 30,
-    item_logo_url:
-      'blob:https://aavegotchi.com/6419374b-3038-4ec6-a8f6-d2acaa172a98',
-  },
-  projectFromItems: [
-    {
-      item_name: 'Mythical Rofl',
-      item_logo_url:
-        'https://aavegotchi.com/_next/image?url=%2Fimages%2Fitems%2F155.svg&w=256&q=75',
-      item_quantity: '5',
-    },
-  ],
-  projectToItems: [
-    {
-      item_name: 'Aantenna Bot',
-      item_logo_url:
-        'https://aavegotchi.com/_next/image?url=%2Fimages%2Fitems%2F261.svg&w=256&q=75',
-      item_quantity: '3',
-    },
-  ],
+  itemFrom: {},
+  itemTo: {},
+  projectFromItems: [],
+  projectToItems: [],
   projects: [
     {
-      project_name: ' bazaar721',
+      projectName: 'bazaar721',
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-      contractAddress: '0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+      contractAddress: '0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC721',
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      api_metadata: 'https://webazaar-meta-api.herokuapp.com/721/detail/{id}',
+      blockExplorerUrl:
+        'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
+      assetExternalLink:
+        'https://mumbai.polygonscan.com/token/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B?a=',
+      projectLink:
+        'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
+
       api_metadata_sample: {
         name: '',
         description: '',
@@ -83,17 +57,23 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'bazaar1155',
+      projectName: 'bazaar1155',
       description: 'Test contract for weebazaar ERC1155',
       base_img:
         'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',
-      contractAddress: '0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
+      contractAddress: '0x638A0ec36d2E89d8671e193854A56326a24455aA',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC1155',
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      api_metadata: 'https://webazaar-meta-api.herokuapp.com/1155/detail/{id}',
+      blockExplorerUrl:
+        'https://mumbai.polygonscan.com/address/0x638A0ec36d2E89d8671e193854A56326a24455aA',
+      assetExternalLink:
+        'https://mumbai.polygonscan.com/token/0x638A0ec36d2E89d8671e193854A56326a24455aA?a=',
+      projectLink:
+        'https://mumbai.polygonscan.com/address/0x638A0ec36d2E89d8671e193854A56326a24455aA',
       api_metadata_sample: {
         name: '',
         description: '',
@@ -101,17 +81,18 @@ export const state = () => ({
       },
     },
     {
-      project_name: 'bazaarERC20',
+      projectName: 'BAZCOIN',
       description: 'Test contract for weebazaar ERC20',
-      base_img:
-        'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
-      contractAddress: '0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
+      tokenImage: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
+      contractAddress: '0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC20',
       discord: '',
       twitter: '',
       api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      projectLink:
+        'https://mumbai.polygonscan.com/token/0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
       api_metadata_sample: {
         name: '',
         description: '',
@@ -145,9 +126,9 @@ export const actions = {
       const { nfts: nftsList } = await getNFTList(params)
       traderLogger.log('getNFTList result:', nftsList)
 
-      if (!nftsList || !nftsList.length || nftsList.length === 0) {
-        throw new Error("User hasn't got any NFTs")
-      }
+      // if (!nftsList || !nftsList.length || nftsList.length === 0) {
+      //   throw new Error("User hasn't got any NFTs")
+      // }
 
       traderLogger.log('nftsList:', nftsList)
 
@@ -172,13 +153,13 @@ export const actions = {
         if (groupByProject) {
           if (to) {
             commit('updateProject', {
-              project_name: project.project_name,
+              projectName: project.projectName,
               projectToItems: groupByProject,
             })
           }
           if (from) {
             commit('updateProject', {
-              project_name: project.project_name,
+              projectName: project.projectName,
               projectFromItems: groupByProject,
             })
           }
@@ -197,6 +178,9 @@ export const actions = {
                 { root: true }
               )
               traderLogger.log('******* ownedIds ***** ', ownedIds)
+
+              ownedIds[0].metadata.image = project.tokenImage
+
               // listDetails = (
               //   await dispatch(
               //     'details/getListDetails',
@@ -212,14 +196,14 @@ export const actions = {
                 if (to) {
                   traderLogger.log('projectToItems : ', ownedIds)
                   commit('updateProject', {
-                    project_name: project.project_name,
+                    projectName: project.projectName,
                     projectToItems: ownedIds,
                   })
                 }
                 if (from) {
                   traderLogger.log('projectFromItems : ', ownedIds)
                   commit('updateProject', {
-                    project_name: project.project_name,
+                    projectName: project.projectName,
                     projectFromItems: ownedIds,
                   })
                 }
@@ -290,8 +274,6 @@ export const actions = {
       //     }
       //   })
       // )
-
-      // TODO: get asst name from heruko api
     } catch (error) {
       traderLogger.error('Error listing ids -> ', error)
     }
@@ -320,7 +302,7 @@ export const mutations = {
   updateProject(state, updatedItem) {
     state.projects = [
       ...state.projects.map((item) =>
-        item.project_name !== updatedItem.project_name
+        item.projectName !== updatedItem.projectName
           ? item
           : { ...item, ...updatedItem }
       ),

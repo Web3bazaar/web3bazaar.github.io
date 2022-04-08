@@ -14,48 +14,47 @@
             v-if="tradesSubmittedByYou.length > 0"
             :to="'/create-new-trade'"
           >
-            <v-btn class="more-btn mb-15 pixel2 w3b-bg-gradient">
-              New Trade
-            </v-btn>
+            <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
+          </nuxt-link>
+        </v-col>
+      </v-row>
+
+      <v-row
+        v-if="
+          !(
+            tradesSubmittedByYou.length > 0 &&
+            tradesSubmittedByOthers.length > 0
+          )
+        "
+        justify="center"
+      >
+        <v-col cols="12" lg="6" class="d-flex flex-column align-center">
+          <h4 class="d-flex mb-4 text-center">
+            It seems like there's no active trades submitted by or for you at
+            the moment
+          </h4>
+          <v-spacer />
+          <nuxt-link :to="'/create-new-trade'" class="">
+            <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
           </nuxt-link>
         </v-col>
       </v-row>
       <!-- Trades submitted by you -->
-      <v-row>
+      <v-row v-if="tradesSubmittedByYou.length > 0" justify="center">
         <v-container class="trades submitted">
-          <div v-if="tradesSubmittedByYou.length > 0" class="trades--title">
-            Trade submitted by you
-          </div>
+          <div class="trades--title">Trades submitted by you</div>
           <trade-list-wrapper
-            v-if="tradesSubmittedByYou.length > 0"
             :trades="tradesSubmittedByYou"
             :creator="true"
             @updateDashboard="getTradesInfo"
           />
-          <v-col
-            v-else
-            cols="12"
-            lg="12"
-            class="d-flex flex-column align-center"
-          >
-            <h3 class="d-flex mb-4">
-              It seems like there's no active trades submitted by our for you at
-              the moment
-            </h3>
-            <v-spacer />
-            <nuxt-link :to="'/create-new-trade'" class="">
-              <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
-                New Trade
-              </v-btn>
-            </nuxt-link>
-          </v-col>
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
-      <v-row v-if="tradesSubmittedByOthers.length > 0">
+      <v-row v-if="tradesSubmittedByOthers.length > 0" class="mt-8">
         <v-container class="trades offered">
           <div class="trades--title">
-            Trade submitted by your counter-parties
+            Trades submitted by your counterparties
           </div>
           <trade-list-wrapper
             :trades="tradesSubmittedByOthers"
@@ -81,6 +80,7 @@ export default {
     return {
       tradesSubmittedByYou: [],
       tradesSubmittedByOthers: [],
+      contractTypes: ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE'],
     }
   },
   computed: {
@@ -104,6 +104,9 @@ export default {
       this.$store.commit('modals/setPopupState', {
         type: 'loading',
         isShow: true,
+        data: {
+          state: 'loading',
+        },
       })
 
       const tradesSubmittedByYou = []
@@ -136,30 +139,36 @@ export default {
               tradeId: e.tradeId,
               itemFrom: {
                 address: e.creator.address,
-                base_img: await this.getBaseImgUrl(
+                // base_img: await this.getBaseImgUrl(
+                //   e.creator.contractAddress,
+                //   e.creator.idAsset,
+                //   e.creator.traderType
+                // ),
+                // project_name: this.getProjectName(e.creator.contractAddress),
+                itemAmount: e.creator.amount,
+                // item_name: this.getItemName(
+                //   e.creator.contractAddress,
+                //   e.creator.idAsset
+                // ),
+                // externalUrl: this.getExternalUrl(
+                //   e.creator.contractAddress,
+                //   e.creator.idAsset
+                // ),
+                ...(await this.getProjectInfo(
                   e.creator.contractAddress,
-                  e.creator.idAsset
-                ),
-                project_name: this.getProjectName(e.creator.contractAddress),
-                item_quantity: e.creator.amount,
-                item_name: this.getItemName(
-                  e.creator.contractAddress,
-                  e.creator.idAsset
-                ),
+                  e.creator.idAsset,
+                  e.creator.traderType
+                )),
                 ...e.creator,
               },
               itemTo: {
                 address: e.executer.address,
-                base_img: await this.getBaseImgUrl(
+                itemAmount: e.executer.amount,
+                ...(await this.getProjectInfo(
                   e.executer.contractAddress,
-                  e.executer.idAsset
-                ),
-                project_name: this.getProjectName(e.executer.contractAddress),
-                item_quantity: e.executer.amount,
-                item_name: this.getItemName(
-                  e.executer.contractAddress,
-                  e.executer.idAsset
-                ),
+                  e.executer.idAsset,
+                  e.executer.traderType
+                )),
                 ...e.executer,
               },
             })
@@ -171,30 +180,22 @@ export default {
               tradeId: e.tradeId,
               itemFrom: {
                 address: e.creator.address,
-                base_img: await this.getBaseImgUrl(
+                itemAmount: e.creator.amount,
+                ...(await this.getProjectInfo(
                   e.creator.contractAddress,
-                  e.creator.idAsset
-                ),
-                project_name: this.getProjectName(e.creator.contractAddress),
-                item_quantity: e.creator.amount,
-                item_name: this.getItemName(
-                  e.creator.contractAddress,
-                  e.creator.idAsset
-                ),
+                  e.creator.idAsset,
+                  e.creator.traderType
+                )),
                 ...e.creator,
               },
               itemTo: {
                 address: e.executer.address,
-                base_img: await this.getBaseImgUrl(
+                itemAmount: e.executer.amount,
+                ...(await this.getProjectInfo(
                   e.executer.contractAddress,
-                  e.executer.idAsset
-                ),
-                project_name: this.getProjectName(e.executer.contractAddress),
-                item_quantity: e.executer.amount,
-                item_name: this.getItemName(
-                  e.executer.contractAddress,
-                  e.executer.idAsset
-                ),
+                  e.executer.idAsset,
+                  e.executer.traderType
+                )),
                 ...e.executer,
               },
             })
@@ -212,21 +213,39 @@ export default {
       }
     },
 
-    getProjectName(contractAddress) {
-      return this.projects.find((p) => p.contractAddress === contractAddress)
-        .project_name
+    getExternalUrl(contractAddress, assetId) {
+      const p = this.projects.find((p) => p.contractAddress === contractAddress)
+      if (p.contractType.toLowerCase() === 'erc20') {
+        return p.blockExplorerUrl
+      } else {
+        return p.assetExternalLink + assetId
+      }
     },
+    async getProjectInfo(contractAddress, idAsset, contractTypeIndex) {
+      const { image, tokenImage, name } = await this.$store.dispatch(
+        'details/getAssetDetails',
+        {
+          walletAddress: this.account,
+          asset: {
+            id: idAsset,
+          },
+          contractAddress,
+          contractType: this.contractTypes[contractTypeIndex],
+        }
+      )
 
-    getItemName(contractAddress, idAsset) {
-      return idAsset
-    },
+      const { projectName, assetExternalLink, projectLink } =
+        this.projects.find((p) => p.contractAddress === contractAddress) || {}
 
-    async getBaseImgUrl(contractAddress, idAsset) {
-      const { image } = await this.$store.dispatch('details/getAssetDetails', {
-        walletAddress: this.account,
-        asset: { id: idAsset },
-      })
-      return image
+      const externalUrl = assetExternalLink + idAsset
+
+      return {
+        baseImg: image || tokenImage,
+        projectName,
+        itemName: name,
+        externalUrl,
+        projectLink,
+      }
     },
 
     async getTradesIds() {

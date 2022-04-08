@@ -54,29 +54,12 @@ export default {
     },
     async networkClickHandler() {
       // only use mumbai
+
       const chainId = '0x13881'
       try {
-        if (chainId === '0x1') {
-          alert('Change in Metamask:(')
-          return false
-        }
-        const data = Object.assign(
-          {},
-          this.networksData.find((item) => item.chainId === chainId)
-        )
-        delete data.apiURL
-        delete data.code
-        delete data.name
-        delete data.w3bChainWalletAddress
-        delete data.tokenAddress
-        const resp = await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [data],
+        await this.$store.dispatch('networks/switchNetwork', {
+          chainId,
         })
-        if (resp === null) {
-          this.$store.commit('networks/setActiveNetwork', chainId)
-        }
-        console.log(resp)
       } catch (error) {
         console.log(error)
       }

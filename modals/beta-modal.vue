@@ -7,20 +7,20 @@
 
     <div class="networks-wrap"></div>
     <p class="">
-      You'll interact with it only via Mumbai testnet and won't pay any real
-      fees or trade main net assets..
+      Everything you'll do on this beta version is on Polygon's Mumbai Testnet.
+      You won't pay any real fees nor trade Mainnet assets.
     </p>
     <p class="">
-      Thank you so much for helping us fine tune it before the main net
-      launches.
+      <a :href="'/'" target="_blank"> Here's </a> a user guide to help you use
+      this test version. Thanks for helping us fine-tune the Bazaar before it
+      goes live on main nets.
     </p>
-    <v-btn
-      type="submit"
-      class="more-btn mb-5 pixel2 w3b-bg-gradient d-flex mx-auto mt-6"
-      @click="closePopup"
+    <ui-action-btn
+      class="d-flex mx-auto mt-6 mb-5"
+      :btn-text="'Enter Bazaar'"
+      @click="enterBazaar"
     >
-      {{ 'Enter Bazaar' }}
-    </v-btn>
+    </ui-action-btn>
   </div>
 </template>
 
@@ -38,11 +38,15 @@ export default {
     ...mapState('connector', ['isWalletConnected']),
   },
   methods: {
+    async enterBazaar() {
+      if (!this.isWalletConnected) return
+
+      await this.$store.dispatch('networks/switchNetwork', {
+        chainId: '0x13881',
+      })
+      this.$router.push({ name: 'main-square' })
+    },
     closePopup() {
-      //    if (routeName !== 'main-square')
-      if (this.isWalletConnected) {
-        this.$router.push({ name: 'main-square' })
-      }
       this.$emit('close')
     },
   },

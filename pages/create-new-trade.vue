@@ -16,33 +16,21 @@
           />
         </v-col>
         <v-col cols="12" class="text-center">
-          <v-btn
+          <ui-action-btn
             v-if="isSelectedContractApproved"
-            type="submit"
-            class="more-btn mb-15 pixel2 w3b-bg-gradient"
             :loading="loadingBtn"
+            :btn-text="ADD_TRADE"
             @click="newTrade"
           >
-            {{ ADD_TRADE }}
-          </v-btn>
+          </ui-action-btn>
 
-          <v-btn
+          <ui-action-btn
             v-else
-            type="submit"
-            class="more-btn mb-15 pixel2 w3b-bg-gradient"
             :loading="loadingBtn"
+            :btn-text="APPROVE"
             @click="approveSelectedContract"
           >
-            {{ APPROVE }}
-          </v-btn>
-          <!-- <v-btn
-            type="submit"
-            class="more-btn mb-15"
-            :loading="loadingBtn"
-            @click="removeApprove"
-          >
-            REMOVE
-          </v-btn> -->
+          </ui-action-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -57,7 +45,7 @@ const createNewTrade = {
   error: require('debug')('w3b:view:error:createNewTrade'),
 }
 
-const ADD_TRADE = 'Add trade'
+const ADD_TRADE = 'Create Trade'
 const APPROVE = 'Approve Contract'
 
 export default {
@@ -115,6 +103,7 @@ export default {
           contractType,
           walletAddress,
         })
+        createNewTrade.log('isApproved', result)
       } catch (error) {
         createNewTrade.error('error', error)
       }
@@ -156,7 +145,7 @@ export default {
         this.account,
         false
       )
-      console.log(res)
+      return res
     },
 
     async approveSelectedContract() {
@@ -188,7 +177,6 @@ export default {
             this.account
           )
 
-          console.log(res)
           if (res) {
             this.loadingBtn = true
             let numTries = 5
@@ -263,18 +251,31 @@ export default {
           isShow: true,
         })
 
-        const startTrade = await this.$store
-          .dispatch('bazaar-connector/startTrade', {
+        const startTrade = await this.$store.dispatch(
+          'bazaar-connector/startTrade',
+          {
             ...creatorObject,
             ...executorObject,
-          })
-          .catch((e) => {
-            createNewTrade.error(e)
+          }
+        )
 
-            if (e.code === 3) {
-              createNewTrade.error(e.message)
-            }
-          })
+        this.$store.commit('modals/setPopupState', {
+          type: 'loading',
+          isShow: true,
+          data: {
+            state: 'mining',
+          },
+        })
+        await this.$nextTick()
+
+        await startTrade.wait()
+        // .catch((e) => {
+        //   createNewTrade.error(e)
+
+        //   if (e.code === 3) {
+        //     createNewTrade.error(e.message)
+        //   }
+        // })
 
         // TODO: remove token from the users lists (update list?? )
         createNewTrade.log('startTrade ', startTrade)
@@ -286,13 +287,14 @@ export default {
           this.$store.commit('modals/setPopupState', {
             type: 'success',
             isShow: true,
-            modalData: {
-              message: 'Trade successfully created',
+            data: {
+              message: 'Your trade is now open in the Bazaar',
             },
           })
         }
       } catch (error) {
         createNewTrade.log('error', error)
+        this.$store.commit('modals/closeModal')
       }
       this.loadingBtn = false
     },

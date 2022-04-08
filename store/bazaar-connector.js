@@ -95,16 +95,19 @@ export const actions = {
         Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
         {}
       )
-      await startTradeTx.wait()
+      // await startTradeTx.wait()
 
       bazaarConnectorLog.log(
         'result from start Trade ',
-        Web3ABI.decodeParameter('bool', startTradeTx.data)
+        startTradeTx
+        // Web3ABI.decodeParameter('bool', startTradeTx.data)
       )
 
-      return Web3ABI.decodeParameter('bool', startTradeTx.data)
+      return startTradeTx // Web3ABI.decodeParameter('bool', startTradeTx.data)
     } catch (error) {
-      throw error?.data || error
+      console.error(error)
+      bazaarConnectorLog.error(error)
+      throw error
     }
   },
 
@@ -125,7 +128,7 @@ export const actions = {
 
     try {
       const claimBackResult = await webazaarInstance.claimBlack(tradeId, 0, {})
-      return await claimBackResult.wait()
+      return claimBackResult
     } catch (err) {
       bazaarConnectorLog.error(err)
       throw err
@@ -214,7 +217,7 @@ export const actions = {
       const executeTrade = await webazaarInstance.executeTrade(tradeId)
 
       bazaarConnectorLog.log('Open trades for users ', executeTrade)
-      return await executeTrade.wait()
+      return executeTrade
     } catch (err) {
       bazaarConnectorLog.error(err)
       throw err
@@ -259,14 +262,23 @@ export const actions = {
         webazaarABI,
         userProvider.getSigner()
       )
+      if (contractType.toLowerCase() === 'erc20') {
+        const allowance = await webazaarInstance.allowance(
+          walletAddress,
+          BAZAAR_CONTRACT_ADDRESS
+        )
+        bazaarConnectorLog.log('is approved for all: ', allowance.toString())
 
-      const isApproved = await webazaarInstance.isApprovedForAll(
-        walletAddress,
-        BAZAAR_CONTRACT_ADDRESS
-      )
-      bazaarConnectorLog.log('is approved for all: ', isApproved)
+        return allowance.toString() > 0
+      } else {
+        const isApproved = await webazaarInstance.isApprovedForAll(
+          walletAddress,
+          BAZAAR_CONTRACT_ADDRESS
+        )
+        bazaarConnectorLog.log('is approved for all: ', isApproved)
 
-      return isApproved
+        return isApproved
+      }
     } catch (error) {
       bazaarConnectorLog.error('isApproved', error)
       throw error?.data || error
@@ -295,14 +307,25 @@ export const actions = {
         userProvider.getSigner()
       )
 
-      const isApproved = await contractInstance.setApprovalForAll(
-        BAZAAR_CONTRACT_ADDRESS,
-        Web3ABI.encodeParameter('bool', approveValue),
-        {}
-      )
-      bazaarConnectorLog.log('is approved for all: ', isApproved)
+      if (contractType.toLowerCase() === 'erc20') {
+        const approveAmount = ethers.utils.parseUnits('100000')
 
-      return await isApproved.wait()
+        const tx = await contractInstance.approve(
+          BAZAAR_CONTRACT_ADDRESS,
+          approveAmount
+        )
+
+        return tx
+      } else {
+        const tx = await contractInstance.setApprovalForAll(
+          BAZAAR_CONTRACT_ADDRESS,
+          Web3ABI.encodeParameter('bool', approveValue),
+          {}
+        )
+        bazaarConnectorLog.log('is approved for all: ', tx)
+
+        return tx
+      }
     } catch (error) {
       bazaarConnectorLog.error('isApproved', error)
       throw error?.data || error

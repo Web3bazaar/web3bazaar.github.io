@@ -6,21 +6,28 @@
           <div id="account_from">{{ value.address | truncate(9) }}</div>
         </v-col> -->
         <v-col cols="5" class="d-flex justify-center">
-          <v-img
-            contain
-            class="ml-0"
-            max-height="150px"
-            :src="value.base_img"
-          />
+          <v-img contain class="ml-0" max-height="150px" :src="value.baseImg" />
         </v-col>
-
         <v-col cols="7">
           <div id="project_from" class="text-left pb-3">
-            {{ value.project_name }}
+            <a
+              :href="value.projectLink"
+              target="_blank"
+              class="item-quantity text-left small-links white--text"
+            >
+              {{ value.projectName }}
+              <img :width="16" :src="linkIcon" />
+            </a>
           </div>
-
-          <p class="item-name text-left pb-0">
-            Item Name {{ value.item_name }}
+          <p v-if="value.traderType !== 1" class="item-name text-left pb-0">
+            <a
+              :href="value.externalUrl"
+              target="_blank"
+              class="item-quantity text-left small-links"
+            >
+              Item Name {{ value.itemName }}
+              <img :width="16" :src="linkIcon" />
+            </a>
           </p>
           <p class="item-quantity text-left">Amount {{ formattedQuantity }}</p>
         </v-col>
@@ -61,13 +68,13 @@
             label="Choose projects"
             :items="projects"
             return-object
-            item-text="project_name"
-            :value="value.project_name"
-            @input="update('project_name', $event)"
+            item-text="projectName"
+            :value="value.projectName"
+            @input="update('projectName', $event)"
           >
             <template #selection="{ item, index }">
               <v-chip v-if="index < maxProjectsToShow">
-                <span>{{ item.project_name | truncate(8, 'start') }}</span>
+                <span>{{ item.projectName | truncate(8, 'start') }}</span>
               </v-chip>
               <span
                 v-if="index === maxProjectsToShow"
@@ -101,6 +108,7 @@
 import { ethers } from 'ethers'
 
 export default {
+  components: {},
   props: {
     accountFrom: {
       type: String,
@@ -129,11 +137,16 @@ export default {
       selectedProjects: [],
 
       selectedProjectsAssets: [],
+
+      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
   computed: {
     formattedQuantity() {
-      return ethers.utils.formatUnits(this.value?.item_quantity + '', 'ether')
+      return ethers.utils.formatUnits(
+        (this.value?.itemAmount || 0) + '',
+        'ether'
+      )
     },
   },
   watch: {
@@ -146,7 +159,9 @@ export default {
     updateSelectedProjectsAssets() {
       const selectedProjectsAssets = []
       if (this.accountFrom) {
+        console.log(this.selectedProjects)
         this.selectedProjects.forEach((p) => {
+          console.log(p)
           selectedProjectsAssets.push(...(p.projectFromItems || []))
         })
       } else {
@@ -163,7 +178,7 @@ export default {
     async update(key, value) {
       this.$emit('input', { ...this.value, [key]: value })
       await this.$nextTick()
-      if (key === 'project_name') {
+      if (key === 'projectName') {
         // console.log('project_name', key, value, oldVal)
         // console.log('update projects list')
 

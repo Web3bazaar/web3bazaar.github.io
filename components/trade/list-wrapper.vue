@@ -47,7 +47,7 @@
       <v-row
         v-for="trade in trades"
         :key="trade.id"
-        :class="{ 'new-trade': newTrade }"
+        class="list-trade-row py-4"
         justify="center"
       >
         <v-col cols="12" sm="4" class="d-flex flex-column item-col">
@@ -83,10 +83,12 @@
         <v-col
           cols="12"
           sm="1"
-          class="d-flex flex-column align-center text-center pt-8"
+          class="d-flex flex-column align-center text-center pt-12"
         >
-          {{ getTradeStatus(trade) }}
-
+          <h6>
+            Trade ID:
+            {{ trade.tradeId }}
+          </h6>
           <v-img
             contain
             class="mx-auto"
@@ -121,20 +123,24 @@
             />
           </v-card>
         </v-col>
+
+        <v-col cols="12" sm="9" class="align-center pt-0 mb-5">
+          <h6 class="text-left mb-0">
+            {{ getTradeStatus(trade, { from: true }) }}
+          </h6>
+        </v-col>
         <v-col
-          v-if="creator || trade.tradeStatus !== 3"
+          v-if="showTradeButton(trade)"
           cols="12"
           sm="12"
           class="d-flex justify-center"
         >
-          <v-btn
-            type="submit"
-            class="more-btn mb-15 pixel2 w3b-bg-gradient"
+          <ui-action-btn
             :loading="loadingBtn"
+            :btn-text="tradeBtn(trade)"
             @click="handleTrade(trade)"
           >
-            {{ tradeBtn(trade) }}
-          </v-btn>
+          </ui-action-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -192,6 +198,13 @@ export default {
         'PARTIAL_CLAIM',
         'TRADE_COMPLETED',
       ],
+      TradeStatusMessages: {
+        waitingExecutor: 'Waiting for counterparty deposit',
+        depositExecutor: 'Counterparty assets deposited',
+        alreadyClaimed:
+          'You have already claimed these assets (waiting for counterparty to close the trade)',
+        // 'TRADE_COMPLETED': ,
+      },
       UserStatus: ['NON', 'Execute Trade', 'DEPOSIT', 'CLAIM'],
       // UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
     }
@@ -199,10 +212,10 @@ export default {
   computed: {
     ...mapState('connector', ['account']),
     projectTo() {
-      return this.itemTo.project_name
+      return this.itemTo.projectName
     },
     projectFrom() {
-      return this.itemFrom.project_name
+      return this.itemFrom.projectName
     },
     itemTo: {
       get() {
@@ -252,7 +265,7 @@ export default {
       }
     },
   },
-  created() {
+  mounted() {
     // just for testing
     this.$store.commit('trader/itemFrom', {
       ...this.itemFrom,
@@ -271,19 +284,71 @@ export default {
       .then(() => this.$store.commit('modals/closeModal'))
   },
   methods: {
-    getTradeStatus(trade) {
-      return this.TradeStatus[trade?.tradeStatus].split('_').join(' ')
+    showTradeButton(trade) {
+      switch (true) {
+        // case trade?.itemFrom?.traderStatus === 3:
+        case this.creator && trade?.itemFrom.traderStatus === 3:
+        case trade?.itemTo?.traderStatus === 3:
+          return false
+
+        default:
+          return true
+      }
+    },
+    getTradeStatus(trade, { to, from }) {
+      this.$logger('trade: ', trade)
+
+      // console.log(trade.tradeId)
+      // console.log(this.TradeStatus[trade?.tradeStatus])
+      // console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
+      // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
+
+      if (this.creator) {
+        if (
+          trade.itemFrom.traderStatus === 3 ||
+          trade.itemTo.traderStatus === 3
+        ) {
+          return this.TradeStatusMessages.alreadyClaimed
+        } else {
+          return this.TradeStatusMessages.waitingExecutor
+        }
+        // .creator
+      } else if (trade.itemTo.traderStatus === 2 || trade.tradeStatus === 1) {
+        return this.TradeStatusMessages.depositExecutor
+      } else if (trade.itemTo.traderStatus === 3) {
+        return this.TradeStatusMessages.alreadyClaimed
+      } else
+        return (
+          trade?.tradeStatus +
+          ' ' +
+          trade?.itemFrom.traderStatus +
+          ' ' +
+          trade?.itemTo.traderStatus +
+          ' '
+        )
     },
     tradeBtn(trade) {
-      if (this.creator && trade.tradeStatus === 1) {
-        return CLAIM_BACK
-      } else if (this.creator && trade.tradeStatus === 3) {
-        return CLAIM
-      } else if (this.creator) {
-        return this.UserStatus[trade?.itemFrom?.traderStatus]
-      } else {
-        return this.UserStatus[trade?.itemTo?.traderStatus]
+      switch (true) {
+        case this.creator && trade.tradeStatus === 3:
+        case this.creator && trade.itemFrom.traderStatus === 2:
+          return CLAIM
+        case trade.tradeStatus === 1:
+          return this.UserStatus[trade.tradeStatus]
+        default:
+          return this.UserStatus[trade?.itemFrom?.traderStatus]
       }
+
+      // if (this.creator && trade.tradeStatus === 1) {
+      //   return CLAIM_BACK
+      // } else if (this.creator && trade.tradeStatus === 3) {
+      //   return CLAIM
+      // } else if (this.creator && trade.itemTo.traderStatus === 3) {
+      //   return CLAIM
+      // } else if (trade.tradeStatus === 2 && trade.itemTo.traderStatus === 2) {
+      //   return CLAIM
+      // } else if (trade.itemTo.traderStatus === 3) {
+      //   return this.UserStatus[trade?.itemFrom?.traderStatus]
+      // }
     },
     async handleTrade(trade) {
       this.loadingBtn = true
@@ -291,20 +356,30 @@ export default {
         type: 'loading',
         isShow: true,
       })
+
+      let tx
       try {
         // const res =
-        if (this.creator && trade.tradeStatus === 3) {
-          await this.$store.dispatch('bazaar-connector/claim', {
+        if (this.creator && trade.itemTo.traderStatus === 2) {
+          tx = await this.$store.dispatch('bazaar-connector/claim', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
           })
           await this.checkForTrade(trade.tradeId, 4)
 
           this.$emit('updateDashboard')
-        } else if (this.creator) {
-          await this.$store.dispatch('bazaar-connector/claimBack', {
+        } else if (this.creator && trade.tradeStatus === 1) {
+          tx = await this.$store.dispatch('bazaar-connector/claimBack', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
+          })
+          this.$store.commit('modals/setPopupState', {
+            type: 'success',
+            isShow: true,
+            data: {
+              message: 'You successfully claimed back your assets.',
+              animated: true,
+            },
           })
         } else {
           const isApproved = await this.$store.dispatch(
@@ -317,12 +392,13 @@ export default {
           )
           if (!isApproved) {
             // not aproved do request and wait
-            await this.$store.dispatch('bazaar-connector/setApproval', {
+            tx = await this.$store.dispatch('bazaar-connector/setApproval', {
               contractAddress: trade.itemTo.contractAddress,
               contractType: this.contractTypes[trade.itemTo.traderType],
               walletAddress: this.account,
             })
-            await this.checkIfContractIsApprovedForWallet()
+            await tx.wait()
+            // await this.checkIfContractIsApprovedForWallet()
           }
           if (trade.tradeStatus === 1) {
             //  do executeTrade request and wait, check for transaction approved
@@ -330,16 +406,38 @@ export default {
               tradeId: trade.tradeId,
             })
             await this.checkForTrade(trade.tradeId, 2)
+            this.$emit('updateDashboard')
+            return
           }
 
           // TODO: check if transaction is approved
-          await this.$store.dispatch('bazaar-connector/claim', {
+          tx = await this.$store.dispatch('bazaar-connector/claim', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
           })
 
           await this.checkForTrade(trade.tradeId, 3)
+
+          this.$store.commit('modals/setPopupState', {
+            type: 'success',
+            isShow: true,
+            data: {
+              message: 'You successfully claimed your new assets.',
+              animated: true,
+            },
+          })
         }
+
+        this.$store.commit('modals/setPopupState', {
+          type: 'loading',
+          isShow: true,
+          data: {
+            state: 'mining',
+          },
+        })
+
+        await tx.wait()
+
         this.$emit('updateDashboard')
       } catch (error) {
         console.error(error)
@@ -366,43 +464,43 @@ export default {
 
       return await this.checkForTrade(tradeId, status)
     },
-    checkIfContractIsApprovedForWallet(
-      contractAddress,
-      contractType,
-      walletAddress
-    ) {
-      try {
-        return new Promise((resolve) => {
-          resolve(
-            this.$store.dispatch('bazaar-connector/isApproved', {
-              contractAddress,
-              contractType,
-              walletAddress,
-            })
-          )
-        }).then((result) => {
-          if (result) return result
-          else {
-            const t = setInterval(() => {
-              this.numTries--
-              if (this.numTries === 0) clearInterval(t)
-              return this.checkIfContractIsApprovedForWallet(
-                contractAddress,
-                contractType,
-                this.account
-              ).then((res) => {
-                if (res) {
-                  clearInterval(t)
-                  return res
-                }
-              })
-            }, 4 * 1000)
-          }
-        })
-      } catch (error) {
-        console.error('error', error)
-      }
-    },
+    // checkIfContractIsApprovedForWallet(
+    //   contractAddress,
+    //   contractType,
+    //   walletAddress
+    // ) {
+    //   try {
+    //     return new Promise((resolve) => {
+    //       resolve(
+    //         this.$store.dispatch('bazaar-connector/isApproved', {
+    //           contractAddress,
+    //           contractType,
+    //           walletAddress,
+    //         })
+    //       )
+    //     }).then((result) => {
+    //       if (result) return result
+    //       else {
+    //         const t = setInterval(() => {
+    //           this.numTries--
+    //           if (this.numTries === 0) clearInterval(t)
+    //           return this.checkIfContractIsApprovedForWallet(
+    //             contractAddress,
+    //             contractType,
+    //             this.account
+    //           ).then((res) => {
+    //             if (res) {
+    //               clearInterval(t)
+    //               return res
+    //             }
+    //           })
+    //         }, 4 * 1000)
+    //       }
+    //     })
+    //   } catch (error) {
+    //     console.error('error', error)
+    //   }
+    // },
   },
 }
 </script>
@@ -414,6 +512,9 @@ export default {
   }
   .item-col:nth-child(3) .item-card section.list-item {
     right: 3px;
+  }
+  .list-trade-row:not(:first-child) {
+    border-top: solid 1px #3b3b3bc0;
   }
 }
 .new-trade {

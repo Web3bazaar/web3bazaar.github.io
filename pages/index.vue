@@ -7,13 +7,20 @@
           <!-- Welcome Content -->
           <v-col cols="12" class="text-center">
             <div class="dream-btn-group fadeInUp" data-wow-delay="0.4s">
-              <v-btn
+              <!-- <v-btn
                 type="submit"
                 class="more-btn mb-15 pixel2 w3b-bg-gradient"
                 @click="openBetaModal"
               >
                 {{ 'Enter the Bazaar' }}
-              </v-btn>
+              </v-btn> -->
+
+              <ui-action-btn
+                :loading="loadingBtn"
+                :btn-text="'Enter Bazaar'"
+                @click="openBetaModal"
+              >
+              </ui-action-btn>
             </div>
           </v-col>
         </v-row>
@@ -37,10 +44,9 @@
                 <span class="gradient-text">asset exchange</span>
               </h1>
               <p class="w-text fadeInUp" data-wow-delay="0.3s">
-                Web3 Bazaar is the peer-to-peer marketplace for web3 assets
-                supported by an escrow smart contract that allows you to swap
-                between any ERC-20 token and NFT asset with someone you have
-                already agreed terms with.
+                The Web3 Bazaar is the peer-to-peer exchange for web3 assets
+                supported by escrow smart contracts that enable swaps of any NFT
+                or ERC-20 token.
               </p>
             </div>
           </v-col>
@@ -65,7 +71,7 @@
                 </div>
                 <div class="author-info">
                   <h5 class="author-name">
-                    Safeguard your p2p trades with a trustless smart contract
+                    Safeguard your P2P trades with a trustless smart contract
                   </h5>
                 </div>
               </div>
@@ -94,8 +100,8 @@
                 </div>
                 <div class="author-info">
                   <h5 class="author-name">
-                    Keep full control over your assets until counter-party's are
-                    available
+                    Keep full control over your assets until counterparties make
+                    theirs available
                   </h5>
                 </div>
               </div>
@@ -194,7 +200,7 @@
             <span>Trade on</span>
           </div>
           <h2 class="fadeInUp" data-wow-delay="0.3s">
-            Bazaar is a verified smart contract available on multiple chains
+            Bazaar smart contracts are available on multiple chains
             <img src="@/assets/img/art-work/fire.png" width="20" alt="" />
           </h2>
         </div>
