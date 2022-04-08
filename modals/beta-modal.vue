@@ -15,13 +15,12 @@
       this test version. Thanks for helping us fine-tune the Bazaar before it
       goes live on main nets.
     </p>
-    <v-btn
-      type="submit"
-      class="more-btn mb-5 pixel2 w3b-bg-gradient d-flex mx-auto mt-6"
+    <ui-action-btn
+      class="d-flex mx-auto mt-6 mb-5"
+      :btn-text="'Enter Bazaar'"
       @click="enterBazaar"
     >
-      {{ 'Enter Bazaar' }}
-    </v-btn>
+    </ui-action-btn>
   </div>
 </template>
 

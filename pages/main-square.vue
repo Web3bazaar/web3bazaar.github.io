@@ -14,14 +14,20 @@
             v-if="tradesSubmittedByYou.length > 0"
             :to="'/create-new-trade'"
           >
-            <v-btn class="more-btn mb-15 pixel2 w3b-bg-gradient">
-              New Trade
-            </v-btn>
+            <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
           </nuxt-link>
         </v-col>
       </v-row>
 
-      <v-row v-if="!(tradesSubmittedByYou.length > 0)" justify="center">
+      <v-row
+        v-if="
+          !(
+            tradesSubmittedByYou.length > 0 &&
+            tradesSubmittedByOthers.length > 0
+          )
+        "
+        justify="center"
+      >
         <v-col cols="12" lg="6" class="d-flex flex-column align-center">
           <h4 class="d-flex mb-4 text-center">
             It seems like there's no active trades submitted by or for you at
@@ -29,9 +35,7 @@
           </h4>
           <v-spacer />
           <nuxt-link :to="'/create-new-trade'" class="">
-            <v-btn class="more-btn mb-15 d-flex pixel2 w3b-bg-gradient">
-              New Trade
-            </v-btn>
+            <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
           </nuxt-link>
         </v-col>
       </v-row>

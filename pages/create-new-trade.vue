@@ -16,33 +16,21 @@
           />
         </v-col>
         <v-col cols="12" class="text-center">
-          <v-btn
+          <ui-action-btn
             v-if="isSelectedContractApproved"
-            type="submit"
-            class="more-btn mb-15 pixel2 w3b-bg-gradient"
             :loading="loadingBtn"
+            :btn-text="ADD_TRADE"
             @click="newTrade"
           >
-            {{ ADD_TRADE }}
-          </v-btn>
+          </ui-action-btn>
 
-          <v-btn
+          <ui-action-btn
             v-else
-            type="submit"
-            class="more-btn mb-15 pixel2 w3b-bg-gradient"
             :loading="loadingBtn"
+            :btn-text="APPROVE"
             @click="approveSelectedContract"
           >
-            {{ APPROVE }}
-          </v-btn>
-          <!-- <v-btn
-            type="submit"
-            class="more-btn mb-15"
-            :loading="loadingBtn"
-            @click="removeApprove"
-          >
-            REMOVE
-          </v-btn> -->
+          </ui-action-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -299,6 +287,9 @@ export default {
           this.$store.commit('modals/setPopupState', {
             type: 'success',
             isShow: true,
+            data: {
+              message: 'Your trade is now open in the Bazaar',
+            },
           })
         }
       } catch (error) {

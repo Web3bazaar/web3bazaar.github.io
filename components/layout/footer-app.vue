@@ -65,7 +65,7 @@ export default {
           setInterval(() => {
             // Reduce volume by 0.05 as long as it is above 0
             // This works as long as you start with a multiple of 0.05!
-            if (this.audio.volume < 0.6) {
+            if (this.audio.volume < 0.4) {
               this.audio.volume += 0.03
             } else {
               // Stop the setInterval when 0 is reached
