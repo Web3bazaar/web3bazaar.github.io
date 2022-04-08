@@ -36,7 +36,7 @@ export const state = () => ({
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
-      contractAddress: '0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+      contractAddress: '0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC721',
@@ -44,11 +44,11 @@ export const state = () => ({
       twitter: '',
       api_metadata: 'https://webazaar-meta-api.herokuapp.com/721/detail/{id}',
       blockExplorerUrl:
-        'https://mumbai.polygonscan.com/address/0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+        'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
       assetExternalLink:
-        'https://mumbai.polygonscan.com/token/0xb48342ff701ddff44c7a1eec9c0293b4f2947e53?a=',
+        'https://mumbai.polygonscan.com/token/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B?a=',
       projectLink:
-        'https://mumbai.polygonscan.com/address/0xb48342Ff701dDff44C7A1EEC9C0293B4F2947e53',
+        'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
 
       api_metadata_sample: {
         name: '',
@@ -61,7 +61,7 @@ export const state = () => ({
       description: 'Test contract for weebazaar ERC1155',
       base_img:
         'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',
-      contractAddress: '0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
+      contractAddress: '0x638A0ec36d2E89d8671e193854A56326a24455aA',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC1155',
@@ -69,11 +69,11 @@ export const state = () => ({
       twitter: '',
       api_metadata: 'https://webazaar-meta-api.herokuapp.com/1155/detail/{id}',
       blockExplorerUrl:
-        'https://mumbai.polygonscan.com/address/0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
+        'https://mumbai.polygonscan.com/address/0x638A0ec36d2E89d8671e193854A56326a24455aA',
       assetExternalLink:
-        'https://mumbai.polygonscan.com/token/0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9?a=',
+        'https://mumbai.polygonscan.com/token/0x638A0ec36d2E89d8671e193854A56326a24455aA?a=',
       projectLink:
-        'https://mumbai.polygonscan.com/address/0x327Eb3d1D5aeC78b52683a73f4aF4EdEFCC1F4b9',
+        'https://mumbai.polygonscan.com/address/0x638A0ec36d2E89d8671e193854A56326a24455aA',
       api_metadata_sample: {
         name: '',
         description: '',
@@ -84,7 +84,7 @@ export const state = () => ({
       projectName: 'BAZCOIN',
       description: 'Test contract for weebazaar ERC20',
       tokenImage: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
-      contractAddress: '0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
+      contractAddress: '0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC20',
@@ -92,7 +92,7 @@ export const state = () => ({
       twitter: '',
       api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
       projectLink:
-        'https://mumbai.polygonscan.com/token/0x8E21dAA8144CF63D0A0820F6Caa895D3fC21460E',
+        'https://mumbai.polygonscan.com/token/0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
       api_metadata_sample: {
         name: '',
         description: '',
@@ -274,8 +274,6 @@ export const actions = {
       //     }
       //   })
       // )
-
-      // TODO: get asst name from heruko api
     } catch (error) {
       traderLogger.error('Error listing ids -> ', error)
     }

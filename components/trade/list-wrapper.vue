@@ -130,22 +130,17 @@
           </h6>
         </v-col>
         <v-col
-          v-if="
-            (creator && trade.tradeStatus !== 2) ||
-            (!creator && trade.tradeStatus !== 3)
-          "
+          v-if="showTradeButton(trade)"
           cols="12"
           sm="12"
           class="d-flex justify-center"
         >
-          <v-btn
-            type="submit"
-            class="more-btn mb-15 pixel2 w3b-bg-gradient"
+          <ui-action-btn
             :loading="loadingBtn"
+            :btn-text="tradeBtn(trade)"
             @click="handleTrade(trade)"
           >
-            {{ tradeBtn(trade) }}
-          </v-btn>
+          </ui-action-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -204,21 +199,10 @@ export default {
         'TRADE_COMPLETED',
       ],
       TradeStatusMessages: {
-        TRADE_CREATED: {
-          creator: 'Waiting for counterparty deposit',
-          executor: 'Counterparty assets deposited',
-        },
-        TRADE_CP_DEPOSITED: {
-          creator: 'Waiting for counterparty deposit',
-          executor: 'Counterparty assets deposited',
-
-          // creator: 'Counterparty assets deposited',
-        },
-        PARTIAL_CLAIM: {
-          creator: 'Counterparty assets deposited',
-          executor:
-            'You have already claimed these assets (waiting for counterparty to close the trade)',
-        },
+        waitingExecutor: 'Waiting for counterparty deposit',
+        depositExecutor: 'Counterparty assets deposited',
+        alreadyClaimed:
+          'You have already claimed these assets (waiting for counterparty to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
       UserStatus: ['NON', 'Execute Trade', 'DEPOSIT', 'CLAIM'],
@@ -300,27 +284,71 @@ export default {
       .then(() => this.$store.commit('modals/closeModal'))
   },
   methods: {
+    showTradeButton(trade) {
+      switch (true) {
+        // case trade?.itemFrom?.traderStatus === 3:
+        case this.creator && trade?.itemFrom.traderStatus === 3:
+        case trade?.itemTo?.traderStatus === 3:
+          return false
+
+        default:
+          return true
+      }
+    },
     getTradeStatus(trade, { to, from }) {
       this.$logger('trade: ', trade)
 
+      // console.log(trade.tradeId)
+      // console.log(this.TradeStatus[trade?.tradeStatus])
+      // console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
+      // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
+
       if (this.creator) {
-        return this.TradeStatusMessages?.[this.TradeStatus[trade?.tradeStatus]]
-          .creator
-      } else {
-        return this.TradeStatusMessages?.[this.TradeStatus[trade?.tradeStatus]]
-          .executor
-      }
+        if (
+          trade.itemFrom.traderStatus === 3 ||
+          trade.itemTo.traderStatus === 3
+        ) {
+          return this.TradeStatusMessages.alreadyClaimed
+        } else {
+          return this.TradeStatusMessages.waitingExecutor
+        }
+        // .creator
+      } else if (trade.itemTo.traderStatus === 2 || trade.tradeStatus === 1) {
+        return this.TradeStatusMessages.depositExecutor
+      } else if (trade.itemTo.traderStatus === 3) {
+        return this.TradeStatusMessages.alreadyClaimed
+      } else
+        return (
+          trade?.tradeStatus +
+          ' ' +
+          trade?.itemFrom.traderStatus +
+          ' ' +
+          trade?.itemTo.traderStatus +
+          ' '
+        )
     },
     tradeBtn(trade) {
-      if (this.creator && trade.tradeStatus === 1) {
-        return CLAIM_BACK
-      } else if (this.creator && trade.tradeStatus === 3) {
-        return CLAIM
-      } else if (this.creator) {
-        return this.UserStatus[trade?.itemFrom?.traderStatus]
-      } else {
-        return this.UserStatus[trade?.itemTo?.traderStatus]
+      switch (true) {
+        case this.creator && trade.tradeStatus === 3:
+        case this.creator && trade.itemFrom.traderStatus === 2:
+          return CLAIM
+        case trade.tradeStatus === 1:
+          return this.UserStatus[trade.tradeStatus]
+        default:
+          return this.UserStatus[trade?.itemFrom?.traderStatus]
       }
+
+      // if (this.creator && trade.tradeStatus === 1) {
+      //   return CLAIM_BACK
+      // } else if (this.creator && trade.tradeStatus === 3) {
+      //   return CLAIM
+      // } else if (this.creator && trade.itemTo.traderStatus === 3) {
+      //   return CLAIM
+      // } else if (trade.tradeStatus === 2 && trade.itemTo.traderStatus === 2) {
+      //   return CLAIM
+      // } else if (trade.itemTo.traderStatus === 3) {
+      //   return this.UserStatus[trade?.itemFrom?.traderStatus]
+      // }
     },
     async handleTrade(trade) {
       this.loadingBtn = true
@@ -332,7 +360,7 @@ export default {
       let tx
       try {
         // const res =
-        if (this.creator && trade.tradeStatus === 3) {
+        if (this.creator && trade.itemTo.traderStatus === 2) {
           tx = await this.$store.dispatch('bazaar-connector/claim', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
@@ -340,10 +368,18 @@ export default {
           await this.checkForTrade(trade.tradeId, 4)
 
           this.$emit('updateDashboard')
-        } else if (this.creator) {
+        } else if (this.creator && trade.tradeStatus === 1) {
           tx = await this.$store.dispatch('bazaar-connector/claimBack', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
+          })
+          this.$store.commit('modals/setPopupState', {
+            type: 'success',
+            isShow: true,
+            data: {
+              message: 'You successfully claimed back your assets.',
+              animated: true,
+            },
           })
         } else {
           const isApproved = await this.$store.dispatch(
@@ -381,6 +417,15 @@ export default {
           })
 
           await this.checkForTrade(trade.tradeId, 3)
+
+          this.$store.commit('modals/setPopupState', {
+            type: 'success',
+            isShow: true,
+            data: {
+              message: 'You successfully claimed your new assets.',
+              animated: true,
+            },
+          })
         }
 
         this.$store.commit('modals/setPopupState', {
