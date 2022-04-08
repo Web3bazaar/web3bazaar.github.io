@@ -37,34 +37,55 @@ export const actions = {
 
       const amountFormatted = ethers.utils.formatUnits(
         ethers.utils.parseUnits(amount + ''),
-        0
+        18
       )
       donationsLogger.log('amountFormated', amountFormatted)
 
-      // get w3b address based on active chain
+      // // get w3b address based on active chain
       const {
         w3bChainWalletAddress,
-        tokenAddress: nativeTokenContractAddress,
+        // tokenAddress: nativeTokenContractAddress,
       } = state.baseValue[rootGetters['networks/getActiveChain']?.chainId]
-      donationsLogger.log('w3bWalletAddress', w3bChainWalletAddress)
-      donationsLogger.log(
-        'nativeTokenContractAddress',
-        nativeTokenContractAddress
-      )
 
-      const genericErc20Abi = require(`../const/abis/erc20.json`)
+      donationsLogger.log('w3bWalletAddress', w3bChainWalletAddress)
+      // donationsLogger.log(
+      //   'nativeTokenContractAddress',
+      //   nativeTokenContractAddress
+      // )
+
+      // const genericErc20Abi = require(`../const/abis/erc20.json`)
+
+      // const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+      // const erc20Contract = new ethers.Contract(
+      //   nativeTokenContractAddress,
+      //   genericErc20Abi,
+      //   userProvider.getSigner()
+      // )
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-      const erc20Contract = new ethers.Contract(
-        nativeTokenContractAddress,
-        genericErc20Abi,
-        userProvider.getSigner()
-      )
+      const currentGasPrice = await userProvider.getGasPrice()
+      const gasPrice = ethers.utils.hexlify(parseInt(currentGasPrice))
 
-      const tx = await erc20Contract.transfer(
-        w3bChainWalletAddress,
-        amountFormatted
-      )
+      const userSigner = userProvider.getSigner()
+
+      const tx = {
+        from: rootGetters['connector/account'],
+        to: w3bChainWalletAddress,
+        value: ethers.utils.parseEther(amount + ''),
+        nonce: userProvider.getTransactionCount(
+          rootGetters['connector/account'],
+          'latest'
+        ),
+        gasLimit: ethers.utils.hexlify(0x100000), // 100000
+        gasPrice,
+      }
+
+      const xtx = await userSigner.sendTransaction(tx)
+
+      // const tx = await erc20Contract.transfer(
+      //   w3bChainWalletAddress,
+      //   amountFormatted
+      // )
       // {
       //   chainId: 1337,
       //   confirmations: 0,
@@ -82,11 +103,11 @@ export const actions = {
       //   value: { BigNumber: "0" },
       //   wait: [Function]
       // }
-      donationsLogger.log('tx before wait', tx)
+      donationsLogger.log('tx before wait', xtx)
 
       // Wait for the transaction to be mined...
-      await tx.wait()
-      donationsLogger.log('tx after wait', tx)
+      await xtx
+      donationsLogger.log('tx after wait', xtx)
       return tx
     } catch (error) {
       donationsLogger.error('tx error', error)

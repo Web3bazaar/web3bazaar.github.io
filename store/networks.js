@@ -118,16 +118,24 @@ export const actions = {
       delete data.name
       delete data.w3bChainWalletAddress
       delete data.tokenAddress
-      const resp = await window.ethereum.request({
+      await window.ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [data],
       })
-      if (resp === null) {
+      const newChainId = await dispatch(
+        'connector/fetchChainId',
+        window.ethereum,
+        { root: true }
+      )
+      if (newChainId === chainId) {
         commit('networks/setActiveNetwork', chainId, { root: true })
         return true
+      } else {
+        throw new Error('Network did not change to ' + chainId)
       }
     } catch (error) {
       console.log(error)
+      // throw new Error(error)
     }
   },
 }
