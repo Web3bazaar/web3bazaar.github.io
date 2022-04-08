@@ -130,7 +130,7 @@
           </h6>
         </v-col>
         <v-col
-          v-if="showTradeButton(trade)"
+          v-if="tradeBtn(trade)"
           cols="12"
           sm="12"
           class="d-flex justify-center"
@@ -154,6 +154,7 @@ import { ethers } from 'ethers'
 
 const CLAIM_BACK = 'Claim back assets'
 const CLAIM = 'Claim assets'
+// const DEPOSIT = 'DEPOSIT'
 const EXECUTE = 'Execute Trade'
 
 export default {
@@ -205,7 +206,7 @@ export default {
           'You have already claimed these assets (waiting for counterparty to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
-      UserStatus: ['NON', 'Execute Trade', 'DEPOSIT', 'CLAIM'],
+      UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
       // UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
     }
   },
@@ -303,39 +304,50 @@ export default {
       // console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
       // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
 
-      if (this.creator) {
-        if (
-          trade.itemFrom.traderStatus === 3 ||
-          trade.itemTo.traderStatus === 3
-        ) {
+      switch (true) {
+        // case this.creator && trade.tradeStatus === 3:
+
+        case this.creator && trade.itemFrom.traderStatus === 3:
+        case !this.creator && trade.itemTo.traderStatus === 3:
           return this.TradeStatusMessages.alreadyClaimed
-        } else {
+
+        case this.creator &&
+          trade.tradeStatus === 1 &&
+          trade.itemTo.traderStatus < 2:
           return this.TradeStatusMessages.waitingExecutor
-        }
-        // .creator
-      } else if (trade.itemTo.traderStatus === 2 || trade.tradeStatus === 1) {
-        return this.TradeStatusMessages.depositExecutor
-      } else if (trade.itemTo.traderStatus === 3) {
-        return this.TradeStatusMessages.alreadyClaimed
-      } else
-        return (
-          trade?.tradeStatus +
-          ' ' +
-          trade?.itemFrom.traderStatus +
-          ' ' +
-          trade?.itemTo.traderStatus +
-          ' '
-        )
+        case this.creator && trade.itemTo.traderStatus > 1:
+        case !this.creator && trade.itemFrom.traderStatus > 1:
+          return this.TradeStatusMessages.depositExecutor
+        default:
+          return true
+        // break
+      }
     },
     tradeBtn(trade) {
+      console.log(trade.tradeId)
+      console.log(this.TradeStatus[trade?.tradeStatus])
+      console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
+      console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
+
       switch (true) {
-        case this.creator && trade.tradeStatus === 3:
-        case this.creator && trade.itemFrom.traderStatus === 2:
+        // case this.creator && trade.tradeStatus === 3:
+        case this.creator &&
+          trade.tradeStatus > 1 &&
+          trade.itemTo.traderStatus > 1 &&
+          trade.itemFrom.traderStatus !== 3:
+        case !this.creator &&
+          trade.tradeStatus > 1 &&
+          trade.itemFrom.traderStatus > 1 &&
+          trade.itemTo.traderStatus !== 3:
           return CLAIM
+        // return DEPOSIT
+        case this.creator && trade.tradeStatus === 1:
+          return CLAIM_BACK
         case trade.tradeStatus === 1:
-          return this.UserStatus[trade.tradeStatus]
+          return EXECUTE
         default:
-          return this.UserStatus[trade?.itemFrom?.traderStatus]
+          return false
+        // break
       }
 
       // if (this.creator && trade.tradeStatus === 1) {
@@ -365,9 +377,9 @@ export default {
             walletAddress: this.account,
             tradeId: trade.tradeId,
           })
-          await this.checkForTrade(trade.tradeId, 4)
+          // await this.checkForTrade(trade.tradeId, 4)
 
-          this.$emit('updateDashboard')
+          // this.$emit('updateDashboard')
         } else if (this.creator && trade.tradeStatus === 1) {
           tx = await this.$store.dispatch('bazaar-connector/claimBack', {
             walletAddress: this.account,
