@@ -67,9 +67,10 @@
                 <label>Amount:</label>
                 <input
                   class="amount-input"
-                  type="text"
+                  min="0"
+                  :max="getMaxAmount(index)"
                   :value="getAmount(index)"
-                  @input="checkAmount($event, index)"
+                  @input="updateAmount($event, index)"
                 />
               </div>
             </v-container>
@@ -136,18 +137,26 @@ export default {
 
       this.previousSelectedProjectsAssets = value
     },
-    checkAmount(amount, index) {
-      const chosenAmount = parseInt(amount.data) || 0
+    updateAmount(event, index) {
+      // console.log(event.target.value, index)
+
+      const chosenAmount = parseInt(event.target.value) || 0
       const internalValue = this.value.slice()
       const amountInt = parseInt(internalValue[index].amount) || 0
+      // console.log(chosenAmount, amountInt)
+      // console.log(chosenAmount >= amountInt || chosenAmount < 0)
 
       internalValue[index].chosenAmount =
-        chosenAmount > amountInt || chosenAmount < 0 ? 0 : chosenAmount
-
+        chosenAmount > amountInt || chosenAmount < 0
+          ? internalValue[index].chosenAmount
+          : chosenAmount
       this.setValue(internalValue)
     },
     getAmount(index) {
       return this.value[index].chosenAmount
+    },
+    getMaxAmount(index) {
+      return parseInt(this.value[index].amount)
     },
     setValue(value) {
       this.internalValue = value
@@ -234,8 +243,8 @@ export default {
     font-size: 12px;
   }
   .amount-input {
-    height: 10px;
-    padding-top: 0;
+    height: 14px;
+    padding: 2px 0;
     margin-top: 4px;
     margin-bottom: 2px;
     align-items: flex-start;
@@ -243,10 +252,15 @@ export default {
     flex: 1 1 auto;
     font-size: 16px;
     letter-spacing: normal;
-    max-width: 100%;
+    max-width: 40%;
+    margin: 0 auto;
 
     color: white;
     outline: gray;
+    &:focus {
+      border-bottom: solid 1px purple;
+    }
+
     .v-input__control {
       height: 10px;
       .v-input__slot {

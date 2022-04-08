@@ -70,6 +70,7 @@
             return-object
             item-text="projectName"
             :value="value.projectName"
+            :disabled="!value.address"
             @input="update('projectName', $event)"
           >
             <template #selection="{ item, index }">
