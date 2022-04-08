@@ -5,18 +5,19 @@
         v-for="(asset, index) in value"
         :key="index"
         cols="4"
-        class="pa-3 d-flex align-center"
+        class="pa-3 d-flex align-center flex-column"
         :class="{ selected: asset.selected }"
         @click="changeSelection(index)"
       >
         <v-hover>
           <template #default="{}">
-            <v-container class="px-0">
+            <v-container class="pa-0">
               <v-row no-gutters>
                 <v-col class="pa-0">
                   <div class="img-wrapper">
                     <v-img :src="asset.metadata.image" contain />
                   </div>
+
                   <v-fade-transition>
                     <v-overlay
                       v-if="asset.selected"
@@ -31,7 +32,7 @@
                             </p>
                           </v-col>
                           <v-spacer />
-                          <v-col cols="2" class="pa-0">
+                          <!-- <v-col cols="2" class="pa-0">
                             <v-btn
                               dark
                               fab
@@ -41,12 +42,12 @@
                             >
                               <v-icon dark> mdi-minus </v-icon>
                             </v-btn>
-                          </v-col>
-                          <v-col cols="2" class="pa-0">
+                          </v-col> -->
+                          <!-- <v-col cols="2" class="pa-0">
                             <v-text-field :value="getAmount(index)" />
-                          </v-col>
+                          </v-col> -->
 
-                          <v-col cols="2" class="pa-0">
+                          <!-- <v-col cols="2" class="pa-0">
                             <v-btn
                               fab
                               dark
@@ -55,13 +56,22 @@
                             >
                               <v-icon dark> mdi-plus </v-icon>
                             </v-btn>
-                          </v-col>
+                          </v-col> -->
                         </v-row>
                       </v-container>
                     </v-overlay>
                   </v-fade-transition>
                 </v-col>
               </v-row>
+              <div v-if="asset.selected">
+                <label>Amount:</label>
+                <input
+                  class="amount-input"
+                  type="text"
+                  :value="getAmount(index)"
+                  @input="checkAmount($event, index)"
+                />
+              </div>
             </v-container>
           </template>
         </v-hover>
@@ -125,6 +135,16 @@ export default {
       })
 
       this.previousSelectedProjectsAssets = value
+    },
+    checkAmount(amount, index) {
+      const chosenAmount = parseInt(amount.data) || 0
+      const internalValue = this.value.slice()
+      const amountInt = parseInt(internalValue[index].amount) || 0
+
+      internalValue[index].chosenAmount =
+        chosenAmount > amountInt || chosenAmount < 0 ? 0 : chosenAmount
+
+      this.setValue(internalValue)
     },
     getAmount(index) {
       return this.value[index].chosenAmount
@@ -210,6 +230,35 @@ export default {
     font-size: 0.9em !important;
     color: white;
   }
+  label {
+    font-size: 12px;
+  }
+  .amount-input {
+    height: 10px;
+    padding-top: 0;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    align-items: flex-start;
+    display: flex;
+    flex: 1 1 auto;
+    font-size: 16px;
+    letter-spacing: normal;
+    max-width: 100%;
+
+    color: white;
+    outline: gray;
+    .v-input__control {
+      height: 10px;
+      .v-input__slot {
+        height: 10px;
+        &::before,
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+
   .v-overlay {
     // .v-overlay__scrim {
     //   opacity: 0.5 !important;
@@ -231,22 +280,6 @@ export default {
       //     display: flex;
       //     max-width: 15px;
       //   }
-      .v-text-field {
-        height: 10px;
-        padding-top: 0;
-        margin-top: 4px;
-        margin-bottom: 2px;
-        .v-input__control {
-          height: 10px;
-          .v-input__slot {
-            height: 10px;
-            &::before,
-            &::after {
-              content: none;
-            }
-          }
-        }
-      }
     }
   }
   .col > div .img-wrapper {
