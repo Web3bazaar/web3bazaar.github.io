@@ -20,16 +20,16 @@ export const mutations = {
     localStorage.setItem('isSoundEnabled', state.isSoundEnabled)
   },
   initializeSound(state) {
-    const isSoundEnabled = JSON.parse(localStorage.getItem('isSoundEnabled'))
+    const isSoundEnabled = localStorage.getItem('isSoundEnabled')
     if (!isSoundEnabled) {
+      state.isSoundEnabled = true
+      localStorage.setItem('isSoundEnabled', 'true')
+    } else if (isSoundEnabled === 'false') {
       state.isSoundEnabled = false
-      localStorage.setItem('isSoundEnabled', false)
-    } else if (isSoundEnabled) {
+      localStorage.setItem('isSoundEnabled', 'false')
+    } else if (isSoundEnabled === 'true') {
       state.isSoundEnabled = true
-      localStorage.setItem('isSoundEnabled', true)
-    } else {
-      state.isSoundEnabled = true
-      localStorage.setItem('isSoundEnabled', true)
+      localStorage.setItem('isSoundEnabled', 'true')
     }
   },
 }
