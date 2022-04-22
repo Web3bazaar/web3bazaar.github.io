@@ -19,13 +19,94 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.  Swap any NFT or ERC-20 token with someone you already agreed terms without needing to trust them.',
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks. Swap any NFT or ERC-20 token with someone you already agreed terms without needing to trust them.',
       },
       {
         hid: 'og:image',
         property: 'og:image',
         content:
           'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+      },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.',
+      },
+      {
+        hid: 'og:site_name',
+        property: 'og:site_name',
+        content: 'Web3Bazaar',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.',
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content:
+          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+      },
+      {
+        hid: 'og:image:secure_url',
+        property: 'og:image:secure_url',
+        content:
+          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+      },
+      {
+        hid: 'og:image:alt',
+        property: 'og:image:alt',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      {
+        hid: 'twitter:title',
+        name: 'twitter:title',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.',
+      },
+      {
+        hid: 'twitter:description',
+        name: 'twitter:description',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.',
+      },
+      {
+        hid: 'twitter:image',
+        name: 'twitter:image',
+        content:
+          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+      },
+      {
+        hid: 'twitter:image:src',
+        name: 'twitter:image:src',
+        content:
+          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+      },
+      {
+        hid: 'twitter:image:alt',
+        name: 'twitter:image:alt',
+        content:
+          'The Web3 Bazaar is a Peer-to-Peer exchange for every asset on EVM compatible networks.',
+      },
+      {
+        name: 'twitter:site',
+        content: '@Web3Bazaar',
+      },
+      {
+        name: 'twitter:creator',
+        content: '@Web3Bazaar',
       },
     ],
     link: [
