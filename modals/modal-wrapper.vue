@@ -1,12 +1,13 @@
 <template>
-  <div
-    v-if="modalType"
-    class="modal-wrap"
-    :class="{ loading: modalType === 'loading' }"
-  >
+  <div v-if="modalType" class="modal-wrap">
     <NetworkModal v-if="modalType === 'network'" @close="closeModal" />
     <LoadingModal v-if="modalType === 'loading'" @close="closeModal" />
     <BetaModal v-if="modalType === 'beta'" @close="closeModal" />
+    <ErrorModal
+      v-if="modalType === 'error'"
+      :modal-data="modalData"
+      @close="closeModal"
+    />
     <SuccessModal
       v-if="modalType === 'success'"
       :modal-data="modalData"
@@ -31,6 +32,7 @@ const NetworkModal = () => import('@/modals/network-modal.vue')
 const SuccessModal = () => import('@/modals/success-modal.vue')
 const LoadingModal = () => import('@/modals/loading-modal.vue')
 const BetaModal = () => import('@/modals/beta-modal.vue')
+const ErrorModal = () => import('@/modals/error-modal.vue')
 
 export default {
   components: {
@@ -38,6 +40,7 @@ export default {
     LoadingModal,
     SuccessModal,
     BetaModal,
+    ErrorModal,
 
     // TokenStakeModal,
     // DepositModal,
@@ -46,7 +49,21 @@ export default {
     ...mapState('modals', ['modalType', 'modalData']),
   },
   methods: {
+    // ...mapActions('modals', ['updateDashboard']),
+
     closeModal() {
+      // if (this.modalType === 'success') {
+      //   this.$store.commit('modals/setPopupState', {
+      //     type: 'loading',
+      //     isShow: true,
+      //     data: {
+      //       state: 'mining',
+      //     },
+      //   })
+
+      //   await this.updateDashboard()
+      // }
+
       this.$store.commit('modals/closeModal')
     },
   },

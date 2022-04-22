@@ -19,7 +19,7 @@ const getNFTList = async function (params) {
 
     return response.data.data
   } catch (ex) {
-    throw new Error('Not able to retrive data form event log : ', ex)
+    throw new Error('Not able to retrieve data form event log : ', ex)
   }
 }
 

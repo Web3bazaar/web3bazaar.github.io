@@ -1,68 +1,59 @@
 <template>
-  <div class="loading-popup">
-    <p class="title text-center">{{ title }}</p>
-
-    <div class="networks-wrap">
-      <v-img v-if="reading" class="mb-16" :src="readingGif" max-height="300" />
-      <v-img v-else :src="miningGif" max-height="300" />
+  <div class="error-popup">
+    <div class="close-btn" @click="closePopup">
+      <CloseButton />
     </div>
+    <h3 class="title text-center">Ups!</h3>
 
-    <p class="title text-center">
-      {{ message }}
-    </p>
+    <div class="error-wrap">
+      <v-img :src="errorImg" max-height="300" />
+    </div>
+    <p class="title text-center">{{ message }}</p>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import CloseButton from '~/assets/img/svg/CloseButton.vue'
 
 export default {
-  components: {},
-  props: {},
+  components: { CloseButton },
+  props: {
+    modalData: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      miningGif: require('../assets/gifs/MinerAnimation.gif'),
-      readingGif: require('../assets/gifs/reader.gif'),
-
-      modalTexts: {
-        loading: {
-          title: 'Loading...',
-          message: 'Please wait while you fetch your trades on the blockchain',
-        },
-        mining: {
-          title: 'Hold tight...',
-          message:
-            'Miners are working hard to write your transaction on the blockchain.',
-        },
-      },
+      errorImg: require('../assets/img/core-img/Web3Bazaar_1080x1080_FINAL.png'),
+      defaultErrorMsg:
+        'Looks like this transaction didn’t go through. Please try again.',
     }
   },
   computed: {
-    ...mapState('modals', ['modalType', 'modalData']),
-
-    reading() {
-      return this.modalData?.reading
-    },
-    state() {
-      return this.modalData?.state
-    },
-    title() {
-      return this.modalTexts?.[this.state]?.title || 'Loading...'
-    },
     message() {
-      return this.modalTexts?.[this.state]?.message
+      return this.modalData?.message || this.defaultErrorMsg
     },
   },
-  methods: {},
+  methods: {
+    closePopup() {
+      this.$emit('close')
+    },
+  },
 }
 </script>
+<style lang="scss">
+.modal-wrap {
+  background: rgba($color: #03091f, $alpha: 0.6);
+}
+</style>
 <style lang="scss" scoped>
-.loading-popup {
+.error-popup {
   padding: 20px;
   background: #03091f;
-  background: none !important;
+  background: none;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   box-shadow: none;
-  // box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   width: 95%;
   max-width: 590px;
@@ -81,11 +72,15 @@ export default {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     object-fit: contain;
     z-index: 3;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
   }
   .title {
     font-size: 24px;
@@ -94,9 +89,8 @@ export default {
     margin-bottom: 0px;
     position: relative;
     z-index: 2;
-    color: #ffffff;
   }
-  .networks-wrap {
+  .error-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
