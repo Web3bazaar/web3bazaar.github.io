@@ -21,11 +21,16 @@ import { mapState } from 'vuex'
 
 export default {
   components: {},
+  props: {
+    btnText: {
+      type: String,
+      default: 'Connect wallet',
+    },
+  },
   data() {
     return {
       itsHover: false,
       connectLoader: false,
-      btnText: 'Connect wallet',
     }
   },
   computed: {

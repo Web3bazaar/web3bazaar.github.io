@@ -23,6 +23,7 @@
     <ui-action-btn
       class="d-flex mx-auto mt-6 mb-5"
       :btn-text="'Enter Bazaar'"
+      :loading="connectLoader"
       @click="enterBazaar"
     >
     </ui-action-btn>
@@ -37,19 +38,31 @@ export default {
   components: { CloseButton },
   props: {},
   data() {
-    return {}
+    return { connectLoader: false }
   },
   computed: {
     ...mapState('connector', ['isWalletConnected']),
   },
   methods: {
     async enterBazaar() {
-      if (!this.isWalletConnected) return
+      if (this.isWalletConnected) {
+        this.$router.push({ name: 'main-square' })
+      }
+      this.connectLoader = true
+      try {
+        await this.$store.dispatch('connector/connectAccount', window.ethereum)
+        if (this.isWalletConnected) {
+          // switch to mumbai
+          await this.$store.dispatch('networks/switchNetwork', {
+            chainId: '0x13881',
+          })
 
-      await this.$store.dispatch('networks/switchNetwork', {
-        chainId: '0x13881',
-      })
-      this.$router.push({ name: 'main-square' })
+          this.$router.push({ name: 'main-square' })
+        }
+      } catch (e) {
+        console.log('e:', e)
+      }
+      this.connectLoader = false
     },
     closePopup() {
       this.$emit('close')
