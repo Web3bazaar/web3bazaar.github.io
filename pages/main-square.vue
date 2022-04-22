@@ -10,20 +10,14 @@
           <h1 class="gradient-text">Main Square</h1>
         </v-col>
         <v-col cols="12" lg="3" class="d-flex justify-center">
-          <nuxt-link
-            v-if="tradesSubmittedByYou.length > 0"
-            :to="'/create-new-trade'"
-          >
+          <nuxt-link v-if="hasTradesPendingCreator" :to="'/create-new-trade'">
             <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
           </nuxt-link>
         </v-col>
       </v-row>
 
       <v-row
-        v-if="
-          tradesSubmittedByYou.length === 0 &&
-          tradesSubmittedByOthers.length === 0
-        "
+        v-if="!hasTradesPendingExecutor && !hasTradesPendingCreator"
         justify="center"
       >
         <v-col cols="12" lg="6" class="d-flex flex-column align-center">
@@ -38,26 +32,26 @@
         </v-col>
       </v-row>
       <!-- Trades submitted by you -->
-      <v-row v-if="tradesSubmittedByYou.length > 0" justify="center">
+      <v-row v-if="hasTradesPendingCreator" justify="center">
         <v-container class="trades submitted">
           <div class="trades--title">Trades submitted by you</div>
-          <trade-list-wrapper
-            :trades="tradesSubmittedByYou"
-            :creator="true"
-            @updateDashboard="getTradesInfo"
-          />
+          <dashboard-trades-wrapper :creator="true" :trades="tradesCreator">
+          </dashboard-trades-wrapper>
         </v-container>
       </v-row>
       <!-- Trades offered by others -->
-      <v-row v-if="tradesSubmittedByOthers.length > 0" class="mt-8">
+      <v-row v-if="hasTradesPendingExecutor" class="mt-8">
         <v-container class="trades offered">
           <div class="trades--title">
             Trades submitted by your counterparties
           </div>
+          <dashboard-trades-wrapper :trades="tradesExecutor">
+          </dashboard-trades-wrapper>
+          <!-- 
           <trade-list-wrapper
-            :trades="tradesSubmittedByOthers"
+            :trades="tradesExecutor"
             @updateDashboard="getTradesInfo"
-          />
+          /> -->
         </v-container>
       </v-row>
     </v-container>
@@ -65,9 +59,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
-import { ethers } from 'ethers'
+import { mapState, mapGetters } from 'vuex'
 
 const mainSquare = {
   log: require('debug')('w3b:view:createNewTrade'),
@@ -78,12 +70,13 @@ export default {
     return {
       tradesSubmittedByYou: [],
       tradesSubmittedByOthers: [],
-      contractTypes: ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE'],
     }
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
     ...mapState('trader', ['projects']),
+    ...mapState(['tradesCreator', 'tradesExecutor']),
+    ...mapGetters(['hasTradesPendingCreator', 'hasTradesPendingExecutor']),
   },
   watch: {
     async account(val) {
@@ -99,6 +92,11 @@ export default {
   },
   methods: {
     async getTradesInfo() {
+      const res = await this.$store.dispatch('getTradesInfo')
+      if (res) {
+        return
+      }
+
       this.$store.commit('modals/setPopupState', {
         type: 'loading',
         isShow: true,
@@ -108,101 +106,101 @@ export default {
         },
       })
 
-      const tradesSubmittedByYou = []
-      const tradesSubmittedByOthers = []
+      // const tradesSubmittedByYou = []
+      // const tradesSubmittedByOthers = []
       this.loading = true
 
       try {
         const tradesIdsList = await this.getTradesIds()
         mainSquare.log('tradesIdsList', tradesIdsList)
 
-        const promises = []
+        // const promises = []
 
-        for (let i = 0; i < tradesIdsList.length; i++) {
-          const e = tradesIdsList[i]
-          promises.push(this.getSingleTradeInfo(e._hex))
-        }
+        // for (let i = 0; i < tradesIdsList.length; i++) {
+        //   const e = tradesIdsList[i]
+        //   promises.push(this.getSingleTradeInfo(e._hex))
+        // }
 
-        const resolvedPromises = await Promise.all(promises)
+        // const resolvedPromises = await Promise.all(promises)
 
-        //  resolvedPromises.map
+        // //  resolvedPromises.map
 
-        for (let i = 0; i < resolvedPromises.length; i++) {
-          const e = resolvedPromises[i]
+        // for (let i = 0; i < resolvedPromises.length; i++) {
+        //   const e = resolvedPromises[i]
 
-          if (e.tradeStatus === 4) continue
+        //   if (e.tradeStatus === 4) continue
 
-          if (e?.creator?.address === ethers.utils.getAddress(this.account)) {
-            tradesSubmittedByYou.push({
-              tradeStatus: e.tradeStatus,
-              tradeId: e.tradeId,
-              itemFrom: {
-                address: e.creator.address,
-                // base_img: await this.getBaseImgUrl(
-                //   e.creator.contractAddress,
-                //   e.creator.idAsset,
-                //   e.creator.traderType
-                // ),
-                // project_name: this.getProjectName(e.creator.contractAddress),
-                itemAmount: e.creator.amount,
-                // item_name: this.getItemName(
-                //   e.creator.contractAddress,
-                //   e.creator.idAsset
-                // ),
-                // externalUrl: this.getExternalUrl(
-                //   e.creator.contractAddress,
-                //   e.creator.idAsset
-                // ),
-                ...(await this.getProjectInfo(
-                  e.creator.contractAddress,
-                  e.creator.idAsset,
-                  e.creator.traderType
-                )),
-                ...e.creator,
-              },
-              itemTo: {
-                address: e.executer.address,
-                itemAmount: e.executer.amount,
-                ...(await this.getProjectInfo(
-                  e.executer.contractAddress,
-                  e.executer.idAsset,
-                  e.executer.traderType
-                )),
-                ...e.executer,
-              },
-            })
-          }
+        //   if (e?.creator?.address === ethers.utils.getAddress(this.account)) {
+        //     tradesSubmittedByYou.push({
+        //       tradeStatus: e.tradeStatus,
+        //       tradeId: e.tradeId,
+        //       itemFrom: {
+        //         address: e.creator.address,
+        //         // base_img: await this.getBaseImgUrl(
+        //         //   e.creator.contractAddress,
+        //         //   e.creator.idAsset,
+        //         //   e.creator.traderType
+        //         // ),
+        //         // project_name: this.getProjectName(e.creator.contractAddress),
+        //         itemAmount: e.creator.amount,
+        //         // item_name: this.getItemName(
+        //         //   e.creator.contractAddress,
+        //         //   e.creator.idAsset
+        //         // ),
+        //         // externalUrl: this.getExternalUrl(
+        //         //   e.creator.contractAddress,
+        //         //   e.creator.idAsset
+        //         // ),
+        //         ...(await this.getProjectInfo(
+        //           e.creator.contractAddress,
+        //           e.creator.idAsset,
+        //           e.creator.traderType
+        //         )),
+        //         ...e.creator,
+        //       },
+        //       itemTo: {
+        //         address: e.executer.address,
+        //         itemAmount: e.executer.amount,
+        //         ...(await this.getProjectInfo(
+        //           e.executer.contractAddress,
+        //           e.executer.idAsset,
+        //           e.executer.traderType
+        //         )),
+        //         ...e.executer,
+        //       },
+        //     })
+        //   }
 
-          if (e?.executer?.address === ethers.utils.getAddress(this.account)) {
-            tradesSubmittedByOthers.push({
-              tradeStatus: e.tradeStatus,
-              tradeId: e.tradeId,
-              itemFrom: {
-                address: e.creator.address,
-                itemAmount: e.creator.amount,
-                ...(await this.getProjectInfo(
-                  e.creator.contractAddress,
-                  e.creator.idAsset,
-                  e.creator.traderType
-                )),
-                ...e.creator,
-              },
-              itemTo: {
-                address: e.executer.address,
-                itemAmount: e.executer.amount,
-                ...(await this.getProjectInfo(
-                  e.executer.contractAddress,
-                  e.executer.idAsset,
-                  e.executer.traderType
-                )),
-                ...e.executer,
-              },
-            })
-          }
-        }
+        //   if (e?.executer?.address === ethers.utils.getAddress(this.account)) {
+        //     tradesSubmittedByOthers.push({
+        //       tradeStatus: e.tradeStatus,
+        //       tradeId: e.tradeId,
+        //       itemFrom: {
+        //         address: e.creator.address,
+        //         itemAmount: e.creator.amount,
+        //         ...(await this.getProjectInfo(
+        //           e.creator.contractAddress,
+        //           e.creator.idAsset,
+        //           e.creator.traderType
+        //         )),
+        //         ...e.creator,
+        //       },
+        //       itemTo: {
+        //         address: e.executer.address,
+        //         itemAmount: e.executer.amount,
+        //         ...(await this.getProjectInfo(
+        //           e.executer.contractAddress,
+        //           e.executer.idAsset,
+        //           e.executer.traderType
+        //         )),
+        //         ...e.executer,
+        //       },
+        //     })
+        //   }
+        // }
 
-        this.tradesSubmittedByYou = tradesSubmittedByYou
-        this.tradesSubmittedByOthers = tradesSubmittedByOthers
+        // this.tradesSubmittedByYou = tradesSubmittedByYou
+        // this.tradesSubmittedByOthers = tradesSubmittedByOthers
 
         this.$store.commit('modals/closeModal')
       } catch (error) {

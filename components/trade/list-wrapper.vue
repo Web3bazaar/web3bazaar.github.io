@@ -44,12 +44,7 @@
       </v-row>
     </v-container>
     <v-container v-else class="pa-0">
-      <v-row
-        v-for="trade in trades"
-        :key="trade.id"
-        class="list-trade-row py-4"
-        justify="center"
-      >
+      <v-row class="list-trade-row py-4" justify="center">
         <v-col cols="12" sm="4" class="d-flex flex-column item-col">
           <div id="account_from">
             <p class="">
@@ -148,7 +143,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 import { ethers } from 'ethers'
 
@@ -159,9 +154,9 @@ const EXECUTE = 'Execute Trade'
 
 export default {
   props: {
-    trades: {
-      type: Array,
-      default: () => [],
+    trade: {
+      type: Object,
+      default: () => {},
     },
     creator: {
       type: Boolean,
@@ -266,7 +261,7 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     // just for testing
     this.$store.commit('trader/itemFrom', {
       ...this.itemFrom,
@@ -279,15 +274,17 @@ export default {
         reading: true,
       },
     })
-    this.$store
-      .dispatch('trader/listOwnedIds', {
-        selectedProjects: this.projects,
-        wa: this.account,
-        from: true,
-      })
-      .then(() => this.$store.commit('modals/closeModal'))
+    await this.$store.dispatch('trader/listOwnedIds', {
+      selectedProjects: this.projects,
+      wa: this.account,
+      from: true,
+    })
+
+    this.$store.commit('modals/closeModal')
   },
   methods: {
+    ...mapActions(['updateDashboard']),
+    ...mapActions('bazaar-connector', ['getTradeInfo']),
     showTradeButton(trade) {
       switch (true) {
         // case trade?.itemFrom?.traderStatus === 3:
@@ -388,12 +385,12 @@ export default {
             walletAddress: this.account,
             tradeId: trade.tradeId,
           })
+          await tx.wait()
           this.$store.commit('modals/setPopupState', {
             type: 'success',
             isShow: true,
             data: {
-              message: 'You successfully claimed back your assets.',
-              animated: true,
+              message: 'You have successfully claimed your assets back.',
             },
           })
         } else {
@@ -421,15 +418,15 @@ export default {
               tradeId: trade.tradeId,
             })
             await this.checkForTrade(trade.tradeId, 2)
-            this.$emit('updateDashboard')
             return
           }
 
-          // TODO: check if transaction is approved
           tx = await this.$store.dispatch('bazaar-connector/claim', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
           })
+
+          await tx.wait()
 
           await this.checkForTrade(trade.tradeId, 3)
 
@@ -437,23 +434,13 @@ export default {
             type: 'success',
             isShow: true,
             data: {
-              message: 'You successfully claimed your new assets.',
-              animated: true,
+              message: 'Your new assets have been claimed.',
             },
           })
         }
 
-        this.$store.commit('modals/setPopupState', {
-          type: 'loading',
-          isShow: true,
-          data: {
-            state: 'mining',
-          },
-        })
-
-        await tx.wait()
-
-        this.$emit('updateDashboard')
+        // update the dashboard silently
+        this.updateDashboard()
       } catch (error) {
         console.error(error)
         this.$store.commit('modals/closeModal')

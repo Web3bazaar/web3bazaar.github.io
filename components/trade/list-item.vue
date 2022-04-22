@@ -136,7 +136,6 @@ export default {
     return {
       maxProjectsToShow: 3,
       selectedProjects: [],
-
       selectedProjectsAssets: [],
 
       linkIcon: require('@/assets/img/icons/link.png'),

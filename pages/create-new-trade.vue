@@ -288,13 +288,19 @@ export default {
             type: 'success',
             isShow: true,
             data: {
-              message: 'Your trade is now open in the Bazaar',
+              message:
+                'Your trade is now open in the Bazaar. Check its status in the Main Square.',
             },
           })
         }
       } catch (error) {
         createNewTrade.log('error', error)
         this.$store.commit('modals/closeModal')
+        this.$store.commit('modals/setPopupState', {
+          type: 'error',
+          isShow: true,
+          data: {},
+        })
       }
       this.loadingBtn = false
     },
