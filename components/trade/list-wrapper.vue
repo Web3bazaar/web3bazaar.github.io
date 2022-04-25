@@ -1,5 +1,5 @@
 <template>
-  <v-container class="trade-wrapper">
+  <v-container class="list-wrapper">
     <v-container v-if="newTrade" class="pa-0">
       <v-row :class="{ 'new-trade': newTrade }" justify="center">
         <v-col cols="12" sm="4" class="item-col">
@@ -508,17 +508,23 @@ export default {
 </script>
 
 <style lang="scss">
-.trade-wrapper {
+.trades-wrapper-row {
   .item-col:first-child .item-card section.list-item {
     left: 3px;
   }
   .item-col:nth-child(3) .item-card section.list-item {
     right: 3px;
   }
-  .list-trade-row:not(:first-child) {
+  .list-trade-row {
     border-top: solid 1px #3b3b3bc0;
   }
 }
+.trades-wrapper-row:nth-child(2) {
+  .list-trade-row {
+    border-top: none;
+  }
+}
+
 .new-trade {
   .v-card.item-card {
     height: 500px;

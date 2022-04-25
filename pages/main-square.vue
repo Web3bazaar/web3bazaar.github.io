@@ -10,50 +10,15 @@
           <h1 class="gradient-text">Main Square</h1>
         </v-col>
         <v-col cols="12" lg="3" class="d-flex justify-center">
-          <nuxt-link v-if="hasTradesPendingCreator" :to="'/create-new-trade'">
+          <nuxt-link
+            v-if="hasTradesPendingExecutor || hasTradesPendingCreator"
+            :to="'/create-new-trade'"
+          >
             <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
           </nuxt-link>
         </v-col>
       </v-row>
-
-      <v-row
-        v-if="!hasTradesPendingExecutor && !hasTradesPendingCreator"
-        justify="center"
-      >
-        <v-col cols="12" lg="6" class="d-flex flex-column align-center">
-          <h4 class="d-flex mb-4 text-center">
-            It seems like there's no active trades submitted by or for you at
-            the moment
-          </h4>
-          <v-spacer />
-          <nuxt-link :to="'/create-new-trade'" class="">
-            <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
-          </nuxt-link>
-        </v-col>
-      </v-row>
-      <!-- Trades submitted by you -->
-      <v-row v-if="hasTradesPendingCreator" justify="center">
-        <v-container class="trades submitted">
-          <div class="trades--title">Trades submitted by you</div>
-          <dashboard-trades-wrapper :creator="true" :trades="tradesCreator">
-          </dashboard-trades-wrapper>
-        </v-container>
-      </v-row>
-      <!-- Trades offered by others -->
-      <v-row v-if="hasTradesPendingExecutor" class="mt-8">
-        <v-container class="trades offered">
-          <div class="trades--title">
-            Trades submitted by your counterparties
-          </div>
-          <dashboard-trades-wrapper :trades="tradesExecutor">
-          </dashboard-trades-wrapper>
-          <!-- 
-          <trade-list-wrapper
-            :trades="tradesExecutor"
-            @updateDashboard="getTradesInfo"
-          /> -->
-        </v-container>
-      </v-row>
+      <dashboard-trades-wrapper> </dashboard-trades-wrapper>
     </v-container>
   </section>
 </template>
