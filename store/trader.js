@@ -23,6 +23,18 @@ const getNFTList = async function (params) {
   }
 }
 
+const getAssetMetadata = async function (e) {
+  if (e.contract_type === 'ERC721') {
+    return (
+      await axios.get(
+        'https://webazaar-meta-api.herokuapp.com/721/detail/' + e.token_id
+      )
+    ).data
+  } else {
+    return {}
+  }
+}
+
 export const state = () => ({
   tradeSelectedItemFrom: [],
   tradeSelectedItemTo: [],
@@ -132,35 +144,35 @@ export const actions = {
 
       traderLogger.log('nftsList:', nftsList)
 
-      selectedProjects.forEach((project) => {
-        const groupByProject = nftsList
+      selectedProjects.forEach(async (project) => {
+        const groupByProject = await nftsList
           .filter(
             (e) =>
               e.token_address.toLowerCase() ===
               project.contractAddress.toLowerCase()
           )
-          .map((e) => ({
+          .map(async (e) => ({
             ...e,
-            metadata: JSON.parse(e.metadata) || {},
+            metadata: JSON.parse(e.metadata) || (await getAssetMetadata(e)),
             amount:
               e.contract_type === 'ERC1155'
                 ? ethers.utils.formatUnits(e.amount)
                 : e.amount,
           }))
 
-        traderLogger.log('groupByProject : ', groupByProject)
-
-        if (groupByProject) {
+        const groupByProjectResolved = await Promise.all(groupByProject)
+        traderLogger.log('groupByProject : ', groupByProjectResolved)
+        if (groupByProjectResolved) {
           if (to) {
             commit('updateProject', {
               projectName: project.projectName,
-              projectToItems: groupByProject,
+              projectToItems: groupByProjectResolved,
             })
           }
           if (from) {
             commit('updateProject', {
               projectName: project.projectName,
-              projectFromItems: groupByProject,
+              projectFromItems: groupByProjectResolved,
             })
           }
         }
