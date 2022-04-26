@@ -12,6 +12,7 @@
         <v-col cols="12" lg="3" class="d-flex justify-center">
           <nuxt-link
             v-if="hasTradesPendingExecutor || hasTradesPendingCreator"
+            class="mb-6"
             :to="'/create-new-trade'"
           >
             <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>

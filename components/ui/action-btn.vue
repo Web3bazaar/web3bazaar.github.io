@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    class="more-btn mb-15 pixel2 w3b-bg-gradient"
+    class="more-btn pixel2 w3b-bg-gradient"
     type="submit"
     :loading="loading"
     :ripple="false"

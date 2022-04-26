@@ -18,6 +18,7 @@
         <v-col cols="12" class="text-center">
           <ui-action-btn
             v-if="isSelectedContractApproved"
+            class="mb-8"
             :loading="loadingBtn"
             :btn-text="ADD_TRADE"
             @click="newTrade"
@@ -26,6 +27,7 @@
 
           <ui-action-btn
             v-else
+            class="mb-8"
             :loading="loadingBtn"
             :btn-text="APPROVE"
             @click="approveSelectedContract"

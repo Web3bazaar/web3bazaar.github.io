@@ -25,7 +25,7 @@
           class="trades-wrapper-row py-4"
           justify="center"
         >
-          <trade-list-wrapper :trade="trade" :creator="creator" />
+          <trade-list-wrapper :trade="trade" :creator="true" />
         </v-row>
       </v-container>
     </v-row>
@@ -39,7 +39,7 @@
           class="trades-wrapper-row py-4"
           justify="center"
         >
-          <trade-list-wrapper :trade="trade" :creator="creator" />
+          <trade-list-wrapper :trade="trade" />
         </v-row>
         <!-- 
           <trade-list-wrapper

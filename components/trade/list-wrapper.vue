@@ -3,7 +3,7 @@
     <v-container v-if="newTrade" class="pa-0">
       <v-row :class="{ 'new-trade': newTrade }" justify="center">
         <v-col cols="12" sm="4" class="item-col">
-          <p class="">From</p>
+          <p class="">You</p>
           <v-card class="item-card">
             <trade-list-item
               v-model="itemFrom"
@@ -28,7 +28,7 @@
         </v-col>
         <!-- To -->
         <v-col cols="12" sm="4" class="item-col">
-          <p class="">To</p>
+          <p class="">Counter-party</p>
           <v-card class="item-card">
             <trade-list-item
               v-model="itemTo"
@@ -47,18 +47,17 @@
       <v-row class="list-trade-row py-4" justify="center">
         <v-col cols="12" sm="4" class="d-flex flex-column item-col">
           <div id="account_from">
-            <p class="">
-              <span style="color: #fff"> From </span>
-
-              {{ trade.itemFrom.address | truncate(9) }}
+            <p>
               <span
                 v-if="
                   account.toLowerCase() === trade.itemFrom.address.toLowerCase()
                 "
-                style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px"
+                style="color: #fff"
               >
                 You
               </span>
+              <span v-else style="color: #fff"> Counter-party </span>
+              {{ trade.itemFrom.address | truncate(9) }}
             </p>
           </div>
 
@@ -94,17 +93,17 @@
         <!-- To -->
         <v-col cols="12" sm="4" class="d-flex flex-column item-col">
           <div id="account_from">
-            <p class="">
-              <span style="color: #fff"> To </span>
-              {{ trade.itemTo.address | truncate(9) }}
+            <p>
               <span
                 v-if="
                   account.toLowerCase() === trade.itemTo.address.toLowerCase()
                 "
-                style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px"
+                style="color: #fff"
               >
                 You
               </span>
+              <span v-else style="color: #fff"> Counter-party </span>
+              {{ trade.itemTo.address | truncate(9) }}
             </p>
           </div>
           <v-card class="item-card">
@@ -131,6 +130,7 @@
           class="d-flex justify-center"
         >
           <ui-action-btn
+            class="mb-7"
             :loading="loadingBtn"
             :btn-text="tradeBtn(trade)"
             @click="handleTrade(trade)"
@@ -343,7 +343,7 @@ export default {
         // return DEPOSIT
         case this.creator && trade.tradeStatus === 1:
           return CLAIM_BACK
-        case trade.tradeStatus === 1:
+        case trade.tradeStatus === 1 && !this.creator:
           return EXECUTE
         default:
           return false
