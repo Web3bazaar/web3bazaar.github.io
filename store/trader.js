@@ -30,8 +30,14 @@ const getAssetMetadata = async function (e) {
         'https://webazaar-meta-api.herokuapp.com/721/detail/' + e.token_id
       )
     ).data
+  } else if (e.contract_type === 'ERC1155') {
+    return (
+      await axios.get(
+        'https://webazaar-meta-api.herokuapp.com/1155/detail/' + e.token_id
+      )
+    ).data
   } else {
-    return {}
+    return JSON.parse(e.metadata || '{}')
   }
 }
 
@@ -153,7 +159,7 @@ export const actions = {
           )
           .map(async (e) => ({
             ...e,
-            metadata: JSON.parse(e.metadata) || (await getAssetMetadata(e)),
+            metadata: await getAssetMetadata(e),
             amount:
               e.contract_type === 'ERC1155'
                 ? ethers.utils.formatUnits(e.amount)
