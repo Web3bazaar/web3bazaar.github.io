@@ -291,7 +291,7 @@ export default {
     this.$store.commit('modals/closeModal')
   },
   methods: {
-    ...mapActions(['updateDashboard']),
+    ...mapActions(['getTradesInfo']),
     ...mapActions('bazaar-connector', ['getTradeInfo']),
     showTradeButton(trade) {
       switch (true) {
@@ -332,10 +332,10 @@ export default {
       }
     },
     tradeBtn(trade) {
-      console.log(trade.tradeId)
-      console.log(this.TradeStatus[trade?.tradeStatus])
-      console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
-      console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
+      // console.log(trade.tradeId)
+      // console.log(this.TradeStatus[trade?.tradeStatus])
+      // console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
+      // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
 
       switch (true) {
         // case this.creator && trade.tradeStatus === 3:
@@ -387,11 +387,18 @@ export default {
           })
           // await this.checkForTrade(trade.tradeId, 4)
 
-          // this.$emit('updateDashboard')
+          // this.$emit('getTradesInfo')
         } else if (this.creator && trade.tradeStatus === 1) {
           tx = await this.$store.dispatch('bazaar-connector/claimBack', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
+          })
+          this.$store.commit('modals/setPopupState', {
+            type: 'loading',
+            isShow: true,
+            data: {
+              state: 'mining',
+            },
           })
           await tx.wait()
           this.$store.commit('modals/setPopupState', {
@@ -425,7 +432,17 @@ export default {
             await this.$store.dispatch('bazaar-connector/executeTrade', {
               tradeId: trade.tradeId,
             })
+            this.$store.commit('modals/setPopupState', {
+              type: 'loading',
+              isShow: true,
+              data: {
+                state: 'mining',
+              },
+            })
             await this.checkForTrade(trade.tradeId, 2)
+            this.$store.commit('modals/closeModal')
+            this.getTradesInfo()
+
             return
           }
 
@@ -433,7 +450,13 @@ export default {
             walletAddress: this.account,
             tradeId: trade.tradeId,
           })
-
+          this.$store.commit('modals/setPopupState', {
+            type: 'loading',
+            isShow: true,
+            data: {
+              state: 'mining',
+            },
+          })
           await tx.wait()
 
           await this.checkForTrade(trade.tradeId, 3)
@@ -448,7 +471,7 @@ export default {
         }
 
         // update the dashboard silently
-        this.updateDashboard()
+        this.getTradesInfo()
       } catch (error) {
         console.error(error)
         this.$store.commit('modals/closeModal')
