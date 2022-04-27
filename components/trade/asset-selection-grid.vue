@@ -7,12 +7,11 @@
         cols="4"
         class="pa-3 d-flex align-center flex-column"
         :class="{ selected: asset.selected }"
-        @click="changeSelection(index)"
       >
         <v-hover>
           <template #default="{}">
             <v-container class="pa-0">
-              <v-row no-gutters>
+              <v-row no-gutters @click="changeSelection(index)">
                 <v-col class="pa-0">
                   <div class="img-wrapper">
                     <v-img :src="asset.metadata.image" contain />
@@ -63,15 +62,22 @@
                   </v-fade-transition>
                 </v-col>
               </v-row>
-              <div v-if="asset.selected">
+              <div v-if="asset.selected" class="amount-wrapper">
                 <label>Amount:</label>
-                <input
-                  class="amount-input"
-                  min="0"
-                  :max="getMaxAmount(index)"
-                  :value="getAmount(index)"
-                  @input="updateAmount($event, index)"
-                />
+                <div class="d-flex justify-space-around">
+                  <input
+                    class="amount-input d-flex"
+                    min="0"
+                    :value="getAmount(index)"
+                    @input="updateAmount($event, index)"
+                  />
+                  <span
+                    class="d-flex grey--text"
+                    @click.prevent="updateAmount(getMaxAmount(index), index)"
+                  >
+                    Max
+                  </span>
+                </div>
               </div>
             </v-container>
           </template>
@@ -137,20 +143,33 @@ export default {
 
       this.previousSelectedProjectsAssets = value
     },
-    updateAmount(event, index) {
-      // console.log(event.target.value, index)
+    async updateAmount(event, index) {
+      const value = event?.target ? event?.target?.value || 0 : event
+      console.log(value, index)
 
-      const chosenAmount = parseInt(event.target.value) || 0
       const internalValue = this.value.slice()
-      const amountInt = parseInt(internalValue[index].amount) || 0
-      // console.log(chosenAmount, amountInt)
-      // console.log(chosenAmount >= amountInt || chosenAmount < 0)
+      const maxAmount = parseInt(internalValue[index].amount) || 0
+      const newAmount =
+        (internalValue[index].contract_type?.toLowerCase?.() === 'erc20'
+          ? parseFloat(value)
+          : parseInt(value)) || 0
+      console.log(
+        newAmount,
+        maxAmount,
+        internalValue[index].contract_type?.toLowerCase?.() === 'erc20'
+      )
+      console.log(newAmount <= maxAmount && newAmount >= 0)
 
       internalValue[index].chosenAmount =
-        chosenAmount > amountInt || chosenAmount < 0
-          ? internalValue[index].chosenAmount
-          : chosenAmount
+        newAmount <= maxAmount && newAmount >= 0
+          ? (internalValue[index].contract_type?.toLowerCase?.() === 'erc20'
+              ? value
+              : parseInt(value)) || 0
+          : internalValue[index].chosenAmount
+
+      console.log(internalValue[index].chosenAmount)
       this.setValue(internalValue)
+      await this.$forceUpdate()
     },
     getAmount(index) {
       return this.value[index].chosenAmount
@@ -242,32 +261,38 @@ export default {
   label {
     font-size: 12px;
   }
-  .amount-input {
-    height: 14px;
-    padding: 2px 0;
-    margin-top: 4px;
-    margin-bottom: 2px;
-    align-items: flex-start;
-    display: flex;
-    flex: 1 1 auto;
-    font-size: 16px;
-    letter-spacing: normal;
-    max-width: 40%;
-    margin: 0 auto;
-
-    color: white;
-    outline: gray;
-    &:focus {
-      border-bottom: solid 1px purple;
+  .amount-wrapper {
+    margin-top: 2px;
+    span {
+      line-height: 14px;
     }
+    .amount-input {
+      height: 14px;
+      padding: 2px 0;
+      margin-top: 4px;
+      margin-bottom: 2px;
+      align-items: flex-start;
+      display: flex;
+      flex: 1 1 auto;
+      font-size: 16px;
+      letter-spacing: normal;
+      max-width: 40%;
+      margin: 0 auto;
 
-    .v-input__control {
-      height: 10px;
-      .v-input__slot {
+      color: white;
+      outline: gray;
+      &:focus {
+        border-bottom: solid 1px purple;
+      }
+
+      .v-input__control {
         height: 10px;
-        &::before,
-        &::after {
-          content: none;
+        .v-input__slot {
+          height: 10px;
+          &::before,
+          &::after {
+            content: none;
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import Web3Utils from 'web3-utils'
+// import Web3Utils from 'web3-utils'
 import Web3ABI from 'web3-eth-abi'
 
 const bazaarConnectorLog = {
@@ -9,8 +9,8 @@ const bazaarConnectorLog = {
 
 const BAZAAR_CONTRACT_ADDRESS = process.env.BAZAAR_CONTRACT_ADDRESS
 
-const BN = Web3Utils.BN
-const EtherUnit = Web3Utils.toWei('1')
+// const BN = Web3Utils.BN
+// const EtherUnit = Web3Utils.toWei('1')
 
 const TRADE_TYPE = {
   NON: 0,
@@ -80,18 +80,21 @@ export const actions = {
         userProvider.getSigner()
       )
 
-      const _creatorAmount = new BN(creatorAmount).mul(new BN(EtherUnit))
-      const _executorAmount = new BN(executorAmount).mul(new BN(EtherUnit))
-
       const startTradeTx = await bazaarInstance.startTrade(
         creatorAssetContract, // Web3ABI.encodeParameter('address', creatorAssetContract),
         Web3ABI.encodeParameter('uint256', creatorAssetId),
-        Web3ABI.encodeParameter('uint256', _creatorAmount),
+        Web3ABI.encodeParameter(
+          'uint256',
+          ethers.utils.parseUnits(creatorAmount.toString(), 18)
+        ),
         Web3ABI.encodeParameter('uint8', creatorAssetTypeParsed),
         executorWalletAdd, // Web3ABI.encodeParameter('address', executorWalletAdd),
         executorAssetContract, // Web3ABI.encodeParameter('address', executorAssetContract),
         Web3ABI.encodeParameter('uint256', executorAssetId),
-        Web3ABI.encodeParameter('uint256', _executorAmount),
+        Web3ABI.encodeParameter(
+          'uint256',
+          ethers.utils.parseUnits(executorAmount.toString(), 18)
+        ),
         Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
         {}
       )
