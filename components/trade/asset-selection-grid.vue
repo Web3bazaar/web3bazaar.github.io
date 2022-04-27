@@ -145,7 +145,7 @@ export default {
     },
     async updateAmount(event, index) {
       const value = event?.target ? event?.target?.value || 0 : event
-      console.log(value, index)
+      // console.log(value, index)
 
       const internalValue = this.value.slice()
       const maxAmount = parseInt(internalValue[index].amount) || 0
@@ -153,12 +153,12 @@ export default {
         (internalValue[index].contract_type?.toLowerCase?.() === 'erc20'
           ? parseFloat(value)
           : parseInt(value)) || 0
-      console.log(
-        newAmount,
-        maxAmount,
-        internalValue[index].contract_type?.toLowerCase?.() === 'erc20'
-      )
-      console.log(newAmount <= maxAmount && newAmount >= 0)
+      // console.log(
+      //   newAmount,
+      //   maxAmount,
+      //   internalValue[index].contract_type?.toLowerCase?.() === 'erc20'
+      // )
+      // console.log(newAmount <= maxAmount && newAmount >= 0)
 
       internalValue[index].chosenAmount =
         newAmount <= maxAmount && newAmount >= 0
@@ -167,7 +167,7 @@ export default {
               : parseInt(value)) || 0
           : internalValue[index].chosenAmount
 
-      console.log(internalValue[index].chosenAmount)
+      // console.log(internalValue[index].chosenAmount)
       this.setValue(internalValue)
       await this.$forceUpdate()
     },
