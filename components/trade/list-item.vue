@@ -23,13 +23,15 @@
             <a
               :href="value.externalUrl"
               target="_blank"
-              class="item-quantity text-left small-links"
+              class="item-name text-left small-links grey--text"
             >
-              Item Name {{ value.itemName }}
+              Token ID {{ value.idAsset }}
               <img :width="16" :src="linkIcon" />
             </a>
           </p>
-          <p class="item-quantity text-left">Amount {{ formattedQuantity }}</p>
+          <p class="item-quantity text-left grey--text">
+            Amount {{ formattedQuantity }}
+          </p>
         </v-col>
       </v-row>
     </v-container>

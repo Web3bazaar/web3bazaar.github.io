@@ -50,7 +50,7 @@ export const state = () => ({
   projectToItems: [],
   projects: [
     {
-      projectName: 'bazaar721',
+      projectName: 'Bazaar ERC721 Collection',
       description: 'Test contract for weebazaar ERC721',
       base_img:
         'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
@@ -75,7 +75,7 @@ export const state = () => ({
       },
     },
     {
-      projectName: 'bazaar1155',
+      projectName: 'Bazaar ERC1155 Collection',
       description: 'Test contract for weebazaar ERC1155',
       base_img:
         'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',

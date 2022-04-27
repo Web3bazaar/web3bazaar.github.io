@@ -63,15 +63,6 @@ export default {
         return
       }
 
-      this.$store.commit('modals/setPopupState', {
-        type: 'loading',
-        isShow: true,
-        data: {
-          state: 'loading',
-          reading: true,
-        },
-      })
-
       // const tradesSubmittedByYou = []
       // const tradesSubmittedByOthers = []
       this.loading = true

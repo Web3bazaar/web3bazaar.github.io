@@ -79,10 +79,6 @@
           sm="1"
           class="d-flex flex-column align-center text-center pt-12"
         >
-          <h6>
-            Trade ID:
-            {{ trade.tradeId }}
-          </h6>
           <v-img
             contain
             class="mx-auto"
@@ -118,10 +114,21 @@
           </v-card>
         </v-col>
 
-        <v-col cols="12" sm="9" class="align-center pt-0 mb-5">
-          <h6 class="text-left mb-0">
+        <v-col cols="12" sm="9" class="align-center pt-0">
+          <h6 class="text-left">
             {{ getTradeStatus(trade, { from: true }) }}
           </h6>
+          <a
+            :href="'https://mumbai.polygonscan.com/address/0x670bc34b16e0994fd64D90F127fDe38c0f1Afb83'"
+            target="_blank"
+            class="text-left small-links white--text"
+          >
+            <h6>
+              Trade ID:
+              {{ parseInt(trade.tradeId) }}
+              <img :width="16" :src="linkIcon" />
+            </h6>
+          </a>
         </v-col>
         <v-col
           v-if="tradeBtn(trade)"
@@ -203,6 +210,7 @@ export default {
       },
       UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
       // UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
+      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
   computed: {

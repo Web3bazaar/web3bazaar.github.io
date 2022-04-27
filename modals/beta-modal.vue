@@ -7,18 +7,18 @@
 
     <div class="networks-wrap"></div>
     <p class="">
-      Everything you'll do on this beta version is on Polygon's Mumbai Testnet.
-      You won't pay any real fees nor trade Mainnet assets.
+      Everything you'll do in this beta version is on Polygon's Mumbai Testnet.
+      You won't pay any real fees nor trade Mainnet assets
     </p>
     <p class="">
       <a
         :href="'https://medium.com/@web3bazaar/the-web3-bazaar-opens-for-tests-on-polygon-83f0ed26625c'"
         target="_blank"
       >
-        Here's
+        Here
       </a>
-      a user guide to help you use this test version. Thanks for helping us
-      fine-tune the Bazaar before it goes live on main nets.
+      is a user guide to support you on this journey. Thanks for helping us
+      fine-tune the Bazaar before it goes line on main nets.
     </p>
     <ui-action-btn
       class="d-flex mx-auto mt-6 mb-5"

@@ -5,12 +5,11 @@
       justify="center"
     >
       <v-col cols="12" lg="6" class="d-flex flex-column align-center">
-        <h4 class="d-flex mb-4 text-center">
-          It seems like there's no active trades submitted by or for you at the
-          moment
-        </h4>
+        <h5 class="d-flex mb-4 text-center">
+          It seems like you don't have any open trades in the Bazaar.
+        </h5>
         <v-spacer />
-        <nuxt-link :to="'/create-new-trade'" class="">
+        <nuxt-link :to="'/create-new-trade'" class="mt-12">
           <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
         </nuxt-link>
       </v-col>

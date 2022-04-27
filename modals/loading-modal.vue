@@ -27,7 +27,7 @@ export default {
       modalTexts: {
         loading: {
           title: 'Loading...',
-          message: 'Please wait while you fetch your trades on the blockchain',
+          message: 'Please wait while we fetch your trades on the blockchain.',
         },
         mining: {
           title: 'Hold tight...',
