@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -33,7 +33,15 @@ export default {
     },
   },
   methods: {
+    ...mapActions('sound', ['playSFXAudio']),
+
+    playSound() {
+      this.playSFXAudio({ audioToPlay: 'actionButton' })
+      this.$emit('click')
+    },
     clickHandler() {
+      this.playSound()
+
       // disable network change for now
       this.$emit('click')
     },

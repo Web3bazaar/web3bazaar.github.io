@@ -26,6 +26,7 @@
         href="http://docs.web3bazaar.org/"
         target="_blank"
         class="btn login-btn ml-50 pixel2 w3b-c-purple"
+        @click="playSound"
         >Wiki</a
       >
     </v-col>
@@ -37,6 +38,7 @@
       <router-link
         to="/main-square"
         class="btn login-btn ml-50 pixel2 w3b-c-purple px-4"
+        @click.native="playSound"
         >Main Square</router-link
       >
     </v-col>
@@ -49,7 +51,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
@@ -59,6 +61,11 @@ export default {
     ...mapState('modals', ['showModal', 'modalType']),
   },
   methods: {
+    ...mapActions('sound', ['playSFXAudio']),
+
+    playSound() {
+      this.playSFXAudio({ audioToPlay: 'actionButton' })
+    },
     showSwapPopup() {
       this.$store.commit('setPopupState', {
         type: 'swap',

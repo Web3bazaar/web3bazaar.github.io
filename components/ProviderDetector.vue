@@ -8,8 +8,8 @@ import detectEthereumProvider from '@metamask/detect-provider'
 import { mapState } from 'vuex'
 
 const providerDetector = {
-  log: require('debug')('w3b:view:createNewTrade'),
-  error: require('debug')('w3b:view:error:createNewTrade'),
+  log: require('debug')('w3b:view:ProviderDetector'),
+  error: require('debug')('w3b:view:error:ProviderDetector'),
 }
 
 export default {
