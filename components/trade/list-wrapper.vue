@@ -1,151 +1,46 @@
 <template>
   <v-container class="list-wrapper">
-    <v-container v-if="newTrade" class="pa-0">
-      <v-row :class="{ 'new-trade': newTrade }" justify="center">
-        <v-col cols="12" sm="4" class="item-col">
-          <p class="">You</p>
-          <v-card class="item-card">
-            <trade-list-item
-              v-model="itemFrom"
-              :account-from="account"
-              :new-trade="newTrade"
-              :projects="projects"
-              :project-items="projectFromItems"
-              @selectedProjectsAssets:update="
-                updateSelectedProjectsAssets($event, 'From')
-              "
-            />
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" sm="1" class="d-flex align-center">
-          <v-img
-            contain
-            class="mx-auto"
-            max-width="40px"
-            :src="require('@/assets/img/icons/switch.png')"
+    <v-row :class="{ 'new-trade': newTrade }" justify="center">
+      <v-col cols="12" sm="4" class="item-col">
+        <p class="">You</p>
+        <v-card class="item-card">
+          <trade-list-item
+            v-model="itemFrom"
+            :account-from="account"
+            :new-trade="newTrade"
+            :projects="projects"
+            :project-items="projectFromItems"
+            @selectedProjectsAssets:update="
+              updateSelectedProjectsAssets($event, 'From')
+            "
           />
-        </v-col>
-        <!-- To -->
-        <v-col cols="12" sm="4" class="item-col">
-          <p class="">Counter-party</p>
-          <v-card class="item-card">
-            <trade-list-item
-              v-model="itemTo"
-              :new-trade="newTrade"
-              :projects="projects"
-              :project-items="projectToItems"
-              @selectedProjectsAssets:update="
-                updateSelectedProjectsAssets($event, 'To')
-              "
-            />
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container v-else class="pa-0">
-      <v-row class="list-trade-row py-4" justify="center">
-        <v-col cols="12" sm="4" class="d-flex flex-column item-col">
-          <div id="account_from">
-            <p>
-              <span
-                v-if="
-                  account.toLowerCase() === trade.itemFrom.address.toLowerCase()
-                "
-                style="color: #fff"
-              >
-                You
-              </span>
-              <span v-else style="color: #fff"> Counter-party </span>
-              {{ trade.itemFrom.address | truncate(9) }}
-            </p>
-          </div>
+        </v-card>
+      </v-col>
 
-          <v-card class="item-card">
-            <trade-list-item
-              :value="trade.itemFrom"
-              :account-from="account"
-              :projects="projects"
-              :project-items="projectFromItems"
-              @selectedProjectsAssets:update="
-                updateSelectedProjectsAssets($event, 'From')
-              "
-            />
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          sm="1"
-          class="d-flex flex-column align-center text-center pt-12"
-        >
-          <v-img
-            contain
-            class="mx-auto"
-            max-width="40px"
-            :src="require('@/assets/img/icons/switch.png')"
+      <v-col cols="12" sm="1" class="d-flex align-center">
+        <v-img
+          contain
+          class="mx-auto"
+          max-width="40px"
+          :src="require('@/assets/img/icons/switch.png')"
+        />
+      </v-col>
+      <!-- To -->
+      <v-col cols="12" sm="4" class="item-col">
+        <p class="">Counter-party</p>
+        <v-card class="item-card">
+          <trade-list-item
+            v-model="itemTo"
+            :new-trade="newTrade"
+            :projects="projects"
+            :project-items="projectToItems"
+            @selectedProjectsAssets:update="
+              updateSelectedProjectsAssets($event, 'To')
+            "
           />
-        </v-col>
-        <!-- To -->
-        <v-col cols="12" sm="4" class="d-flex flex-column item-col">
-          <div id="account_from">
-            <p>
-              <span
-                v-if="
-                  account.toLowerCase() === trade.itemTo.address.toLowerCase()
-                "
-                style="color: #fff"
-              >
-                You
-              </span>
-              <span v-else style="color: #fff"> Counter-party </span>
-              {{ trade.itemTo.address | truncate(9) }}
-            </p>
-          </div>
-          <v-card class="item-card">
-            <trade-list-item
-              :value="trade.itemTo"
-              :projects="projects"
-              :project-items="projectToItems"
-              @selectedProjectsAssets:update="
-                updateSelectedProjectsAssets($event, 'To')
-              "
-            />
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" sm="9" class="align-center pt-0">
-          <h6 class="text-left">
-            {{ getTradeStatus(trade, { from: true }) }}
-          </h6>
-          <a
-            :href="'https://mumbai.polygonscan.com/address/0x670bc34b16e0994fd64D90F127fDe38c0f1Afb83'"
-            target="_blank"
-            class="text-left small-links white--text"
-          >
-            <h6>
-              Trade ID:
-              {{ parseInt(trade.tradeId) }}
-              <img :width="16" :src="linkIcon" />
-            </h6>
-          </a>
-        </v-col>
-        <v-col
-          v-if="tradeBtn(trade)"
-          cols="12"
-          sm="12"
-          class="d-flex justify-center"
-        >
-          <ui-action-btn
-            class="mb-7"
-            :loading="loadingBtn"
-            :btn-text="tradeBtn(trade)"
-            @click="handleTrade(trade)"
-          >
-          </ui-action-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -154,10 +49,7 @@ import { mapState, mapActions } from 'vuex'
 
 import { ethers } from 'ethers'
 
-const CLAIM_BACK = 'Claim back assets'
-const CLAIM = 'Claim assets'
 // const DEPOSIT = 'DEPOSIT'
-const EXECUTE = 'Execute Trade'
 
 export default {
   props: {
@@ -190,8 +82,6 @@ export default {
   data() {
     return {
       numTries: 5,
-      EXECUTE,
-      CLAIM_BACK,
       loadingBtn: false,
       contractTypes: ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE'],
       TradeStatus: [
@@ -201,16 +91,9 @@ export default {
         'PARTIAL_CLAIM',
         'TRADE_COMPLETED',
       ],
-      TradeStatusMessages: {
-        waitingExecutor: 'Waiting for counterparty deposit',
-        depositExecutor: 'Counterparty assets deposited',
-        alreadyClaimed:
-          'You have already claimed these assets (waiting for counterparty to close the trade)',
-        // 'TRADE_COMPLETED': ,
-      },
+
       UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
       // UserStatus: ['NON', 'OPEN', 'DEPOSIT', 'CLAIM'],
-      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
   computed: {
@@ -291,195 +174,8 @@ export default {
     this.$store.commit('modals/closeModal')
   },
   methods: {
-    ...mapActions(['getTradesInfo']),
     ...mapActions('bazaar-connector', ['getTradeInfo']),
-    showTradeButton(trade) {
-      switch (true) {
-        // case trade?.itemFrom?.traderStatus === 3:
-        case this.creator && trade?.itemFrom.traderStatus === 3:
-        case trade?.itemTo?.traderStatus === 3:
-          return false
 
-        default:
-          return true
-      }
-    },
-    getTradeStatus(trade, { to, from }) {
-      this.$logger('trade: ', trade)
-
-      // console.log(trade.tradeId)
-      // console.log(this.TradeStatus[trade?.tradeStatus])
-      // console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
-      // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
-
-      switch (true) {
-        // case this.creator && trade.tradeStatus === 3:
-
-        case this.creator && trade.itemFrom.traderStatus === 3:
-        case !this.creator && trade.itemTo.traderStatus === 3:
-          return this.TradeStatusMessages.alreadyClaimed
-
-        case this.creator &&
-          trade.tradeStatus === 1 &&
-          trade.itemTo.traderStatus < 2:
-          return this.TradeStatusMessages.waitingExecutor
-        case this.creator && trade.itemTo.traderStatus > 1:
-        case !this.creator && trade.itemFrom.traderStatus > 1:
-          return this.TradeStatusMessages.depositExecutor
-        default:
-          return true
-        // break
-      }
-    },
-    tradeBtn(trade) {
-      // console.log(trade.tradeId)
-      // console.log(this.TradeStatus[trade?.tradeStatus])
-      // console.log('itemFrom', this.UserStatus[trade?.itemFrom.traderStatus])
-      // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
-
-      switch (true) {
-        // case this.creator && trade.tradeStatus === 3:
-        case this.creator &&
-          trade.tradeStatus > 1 &&
-          trade.itemTo.traderStatus > 1 &&
-          trade.itemFrom.traderStatus !== 3:
-        case !this.creator &&
-          trade.tradeStatus > 1 &&
-          trade.itemFrom.traderStatus > 1 &&
-          trade.itemTo.traderStatus !== 3:
-          return CLAIM
-        // return DEPOSIT
-        case this.creator && trade.tradeStatus === 1:
-          return CLAIM_BACK
-        case trade.tradeStatus === 1 && !this.creator:
-          return EXECUTE
-        default:
-          return false
-        // break
-      }
-
-      // if (this.creator && trade.tradeStatus === 1) {
-      //   return CLAIM_BACK
-      // } else if (this.creator && trade.tradeStatus === 3) {
-      //   return CLAIM
-      // } else if (this.creator && trade.itemTo.traderStatus === 3) {
-      //   return CLAIM
-      // } else if (trade.tradeStatus === 2 && trade.itemTo.traderStatus === 2) {
-      //   return CLAIM
-      // } else if (trade.itemTo.traderStatus === 3) {
-      //   return this.UserStatus[trade?.itemFrom?.traderStatus]
-      // }
-    },
-    async handleTrade(trade) {
-      this.loadingBtn = true
-      this.$store.commit('modals/setPopupState', {
-        type: 'loading',
-        isShow: true,
-      })
-
-      let tx
-      try {
-        // const res =
-        if (this.creator && trade.itemTo.traderStatus === 2) {
-          tx = await this.$store.dispatch('bazaar-connector/claim', {
-            walletAddress: this.account,
-            tradeId: trade.tradeId,
-          })
-          // await this.checkForTrade(trade.tradeId, 4)
-
-          // this.$emit('getTradesInfo')
-        } else if (this.creator && trade.tradeStatus === 1) {
-          tx = await this.$store.dispatch('bazaar-connector/claimBack', {
-            walletAddress: this.account,
-            tradeId: trade.tradeId,
-          })
-          this.$store.commit('modals/setPopupState', {
-            type: 'loading',
-            isShow: true,
-            data: {
-              state: 'mining',
-            },
-          })
-          await tx.wait()
-          this.$store.commit('modals/setPopupState', {
-            type: 'success',
-            isShow: true,
-            data: {
-              message: 'You have successfully claimed your assets back.',
-            },
-          })
-        } else {
-          const isApproved = await this.$store.dispatch(
-            'bazaar-connector/isApproved',
-            {
-              contractAddress: trade.itemTo.contractAddress,
-              contractType: this.contractTypes[trade.itemTo.traderType],
-              walletAddress: this.account,
-            }
-          )
-          if (!isApproved) {
-            // not aproved do request and wait
-            tx = await this.$store.dispatch('bazaar-connector/setApproval', {
-              contractAddress: trade.itemTo.contractAddress,
-              contractType: this.contractTypes[trade.itemTo.traderType],
-              walletAddress: this.account,
-            })
-            await tx.wait()
-            // await this.checkIfContractIsApprovedForWallet()
-          }
-          if (trade.tradeStatus === 1) {
-            //  do executeTrade request and wait, check for transaction approved
-            await this.$store.dispatch('bazaar-connector/executeTrade', {
-              tradeId: trade.tradeId,
-            })
-            this.$store.commit('modals/setPopupState', {
-              type: 'loading',
-              isShow: true,
-              data: {
-                state: 'mining',
-              },
-            })
-            await this.checkForTrade(trade.tradeId, 2)
-            this.$store.commit('modals/closeModal')
-            this.getTradesInfo()
-
-            return
-          }
-
-          tx = await this.$store.dispatch('bazaar-connector/claim', {
-            walletAddress: this.account,
-            tradeId: trade.tradeId,
-          })
-          this.$store.commit('modals/setPopupState', {
-            type: 'loading',
-            isShow: true,
-            data: {
-              state: 'mining',
-            },
-          })
-          await tx.wait()
-
-          await this.checkForTrade(trade.tradeId, 3)
-
-          this.$store.commit('modals/setPopupState', {
-            type: 'success',
-            isShow: true,
-            data: {
-              message: 'Your new assets have been claimed.',
-            },
-          })
-        }
-
-        // update the dashboard silently
-        this.getTradesInfo()
-      } catch (error) {
-        console.error(error)
-        this.$store.commit('modals/closeModal')
-      } finally {
-        this.loadingBtn = false
-        // this.$store.commit('modals/closeModal')
-      }
-    },
     updateSelectedProjectsAssets(value, destination) {
       this.$store.commit(`trader/tradeSelectedItem${destination}`, value)
     },

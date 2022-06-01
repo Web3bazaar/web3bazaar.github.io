@@ -19,7 +19,7 @@
           </nuxt-link>
         </v-col>
       </v-row>
-      <dashboard-trades-wrapper> </dashboard-trades-wrapper>
+      <dashboard-trades-section> </dashboard-trades-section>
     </v-container>
   </section>
 </template>
@@ -58,106 +58,13 @@ export default {
   },
   methods: {
     async getTradesInfo() {
-      const res = await this.$store.dispatch('getTradesInfo')
-      if (res) {
-        return
-      }
-
-      // const tradesSubmittedByYou = []
-      // const tradesSubmittedByOthers = []
-      this.loading = true
+      mainSquare.log('CALLED getTradesInfo')
 
       try {
-        const tradesIdsList = await this.getTradesIds()
-        mainSquare.log('tradesIdsList', tradesIdsList)
+        const res = await this.$store.dispatch('getTradesInfo')
+        mainSquare.log('getTradesInfo finished:', res)
 
-        // const promises = []
-
-        // for (let i = 0; i < tradesIdsList.length; i++) {
-        //   const e = tradesIdsList[i]
-        //   promises.push(this.getSingleTradeInfo(e._hex))
-        // }
-
-        // const resolvedPromises = await Promise.all(promises)
-
-        // //  resolvedPromises.map
-
-        // for (let i = 0; i < resolvedPromises.length; i++) {
-        //   const e = resolvedPromises[i]
-
-        //   if (e.tradeStatus === 4) continue
-
-        //   if (e?.creator?.address === ethers.utils.getAddress(this.account)) {
-        //     tradesSubmittedByYou.push({
-        //       tradeStatus: e.tradeStatus,
-        //       tradeId: e.tradeId,
-        //       itemFrom: {
-        //         address: e.creator.address,
-        //         // base_img: await this.getBaseImgUrl(
-        //         //   e.creator.contractAddress,
-        //         //   e.creator.idAsset,
-        //         //   e.creator.traderType
-        //         // ),
-        //         // project_name: this.getProjectName(e.creator.contractAddress),
-        //         itemAmount: e.creator.amount,
-        //         // item_name: this.getItemName(
-        //         //   e.creator.contractAddress,
-        //         //   e.creator.idAsset
-        //         // ),
-        //         // externalUrl: this.getExternalUrl(
-        //         //   e.creator.contractAddress,
-        //         //   e.creator.idAsset
-        //         // ),
-        //         ...(await this.getProjectInfo(
-        //           e.creator.contractAddress,
-        //           e.creator.idAsset,
-        //           e.creator.traderType
-        //         )),
-        //         ...e.creator,
-        //       },
-        //       itemTo: {
-        //         address: e.executer.address,
-        //         itemAmount: e.executer.amount,
-        //         ...(await this.getProjectInfo(
-        //           e.executer.contractAddress,
-        //           e.executer.idAsset,
-        //           e.executer.traderType
-        //         )),
-        //         ...e.executer,
-        //       },
-        //     })
-        //   }
-
-        //   if (e?.executer?.address === ethers.utils.getAddress(this.account)) {
-        //     tradesSubmittedByOthers.push({
-        //       tradeStatus: e.tradeStatus,
-        //       tradeId: e.tradeId,
-        //       itemFrom: {
-        //         address: e.creator.address,
-        //         itemAmount: e.creator.amount,
-        //         ...(await this.getProjectInfo(
-        //           e.creator.contractAddress,
-        //           e.creator.idAsset,
-        //           e.creator.traderType
-        //         )),
-        //         ...e.creator,
-        //       },
-        //       itemTo: {
-        //         address: e.executer.address,
-        //         itemAmount: e.executer.amount,
-        //         ...(await this.getProjectInfo(
-        //           e.executer.contractAddress,
-        //           e.executer.idAsset,
-        //           e.executer.traderType
-        //         )),
-        //         ...e.executer,
-        //       },
-        //     })
-        //   }
-        // }
-
-        // this.tradesSubmittedByYou = tradesSubmittedByYou
-        // this.tradesSubmittedByOthers = tradesSubmittedByOthers
+        this.loading = true
 
         this.$store.commit('modals/closeModal')
       } catch (error) {

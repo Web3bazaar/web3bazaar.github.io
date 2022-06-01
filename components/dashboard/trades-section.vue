@@ -24,7 +24,7 @@
           class="trades-wrapper-row py-4"
           justify="center"
         >
-          <trade-list-wrapper :trade="trade" :creator="true" />
+          <DashboardTradeWrapper :trade="trade" />
         </v-row>
       </v-container>
     </v-row>
@@ -38,13 +38,8 @@
           class="trades-wrapper-row py-4"
           justify="center"
         >
-          <trade-list-wrapper :trade="trade" />
+          <DashboardTradeWrapper :trade="trade" />
         </v-row>
-        <!-- 
-          <trade-list-wrapper
-            :trades="tradesExecutor"
-            @updateDashboard="getTradesInfo"
-          /> -->
       </v-container>
     </v-row>
   </v-container>
@@ -64,12 +59,25 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      TradeStatusMessages: {
+        waitingExecutor: 'Waiting for counterparty deposit',
+        depositExecutor: 'Counterparty assets deposited',
+        alreadyClaimed:
+          'You have already claimed these assets (waiting for counterparty to close the trade)',
+        // 'TRADE_COMPLETED': ,
+      },
+      linkIcon: require('@/assets/img/icons/link.png'),
+    }
+  },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
     ...mapState('trader', ['projects']),
     ...mapState(['tradesCreator', 'tradesExecutor']),
     ...mapGetters(['hasTradesPendingCreator', 'hasTradesPendingExecutor']),
   },
+  methods: {},
 }
 </script>
 

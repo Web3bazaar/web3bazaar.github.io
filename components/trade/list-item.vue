@@ -1,41 +1,6 @@
 <template>
   <section class="list-item">
-    <v-container v-if="!newTrade">
-      <v-row class="justify-space-evenly">
-        <!-- <v-col cols="12">
-          <div id="account_from">{{ value.address | truncate(9) }}</div>
-        </v-col> -->
-        <v-col cols="5" class="d-flex justify-center">
-          <v-img contain class="ml-0" max-height="150px" :src="value.baseImg" />
-        </v-col>
-        <v-col cols="7">
-          <div id="project_from" class="text-left pb-3">
-            <a
-              :href="value.projectLink"
-              target="_blank"
-              class="item-quantity text-left small-links white--text"
-            >
-              {{ value.projectName }}
-              <img :width="16" :src="linkIcon" />
-            </a>
-          </div>
-          <p v-if="value.traderType !== 1" class="item-name text-left pb-0">
-            <a
-              :href="value.externalUrl"
-              target="_blank"
-              class="item-name text-left small-links grey--text"
-            >
-              Token ID {{ value.idAsset }}
-              <img :width="16" :src="linkIcon" />
-            </a>
-          </p>
-          <p class="item-quantity text-left grey--text">
-            Amount {{ formattedQuantity }}
-          </p>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container v-else>
+    <v-container>
       <v-row class="justify-space-evenly">
         <v-col v-if="!accountFrom" cols="12">
           <p>Enter counter-party address</p>
@@ -108,8 +73,6 @@
 </template>
 
 <script>
-import { ethers } from 'ethers'
-
 export default {
   components: {},
   props: {
@@ -139,18 +102,9 @@ export default {
       maxProjectsToShow: 3,
       selectedProjects: [],
       selectedProjectsAssets: [],
-
-      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
-  computed: {
-    formattedQuantity() {
-      return ethers.utils.formatUnits(
-        (this.value?.itemAmount || 0) + '',
-        'ether'
-      )
-    },
-  },
+  computed: {},
   watch: {
     selectedProjectsAssets(val) {
       this.$logger(val)
