@@ -24,7 +24,7 @@
           class="trades-wrapper-row py-4"
           justify="center"
         >
-          <DashboardTradeWrapper :trade="trade" />
+          <DashboardTradeWrapper :trade="trade" :creator="account" />
         </v-row>
       </v-container>
     </v-row>

@@ -44,8 +44,6 @@ export const actions = {
         token_id: '1',
         contract_type: contractType,
       }
-
-      console.log('Getting token balance for wallet : ', balance)
     } catch (ex) {
       console.error('Error listing listERC20 balance: ', ex)
       throw ex

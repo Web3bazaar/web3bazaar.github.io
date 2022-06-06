@@ -26,7 +26,6 @@ export default {
       return this.networksData.find((item) => item.chainId === this.networkType)
     },
     getNetworkName() {
-      console.log(this.activeNetwork)
       return this.activeNetwork?.chainId === '0x13881'
         ? this.activeNetwork.chainName
         : 'Switch to mumbai testnet'

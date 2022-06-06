@@ -3,35 +3,29 @@
     <v-row>
       <v-col
         v-for="(asset, index) in value"
-        :key="index"
+        :key="asset.token_id"
         cols="4"
         class="pa-3 d-flex align-center flex-column"
         :class="{ selected: asset.selected }"
       >
-        <v-hover>
-          <template #default="{}">
-            <v-container class="pa-0">
-              <v-row no-gutters @click="changeSelection(index)">
-                <v-col class="pa-0">
-                  <div class="img-wrapper">
-                    <v-img :src="asset.metadata.image" contain />
-                  </div>
+        <v-container class="pa-0">
+          <v-row no-gutters @click="changeSelection(index)">
+            <v-col class="pa-0">
+              <div class="img-wrapper">
+                <v-img :src="asset.metadata.image" contain />
+              </div>
 
-                  <v-fade-transition>
-                    <v-overlay
-                      v-if="asset.selected"
-                      absolute
-                      color="transparent"
-                    >
-                      <v-container class="pa-3">
-                        <v-row justify="center">
-                          <v-col cols="12" class="pa-0">
-                            <p class="text-center">
-                              {{ asset.metadata.name | truncate(10) }}
-                            </p>
-                          </v-col>
-                          <v-spacer />
-                          <!-- <v-col cols="2" class="pa-0">
+              <v-fade-transition>
+                <v-overlay v-if="asset.selected" absolute color="transparent">
+                  <v-container class="pa-3">
+                    <v-row justify="center">
+                      <v-col cols="12" class="pa-0">
+                        <p class="text-center">
+                          {{ asset.metadata.name | truncate(10) }}
+                        </p>
+                      </v-col>
+                      <v-spacer />
+                      <!-- <v-col cols="2" class="pa-0">
                             <v-btn
                               dark
                               fab
@@ -42,11 +36,11 @@
                               <v-icon dark> mdi-minus </v-icon>
                             </v-btn>
                           </v-col> -->
-                          <!-- <v-col cols="2" class="pa-0">
+                      <!-- <v-col cols="2" class="pa-0">
                             <v-text-field :value="getAmount(index)" />
                           </v-col> -->
 
-                          <!-- <v-col cols="2" class="pa-0">
+                      <!-- <v-col cols="2" class="pa-0">
                             <v-btn
                               fab
                               dark
@@ -56,32 +50,31 @@
                               <v-icon dark> mdi-plus </v-icon>
                             </v-btn>
                           </v-col> -->
-                        </v-row>
-                      </v-container>
-                    </v-overlay>
-                  </v-fade-transition>
-                </v-col>
-              </v-row>
-              <div v-if="asset.selected" class="amount-wrapper">
-                <label>Amount:</label>
-                <div class="d-flex justify-space-around">
-                  <input
-                    class="amount-input d-flex"
-                    min="0"
-                    :value="getAmount(index)"
-                    @input="updateAmount($event, index)"
-                  />
-                  <span
-                    class="d-flex grey--text"
-                    @click.prevent="updateAmount(getMaxAmount(index), index)"
-                  >
-                    Max
-                  </span>
-                </div>
-              </div>
-            </v-container>
-          </template>
-        </v-hover>
+                    </v-row>
+                  </v-container>
+                </v-overlay>
+              </v-fade-transition>
+            </v-col>
+          </v-row>
+          <div v-if="asset.selected" class="amount-wrapper">
+            <label>Amount:</label>
+            <div class="d-flex justify-space-around">
+              <input
+                class="amount-input d-flex"
+                min="0"
+                :value="getAmount(index)"
+                @input="updateAmount($event, index)"
+              />
+              <span
+                class="d-flex grey--text"
+                style="cursor: pointer"
+                @click.prevent="updateAmount(getMaxAmount(index), index)"
+              >
+                Max
+              </span>
+            </div>
+          </div>
+        </v-container>
       </v-col>
     </v-row>
   </v-container>
@@ -213,9 +206,9 @@ export default {
 
       if (index > internalValue.length) return
 
-      internalValue.forEach((e) => {
-        e.selected = false
-      })
+      // internalValue.forEach((e) => {
+      //   e.selected = false
+      // })
 
       if (index === this.previousIndex) {
         internalValue[index].selected = !internalValue[index].selected
@@ -228,19 +221,19 @@ export default {
           )
         }
       } else {
-        internalValue[index].selected = true
+        internalValue[index].selected = !internalValue[index].selected
         internalValue[index].chosenAmount = Math.min(
           1,
           internalValue[index].amount
         )
 
-        if (
-          this.previousIndex > -1 &&
-          this.previousIndex < internalValue.length
-        ) {
-          internalValue[this.previousIndex].selected = false
-          internalValue[this.previousIndex].chosenAmount = 0
-        }
+        // if (
+        //   this.previousIndex > -1 &&
+        //   this.previousIndex < internalValue.length
+        // ) {
+        //   internalValue[this.previousIndex].selected = false
+        //   internalValue[this.previousIndex].chosenAmount = 0
+        // }
         this.previousIndex = index
       }
       this.setValue(internalValue)

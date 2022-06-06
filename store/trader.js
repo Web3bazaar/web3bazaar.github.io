@@ -42,18 +42,14 @@ const getAssetMetadata = async function (e) {
 }
 
 export const state = () => ({
-  tradeSelectedItemFrom: [],
-  tradeSelectedItemTo: [],
-  itemFrom: {},
-  itemTo: {},
-  projectFromItems: [],
-  projectToItems: [],
+  creatorSelectedAssets: [],
+  executorSelectedAssets: [],
+  executorAddress: '',
   projects: [
     {
       projectName: 'Bazaar ERC721 Collection',
       description: 'Test contract for weebazaar ERC721',
-      base_img:
-        'https://2264006251-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdunBb1X4ZSri9eSiAH%2Fuploads%2Fj3zLlHOEGa4kKLWE3qsv%2FTwitter_art.png?alt=media&token=bb90dda5-cf06-4395-bc59-42a3d45bb403',
+      background_image: require('@/assets/img/banners/Twitter 3.jpg'),
       contractAddress: '0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
@@ -77,8 +73,8 @@ export const state = () => ({
     {
       projectName: 'Bazaar ERC1155 Collection',
       description: 'Test contract for weebazaar ERC1155',
-      base_img:
-        'https://blog.bitnovo.com/wp-content/uploads/2021/11/Que%CC%81-es-Aavegotchi1.jpg',
+      background_image: require('@/assets/img/banners/Twitter 3.jpg'),
+
       contractAddress: '0x638A0ec36d2E89d8671e193854A56326a24455aA',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
@@ -127,10 +123,8 @@ export const actions = {
 
   async listOwnedIds(
     { commit, dispatch, state, rootGetters },
-    { wa, selectedProjects, to, from }
+    { wa, selectedProjects, creator }
   ) {
-    // const ownedIds =  await dispatch('relayer-erc721/listERC721Ids', {...project , wa : rootState.connector.account }, {root: true} );
-
     try {
       const activeChain = rootGetters['networks/getActiveChain']
       traderLogger.log('activeChain : ', activeChain)
@@ -169,16 +163,15 @@ export const actions = {
         const groupByProjectResolved = await Promise.all(groupByProject)
         traderLogger.log('groupByProject : ', groupByProjectResolved)
         if (groupByProjectResolved) {
-          if (to) {
+          if (creator) {
             commit('updateProject', {
               projectName: project.projectName,
-              projectToItems: groupByProjectResolved,
+              creatorAssets: groupByProjectResolved,
             })
-          }
-          if (from) {
+          } else {
             commit('updateProject', {
               projectName: project.projectName,
-              projectFromItems: groupByProjectResolved,
+              executorAssets: groupByProjectResolved,
             })
           }
         }
@@ -211,18 +204,17 @@ export const actions = {
               //   )
               // ).filter(Boolean)
               if (ownedIds) {
-                if (to) {
-                  traderLogger.log('projectToItems : ', ownedIds)
+                if (creator) {
+                  traderLogger.log('creatorAssets : ', ownedIds)
                   commit('updateProject', {
                     projectName: project.projectName,
-                    projectToItems: ownedIds,
+                    creatorAssets: ownedIds,
                   })
-                }
-                if (from) {
-                  traderLogger.log('projectFromItems : ', ownedIds)
+                } else {
+                  traderLogger.log('executorAssets : ', ownedIds)
                   commit('updateProject', {
                     projectName: project.projectName,
-                    projectFromItems: ownedIds,
+                    executorAssets: ownedIds,
                   })
                 }
               }
@@ -230,68 +222,6 @@ export const actions = {
           }
         })
       )
-
-      // await Promise.all(
-      //   selectedProjects.map(async (project) => {
-      //     let ownedIds = []
-
-      //     switch (project.contractType) {
-      //       // case 'ERC20':
-      //       //   ownedIds = await dispatch(
-      //       //     'relayer-erc20/listERC20',
-      //       //     { ...project, wa },
-      //       //     { root: true }
-      //       //   )
-      //       //   break
-      //       case 'ERC721':
-      //         ownedIds = await dispatch(
-      //           'relayer-erc721/listERC721',
-      //           { ...project, wa },
-      //           { root: true }
-      //         )
-      //         break
-      //       case 'ERC1155':
-      //         ownedIds = await dispatch(
-      //           'relayer-erc1155/listERC1155',
-      //           { ...project, wa },
-      //           { root: true }
-      //         )
-      //         break
-
-      //       default:
-      //         break
-      //     }
-
-      //     const listDetails = (
-      //       await dispatch(
-      //         'details/getListDetails',
-      //         {
-      //           listIds: ownedIds,
-      //           contractAddress: project.contractAddress,
-      //           contractType: project.contractType,
-      //         },
-      //         { root: true }
-      //       )
-      //     ).filter(Boolean)
-
-      //     if (listDetails) {
-      //       if (to) {
-      //         traderLogger.log('projectToItems : ', listDetails)
-      //         commit('updateProject', {
-      //           project_name: project.project_name,
-      //           projectToItems: listDetails,
-      //         })
-      //       }
-      //       if (from) {
-      //         traderLogger.log('projectFromItems : ', listDetails)
-      //         commit('updateProject', {
-      //           project_name: project.project_name,
-      //           projectFromItems: listDetails,
-      //         })
-      //       }
-      //     }
-      //   })
-      // )
     } catch (error) {
       traderLogger.error('Error listing ids -> ', error)
     }
@@ -299,23 +229,18 @@ export const actions = {
 }
 
 export const mutations = {
-  itemFrom(state, value) {
-    state.itemFrom = value
+  executorAddress(state, value) {
+    state.executorAddress = value
   },
-  itemTo(state, value) {
-    state.itemTo = value
+  executorSelectedAssets(state, value) {
+    state.executorSelectedAssets = { ...state.executorSelectedAssets, ...value }
   },
-  tradeSelectedItemTo(state, value) {
-    state.tradeSelectedItemTo = value
+  creatorSelectedAssets(state, value) {
+    state.creatorSelectedAssets = { ...state.creatorSelectedAssets, ...value }
   },
-  tradeSelectedItemFrom(state, value) {
-    state.tradeSelectedItemFrom = value
-  },
-  projectToItems(state, value) {
-    state.projectToItems = value
-  },
-  projectFromItems(state, value) {
-    state.projectFromItems = value
+  resetSelectedAssets(state) {
+    state.executorSelectedAssets = {}
+    state.creatorSelectedAssets = {}
   },
   updateProject(state, updatedItem) {
     state.projects = [

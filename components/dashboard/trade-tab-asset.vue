@@ -18,7 +18,7 @@
             <img :width="16" :src="linkIcon" />
           </a>
         </div> -->
-        <p
+        <div
           v-if="asset.contractTypeIndex !== 1"
           class="item-name text-left mb-0"
         >
@@ -30,7 +30,7 @@
             Token ID {{ asset.idAsset }}
             <img :width="16" :src="linkIcon" />
           </a>
-        </p>
+        </div>
         <p class="item-quantity text-left grey--text mb-0">
           Amount {{ formattedQuantity }}
         </p>
@@ -62,7 +62,7 @@ export default {
     const projectInfo = await this.$store.dispatch('getProjectInfo', {
       contractAddress: this.asset.contractAddress,
       idAsset: this.asset.idAsset,
-      contractTypeIndex: this.asset.traderType,
+      contractTypeIndex: this.asset.contractTypeIndex,
     })
 
     this.baseImg = projectInfo.baseImg
@@ -74,8 +74,7 @@ export default {
     formattedQuantity() {
       if (this.asset?.contractType === this.$contractTypes.ERC20) {
         return ethers.utils.formatUnits(
-          (this.asset?.amount.toString() || 0) + '',
-          0
+          (this.asset?.amount.toString() || 0) + ''
         )
       } else {
         return this.asset?.amount

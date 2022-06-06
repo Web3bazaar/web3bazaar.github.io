@@ -8,15 +8,18 @@ const donationsLogger = {
 export const state = () => ({
   baseValue: {
     '0x13881': {
+      chainName: 'Mumbai',
       amount: 1000,
       tokenAddress: '0x0000000000000000000000000000000000001010',
       w3bChainWalletAddress: '0xE68A8D60bAD90B5142901b89eCEbE248de42d5a1',
     },
     '0x38': {
+      chainName: 'BSC',
       amount: 5,
       tokenAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     },
     '0x89': {
+      chainName: 'Polygon',
       amount: 1000,
       tokenAddress: '0x0000000000000000000000000000000000001010',
       w3bChainWalletAddress: '0xE68A8D60bAD90B5142901b89eCEbE248de42d5a1',

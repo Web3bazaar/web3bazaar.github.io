@@ -2,19 +2,19 @@
   <section class="list-item">
     <v-container>
       <v-row class="justify-space-evenly">
-        <v-col v-if="!accountFrom" cols="12">
+        <v-col v-if="!creator" cols="12" class="pb-2">
           <p>Enter counter-party address</p>
           <v-text-field
             solo
             dense
-            :value="value.address"
+            :value="value"
             :hide-details="true"
-            @input="update('address', $event)"
+            @input="update"
           />
         </v-col>
-        <v-col v-else cols="12" class="pt-10 pb-6">
+        <v-col v-else cols="12" class="pt-10 pb-7">
           <div id="account_from">
-            {{ accountFrom | truncate(9) }}
+            {{ creator | truncate(9) }}
             <span
               style="opacity: 0.5; color: rgb(226, 65, 173); font-size: 12px"
             >
@@ -23,7 +23,7 @@
           </div>
         </v-col>
 
-        <v-col cols="12" sm="12">
+        <!-- <v-col cols="12" sm="12">
           <p>Choose projects</p>
 
           <v-select
@@ -52,10 +52,44 @@
               </span>
             </template>
           </v-select>
-        </v-col>
-        <v-col cols="12" sm="12">
-          <p>Choose an asset</p>
-          <trade-asset-selection-grid v-model="selectedProjectsAssets" />
+        </v-col> -->
+        <v-col v-if="value" cols="12" sm="12">
+          <p>Choose your assets</p>
+
+          <v-expansion-panels>
+            <v-expansion-panel v-for="(project, i) in projects" :key="i">
+              <v-expansion-panel-header
+                v-if="getAssets(project) && getAssets(project).length > 0"
+              >
+                <v-container class="pa-0">
+                  <v-row justify="space-between">
+                    <v-col cols="auto" class="pa-0 d-flex align-center">
+                      <p class="bold mb-0">
+                        {{ project.projectName }}
+                      </p>
+                    </v-col>
+                    <v-col
+                      cols="auto"
+                      class="selected-assets d-flex align-center"
+                    >
+                      <div>
+                        {{ numberSelectedAssets(getAssets(project)) }}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content
+                v-if="getAssets(project) && getAssets(project).length > 0"
+              >
+                <!-- {{ getAssets(project) }} -->
+                <trade-asset-selection-grid
+                  :value="getAssets(project)"
+                  @change="selectedProjectsAssets($event, project)"
+                />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-col>
         <!--  <v-col cols="12" sm="12">
         <p>Amount</p>
@@ -76,7 +110,7 @@
 export default {
   components: {},
   props: {
-    accountFrom: {
+    creator: {
       type: String,
       default: '',
     },
@@ -84,13 +118,9 @@ export default {
       type: Array,
       default: () => [],
     },
-    projectItems: {
-      type: Array,
-      default: () => [],
-    },
     value: {
-      type: Object,
-      default: () => {},
+      type: String,
+      default: '',
     },
     newTrade: {
       type: Boolean,
@@ -101,53 +131,55 @@ export default {
     return {
       maxProjectsToShow: 3,
       selectedProjects: [],
-      selectedProjectsAssets: [],
     }
   },
   computed: {},
-  watch: {
-    selectedProjectsAssets(val) {
-      this.$logger(val)
-      this.$emit('selectedProjectsAssets:update', val)
-    },
-  },
+  watch: {},
   methods: {
-    updateSelectedProjectsAssets() {
-      const selectedProjectsAssets = []
-      if (this.accountFrom) {
-        console.log(this.selectedProjects)
-        this.selectedProjects.forEach((p) => {
-          console.log(p)
-          selectedProjectsAssets.push(...(p.projectFromItems || []))
-        })
-      } else {
-        this.selectedProjects.forEach((p) => {
-          selectedProjectsAssets.push(...(p.projectToItems || []))
-        })
-      }
-      // selectedProjectsAssets.forEach(
-      //   (a) => (a.selected = false),
-      //   (a) => (a.chosenAmount = 0)
-      // )
-      return selectedProjectsAssets
+    numberSelectedAssets(assets) {
+      return assets.filter((a) => a.selected).length
     },
-    async update(key, value) {
-      this.$emit('input', { ...this.value, [key]: value })
-      await this.$nextTick()
-      if (key === 'projectName') {
-        // console.log('project_name', key, value, oldVal)
-        // console.log('update projects list')
 
-        this.selectedProjectsAssets = this.updateSelectedProjectsAssets()
-        // this.$emit('input', {
-        //   ...this.value,
-        //   base_img: this.projects.find((p) => p.project_name === value)
-        //     .base_img,
-        // })
+    async selectedProjectsAssets(val, project) {
+      this.$logger('selectedProjectsAssets watch', val)
+      const destination = this.creator ? 'creator' : 'executor'
+
+      const currentSelectedAssets = val.filter((a) => a.selected)
+
+      this.$store.commit(`trader/${destination}SelectedAssets`, {
+        [project.contractAddress]: currentSelectedAssets,
+      })
+
+      this.$store.commit('trader/updateProject', {
+        projectName: project.projectName,
+        [`${destination}Assets`]: val,
+      })
+      await this.$nextTick()
+    },
+    getAssets(project) {
+      if (this.creator) {
+        return project.creatorAssets
+      } else {
+        return project.executorAssets
       }
+    },
+    async update(value) {
+      this.$emit('input', value)
+      await this.$nextTick()
     },
   },
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.selected-assets {
+  div {
+    padding: 4px;
+    padding-top: 3px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background-color: #a6a6a65e;
+  }
+}
+</style>

@@ -2,6 +2,8 @@ import { ethers } from 'ethers'
 // import Web3Utils from 'web3-utils'
 import Web3ABI from 'web3-eth-abi'
 
+// const abiCoder = ethers.utils.defaultAbiCoder
+
 const bazaarConnectorLog = {
   log: require('debug')('w3b:store:bazaarConnector'),
   error: require('debug')('w3b:store:error:bazaarConnector'),
@@ -12,14 +14,6 @@ const BAZAAR_CONTRACT_ADDRESS = process.env.BAZAAR_CONTRACT_ADDRESS
 // const BN = Web3Utils.BN
 // const EtherUnit = Web3Utils.toWei('1')
 
-const TRADE_TYPE = {
-  NON: 0,
-  ERC20: 1,
-  ERC1155: 2,
-  ERC721: 3,
-  NATIVE: 4,
-}
-
 export const actions = {
   /**
    *
@@ -29,10 +23,10 @@ export const actions = {
    * creatorAmount - amount for creator trader
    * creatorAssetType - creator asset type
    *
-   * executorWalletAdd - executer wallet address
-   * executorAssetContract -executer wallet address
-   * executorAssetId - executer asset id
-   * executorAmount - executer amount for erc1155/erc20
+   * executorWalletAdd - executor wallet address
+   * executorAssetContract -executor wallet address
+   * executorAssetId - executor asset id
+   * executorAmount - executor amount for erc1155/erc20
    * executorAssetType - ERC20| ERC721 | ERC1155
    *
    * @param {*} param0
@@ -59,13 +53,13 @@ export const actions = {
     // creatorAssetId = 1
     // creatorAmount = 2
     // creatorAssetType = TRADE_TYPE.ERC721
-    const creatorAssetTypeParsed = TRADE_TYPE[creatorAssetType]
+    // const creatorAssetTypeParsed = TRADE_TYPE[creatorAssetType]
 
     // executorWalletAdd = '0xA7Cc2E2050A607c813437C1c074f82322Cc0C8aE'
     // executorAssetContract = '0xbB18df3ca10583Daa4327161d10F65B1A7c63282'
     // executorAssetId = 100
     // executorAmount = 5
-    const executorAssetTypeParsed = TRADE_TYPE[executorAssetType]
+    // const executorAssetTypeParsed = TRADE_TYPE[executorAssetType]
 
     const webBazaarABI = require('../const/abis/webazaar.json')
     bazaarConnectorLog.log('webazaar abi : ', webBazaarABI)
@@ -80,23 +74,19 @@ export const actions = {
         userProvider.getSigner()
       )
 
+      // ethers.utils.parseUnits(creatorAmount.toString(), 18)
+      // ethers.utils.parseUnits(executorAmount.toString(), 18)~
+
       const startTradeTx = await bazaarInstance.startTrade(
-        creatorAssetContract, // Web3ABI.encodeParameter('address', creatorAssetContract),
-        Web3ABI.encodeParameter('uint256', creatorAssetId),
-        Web3ABI.encodeParameter(
-          'uint256',
-          ethers.utils.parseUnits(creatorAmount.toString(), 18)
-        ),
-        Web3ABI.encodeParameter('uint8', creatorAssetTypeParsed),
+        creatorAssetContract, // abiCoder.encode(['address[]'], [creatorAssetContract]), //  creator assets Array
+        creatorAssetId, // abiCoder.encode(['uint256[]'], [creatorAssetId]), // Array
+        creatorAmount, // abiCoder.encode(['uint256[]'], [creatorAmount]), // Amounts Array
+        creatorAssetType, // abiCoder.encode(['uint8[]'], [creatorAssetType]),
         executorWalletAdd, // Web3ABI.encodeParameter('address', executorWalletAdd),
-        executorAssetContract, // Web3ABI.encodeParameter('address', executorAssetContract),
-        Web3ABI.encodeParameter('uint256', executorAssetId),
-        Web3ABI.encodeParameter(
-          'uint256',
-          ethers.utils.parseUnits(executorAmount.toString(), 18)
-        ),
-        Web3ABI.encodeParameter('uint8', executorAssetTypeParsed),
-        {}
+        executorAssetContract, // abiCoder.encode(['address[]'], [executorAssetContract]), // Web3ABI.encodeParameter('address', executorAssetContract),
+        executorAssetId, // abiCoder.encode(['uint256[]'], [executorAssetId]),
+        executorAmount, //   abiCoder.encode(['uint256[]'], [executorAmount]),
+        executorAssetType //  abiCoder.encode(['uint8[]'], [executorAssetType])
       )
       // await startTradeTx.wait()
 
@@ -130,7 +120,7 @@ export const actions = {
     )
 
     try {
-      const claimBackResult = await webazaarInstance.claimBlack(tradeId, 0, {})
+      const claimBackResult = await webazaarInstance.cancelTrade(tradeId)
       return claimBackResult
     } catch (err) {
       bazaarConnectorLog.error(err)
@@ -169,40 +159,59 @@ export const actions = {
       webazaarABI,
       userProvider.getSigner()
     )
+    const [creatorWalletAddress, executorWalletAddress, tradeStatus] =
+      await webazaarInstance['getTrade(uint256)'](tradeId)
 
-    const creatorTradeInfo = await webazaarInstance.getTradeInfoCreator(
-      tradeId,
-      {}
-    )
-    const executerTradeInfo = await webazaarInstance.getTradeInfoExecutor(
-      tradeId,
-      {}
-    )
-
-    const tradeInfo = {
-      tradeId,
-      creator: {
-        address: creatorTradeInfo[0],
-        contractAddress: creatorTradeInfo[1],
-        idAsset: creatorTradeInfo[2].toString(),
-        amount: creatorTradeInfo[3].toString(),
-        traderStatus: creatorTradeInfo[4],
-        traderType: creatorTradeInfo[5],
-      },
-      executer: {
-        address: executerTradeInfo[0],
-        contractAddress: executerTradeInfo[1],
-        idAsset: executerTradeInfo[2].toString(),
-        amount: executerTradeInfo[3].toString(),
-        traderStatus: executerTradeInfo[4],
-        traderType: executerTradeInfo[5],
-      },
-      tradeStatus: creatorTradeInfo[6],
+    if (tradeStatus !== 1) {
+      return { tradeStatus, tradeId }
     }
 
-    bazaarConnectorLog.log('getTradeInfoCreator :  ', tradeInfo)
+    const [
+      creatorTokenAddress,
+      creatorTokenIds,
+      creatorTokenAmount,
+      creatorTokenType,
+    ] = await webazaarInstance['getTrade(uint256,address)'](
+      tradeId,
+      creatorWalletAddress
+    )
 
-    return tradeInfo
+    const [
+      executorTokenAddress,
+      executorTokenIds,
+      executorTokenAmount,
+      executorTokenType,
+    ] = await webazaarInstance['getTrade(uint256,address)'](
+      tradeId,
+      executorWalletAddress
+    )
+
+    bazaarConnectorLog.log(
+      '******* creatorTradeInfo *******',
+      creatorTokenAddress,
+      creatorTokenIds,
+      creatorTokenAmount,
+      creatorTokenType,
+      executorTokenAddress,
+      executorTokenIds,
+      executorTokenAmount,
+      executorTokenType
+    )
+
+    return {
+      creatorWalletAddress,
+      creatorTokenAddress,
+      creatorTokenIds,
+      creatorTokenAmount,
+      creatorTokenType,
+      executorWalletAddress,
+      executorTokenAddress,
+      executorTokenIds,
+      executorTokenAmount,
+      executorTokenType,
+      tradeStatus,
+      tradeId,
+    }
   },
   async executeTrade({ commit }, { walletAddress, tradeId, contractType }) {
     bazaarConnectorLog.log('******* executeTrade *******')
@@ -227,22 +236,58 @@ export const actions = {
     }
   },
   async getOpenTrades({ commit }, { walletAddress }) {
-    bazaarConnectorLog.log('******* getOpenTrades *******')
+    bazaarConnectorLog.log('******* getOpenTrades *******', walletAddress)
 
     const webazaarABI = require('../const/abis/webazaar.json')
+    bazaarConnectorLog.log('webazaarABI')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+    bazaarConnectorLog.log('userProvider')
 
     const webazaarInstance = new ethers.Contract(
       BAZAAR_CONTRACT_ADDRESS,
       webazaarABI,
       userProvider.getSigner()
     )
+    bazaarConnectorLog.log('webazaarInstance')
 
     const openTrades = await webazaarInstance.tradePerUser(walletAddress)
     bazaarConnectorLog.log('Open trades for users ', openTrades)
 
     return openTrades
+  },
+
+  async checkIsApprovedArray({ commit, dispatch }, { assets, walletAddress }) {
+    bazaarConnectorLog.log('******* checkIsApprovedArray *******', assets)
+    try {
+      const contractAddressArray = []
+      const contractTypeArray = []
+      for (const asset in assets) {
+        if (Object.hasOwnProperty.call(assets, asset)) {
+          const { contractAddress, contractType } = assets[asset]
+
+          const isApproved = await dispatch(
+            'bazaar-connector/isApproved',
+            {
+              contractAddress,
+              contractType,
+              walletAddress,
+            },
+            { root: true }
+          )
+
+          if (!isApproved) {
+            contractAddressArray.push(contractAddress)
+            contractTypeArray.push(contractType)
+          }
+        }
+      }
+
+      return { contractAddressArray, contractTypeArray }
+    } catch (error) {
+      bazaarConnectorLog.error('checkIsApprovedArray', error)
+      throw error?.data || error
+    }
   },
 
   async isApproved(
@@ -287,7 +332,47 @@ export const actions = {
       throw error?.data || error
     }
   },
+  async setApprovalArray(
+    { commit, dispatch },
+    {
+      contractAddressArray,
+      contractTypeArray,
+      walletAddress,
+      approveValue = true,
+    }
+  ) {
+    bazaarConnectorLog.log(
+      '******* setApprovalArray *******',
+      contractAddressArray,
+      contractTypeArray,
+      walletAddress,
+      approveValue
+    )
+    try {
+      const promises = []
 
+      for (let i = 0; i < contractAddressArray.length; i++) {
+        promises.push(
+          dispatch(
+            'bazaar-connector/setApproval',
+            {
+              contractAddress: contractAddressArray[i],
+              contractType: contractTypeArray[i],
+              walletAddress,
+            },
+            { root: true }
+          )
+        )
+      }
+
+      const resolvedPromises = await Promise.all(promises)
+      bazaarConnectorLog.log(resolvedPromises)
+      return resolvedPromises
+    } catch (error) {
+      bazaarConnectorLog.error('isApproved', error)
+      throw error?.data || error
+    }
+  },
   async setApproval(
     { commit },
     { contractAddress, contractType, walletAddress, approveValue = true }
@@ -318,7 +403,7 @@ export const actions = {
           approveAmount
         )
 
-        return tx
+        return await tx.wait()
       } else {
         const tx = await contractInstance.setApprovalForAll(
           BAZAAR_CONTRACT_ADDRESS,
@@ -327,10 +412,12 @@ export const actions = {
         )
         bazaarConnectorLog.log('is approved for all: ', tx)
 
-        return tx
+        return await tx.wait()
       }
     } catch (error) {
       bazaarConnectorLog.error('isApproved', error)
+      if (error?.code === 4001) return 'REJECTED'
+
       throw error?.data || error
     }
   },

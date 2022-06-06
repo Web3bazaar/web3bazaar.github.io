@@ -3,7 +3,7 @@
 // const BAZAAR_CONTRACT_ADDRESS = '0x670bc34b16e0994fd64D90F127fDe38c0f1Afb83'
 
 // batch version (v2)
-const BAZAAR_CONTRACT_ADDRESS = '0xb05367047afb05a921f75e16ea99aaaed5d6bf80'
+const BAZAAR_CONTRACT_ADDRESS = '0x33300C588C0f363AbEe294Dd2B6E5Eb61d0d0ebE'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head

@@ -60,91 +60,76 @@ export const actions = {
       }
 
       const resolvedPromises = await Promise.all(promises)
+      logger.log('resolvedPromises', resolvedPromises)
 
       //  resolvedPromises.map
 
       for (let i = 0; i < resolvedPromises.length; i++) {
         const e = resolvedPromises[i]
 
-        if (e.tradeStatus === 4) continue
+        if (e.tradeStatus !== 1) continue
+
+        logger.log('Trade:  ', e)
 
         if (
-          e?.creator?.address ===
+          e?.creatorWalletAddress ===
           ethers.utils.getAddress(rootGetters['connector/account'])
         ) {
           tradesCreator.push({
             tradeStatus: e.tradeStatus,
             tradeId: e.tradeId,
-            itemFrom: {
-              address: e.creator.address,
-              // base_img: await this.getBaseImgUrl(
-              //   e.creator.contractAddress,
-              //   e.creator.idAsset,
-              //   e.creator.traderType
-              // ),
-              // project_name: this.getProjectName(e.creator.contractAddress),
-              itemAmount: e.creator.amount,
-              // item_name: this.getItemName(
-              //   e.creator.contractAddress,
-              //   e.creator.idAsset
-              // ),
-              // externalUrl: this.getExternalUrl(
-              //   e.creator.contractAddress,
-              //   e.creator.idAsset
-              // ),
-              ...(await dispatch('getProjectInfo', {
-                contractAddress: e.creator.contractAddress,
-                idAsset: e.creator.idAsset,
-                contractTypeIndex: e.creator.traderType,
-              })),
+            creator: {
+              address: e.creatorWalletAddress,
+              assetsByProject: await dispatch('groupAssetsByProject', {
+                tokenAddress: e.creatorTokenAddress,
+                tokenIds: e.creatorTokenIds,
+                tokenAmount: e.creatorTokenAmount,
+                tokenType: e.creatorTokenType,
+              }),
               ...e.creator,
             },
-            itemTo: {
-              address: e.executer.address,
-              itemAmount: e.executer.amount,
-              ...(await dispatch('getProjectInfo', {
-                contractAddress: e.executer.contractAddress,
-                idAsset: e.executer.idAsset,
-                contractTypeIndex: e.executer.traderType,
-              })),
-              ...e.executer,
+            executor: {
+              address: e.executorWalletAddress,
+              assetsByProject: await dispatch('groupAssetsByProject', {
+                tokenAddress: e.executorTokenAddress,
+                tokenIds: e.executorTokenIds,
+                tokenAmount: e.executorTokenAmount,
+                tokenType: e.executorTokenType,
+              }),
             },
           })
-        }
-
-        if (
-          e?.executer?.address ===
+        } else if (
+          e?.executorWalletAddress ===
           ethers.utils.getAddress(rootGetters['connector/account'])
         ) {
           tradesExecutor.push({
             tradeStatus: e.tradeStatus,
             tradeId: e.tradeId,
-            itemFrom: {
-              address: e.creator.address,
-              itemAmount: e.creator.amount,
-              ...(await dispatch('getProjectInfo', {
-                contractAddress: e.creator.contractAddress,
-                idAsset: e.creator.idAsset,
-                contractTypeIndex: e.creator.traderType,
-              })),
+            creator: {
+              address: e.creatorWalletAddress,
+              assetsByProject: await dispatch('groupAssetsByProject', {
+                tokenAddress: e.creatorTokenAddress,
+                tokenIds: e.creatorTokenIds,
+                tokenAmount: e.creatorTokenAmount,
+                tokenType: e.creatorTokenType,
+              }),
               ...e.creator,
             },
-            itemTo: {
-              address: e.executer.address,
-              itemAmount: e.executer.amount,
-              ...(await dispatch('getProjectInfo', {
-                contractAddress: e.executer.contractAddress,
-                idAsset: e.executer.idAsset,
-                contractTypeIndex: e.executer.traderType,
-              })),
-              ...e.executer,
+            executor: {
+              address: e.executorWalletAddress,
+              assetsByProject: await dispatch('groupAssetsByProject', {
+                tokenAddress: e.executorTokenAddress,
+                tokenIds: e.executorTokenIds,
+                tokenAmount: e.executorTokenAmount,
+                tokenType: e.executorTokenType,
+              }),
             },
           })
         }
-        commit('modals/closeModal')
-        commit('tradesCreator', tradesCreator.slice())
-        commit('tradesExecutor', tradesExecutor.slice())
       }
+      commit('tradesCreator', tradesCreator.slice())
+      commit('tradesExecutor', tradesExecutor.slice())
+      commit('modals/closeModal')
 
       return true
     } catch (ex) {
@@ -153,11 +138,60 @@ export const actions = {
       //   throw new Error('Not able to retrieve data from heroku api: ', ex)
     }
   },
+  groupAssetsByProject(
+    { state, dispatch, rootGetters },
+    { tokenAddress, tokenIds, tokenAmount, tokenType }
+  ) {
+    const projects = {}
 
+    const totalAssetsLength = tokenAddress.length
+
+    for (let i = 0; i < totalAssetsLength; i++) {
+      const contractAddress = tokenAddress[i]
+
+      const newObj = {
+        idAsset: tokenIds[i].toString(),
+        contractAddress: tokenAddress[i],
+        contractType: contractTypes[tokenType[i]],
+        contractTypeIndex: tokenType[i],
+        amount: tokenAmount[i].toString(),
+      }
+
+      const {
+        projectName,
+        assetExternalLink,
+        projectLink,
+        background_image: backgroundImage,
+      } = state.trader.projects.find(
+        (p) => p.contractAddress === contractAddress
+      ) || {}
+
+      if (contractAddress in projects) {
+        projects[contractAddress].assets.push(newObj)
+      } else {
+        projects[contractAddress] = {}
+        projects[contractAddress].contractAddress = contractAddress
+        projects[contractAddress].projectName = projectName
+        projects[contractAddress].assetExternalLink = assetExternalLink
+        projects[contractAddress].projectLink = projectLink
+        projects[contractAddress].backgroundImage = backgroundImage
+        projects[contractAddress].contractType = contractTypes[tokenType[i]]
+        projects[contractAddress].contractTypeIndex = tokenType[i]
+
+        projects[contractAddress].assets = []
+        projects[contractAddress].assets.push(newObj)
+      }
+    }
+    logger.log('projects', projects)
+
+    return projects
+  },
   async getProjectInfo(
     { state, dispatch, rootGetters },
     { contractAddress, idAsset, contractTypeIndex }
   ) {
+    logger.log('getProjectInfo idAsset', idAsset)
+
     const { image, tokenImage, name } = await dispatch(
       'details/getAssetDetails',
       {
@@ -171,12 +205,18 @@ export const actions = {
       { root: true }
     )
 
-    const { projectName, assetExternalLink, projectLink } =
-      state.trader.projects.find(
-        (p) => p.contractAddress === contractAddress
-      ) || {}
+    const {
+      projectName,
+      assetExternalLink,
+      projectLink,
+      background_image: backgroundImage,
+      blockExplorerUrl,
+    } = state.trader.projects.find(
+      (p) => p.contractAddress === contractAddress
+    ) || {}
 
-    const externalUrl = assetExternalLink + idAsset
+    const externalUrl =
+      contractTypeIndex === 1 ? blockExplorerUrl : assetExternalLink + idAsset
 
     return {
       baseImg: image || tokenImage,
@@ -184,6 +224,8 @@ export const actions = {
       itemName: name,
       externalUrl,
       projectLink,
+      backgroundImage,
+      contractType: contractTypes[contractTypeIndex],
     }
   },
 }

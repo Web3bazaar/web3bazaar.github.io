@@ -1,0 +1,8 @@
+[0.2]
+    - Major rework to use new version of the contract
+    - Cleaned up some code
+
+[0.1]
+    - Initial version of Bazaar
+    - Using v1 of the contract
+    - First tests on mumbai 

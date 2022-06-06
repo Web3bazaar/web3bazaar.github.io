@@ -101,7 +101,7 @@ export default {
     background-color: #03091f;
   }
   .v-toolbar__content {
-    max-width: 1200px;
+    max-width: 1260px;
     margin: 0 auto;
   }
 }

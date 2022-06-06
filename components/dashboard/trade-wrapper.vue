@@ -44,29 +44,29 @@
           <p>
             <span
               v-if="
-                account.toLowerCase() === trade.executer.address.toLowerCase()
+                account.toLowerCase() === trade.executor.address.toLowerCase()
               "
               style="color: #fff"
             >
               You
             </span>
             <span v-else style="color: #fff"> Counter-party </span>
-            {{ trade.executer.address | truncate(9) }}
+            {{ trade.executor.address | truncate(9) }}
           </p>
         </div>
         <v-card class="item-card">
           <dashboard-trade-tabs-group
-            :assets-by-project="trade.executer.assetsByProject"
+            :assets-by-project="trade.executor.assetsByProject"
           />
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="9" class="align-center pt-0">
+      <v-col cols="12" sm="12" class="align-center pt-0">
         <h6 class="text-left">
           {{ getTradeStatus(trade, { from: true }) }}
         </h6>
         <a
-          :href="'https://mumbai.polygonscan.com/address/0x670bc34b16e0994fd64D90F127fDe38c0f1Afb83'"
+          :href="`https://mumbai.polygonscan.com/address/${bazaarContractAddress}`"
           target="_blank"
           class="text-left small-links white--text"
         >
@@ -99,7 +99,7 @@
 import { mapState, mapActions } from 'vuex'
 
 const CLAIM = 'Claim assets'
-const CLAIM_BACK = 'Claim back assets'
+const CLAIM_BACK = 'Cancel Trade'
 const EXECUTE = 'Execute Trade'
 
 export default {
@@ -108,19 +108,24 @@ export default {
       type: Object,
       required: true,
     },
+    creator: {
+      type: String,
+      default: undefined,
+    },
   },
   data() {
     return {
       loadingBtn: false,
 
       TradeStatusMessages: {
-        waitingExecutor: 'Waiting for counterparty deposit',
+        waitingExecutor: 'Waiting for counterparty',
         depositExecutor: 'Counterparty assets deposited',
         alreadyClaimed:
           'You have already claimed these assets (waiting for counterparty to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
       linkIcon: require('@/assets/img/icons/link.png'),
+      bazaarContractAddress: process.env.BAZAAR_CONTRACT_ADDRESS,
     }
   },
   computed: {
@@ -139,15 +144,7 @@ export default {
       let tx
       try {
         // const res =
-        if (this.creator && trade.itemTo.traderStatus === 2) {
-          tx = await this.$store.dispatch('bazaar-connector/claim', {
-            walletAddress: this.account,
-            tradeId: trade.tradeId,
-          })
-          // await this.checkForTrade(trade.tradeId, 4)
-
-          // this.$emit('getTradesInfo')
-        } else if (this.creator && trade.tradeStatus === 1) {
+        if (this.creator && trade.tradeStatus === 1) {
           tx = await this.$store.dispatch('bazaar-connector/claimBack', {
             walletAddress: this.account,
             tradeId: trade.tradeId,
@@ -168,22 +165,25 @@ export default {
             },
           })
         } else {
-          const isApproved = await this.$store.dispatch(
-            'bazaar-connector/isApproved',
-            {
-              contractAddress: trade.itemTo.contractAddress,
-              contractType: this.contractTypes[trade.itemTo.traderType],
-              walletAddress: this.account,
-            }
-          )
-          if (!isApproved) {
+          const { contractAddressArray, contractTypeArray } =
+            await this.$store.dispatch(
+              'bazaar-connector/checkIsApprovedArray',
+              {
+                assets: trade.executor.assetsByProject,
+                walletAddress: this.account,
+              }
+            )
+          if (contractAddressArray.length > 0 && contractTypeArray.length > 0) {
             // not aproved do request and wait
-            tx = await this.$store.dispatch('bazaar-connector/setApproval', {
-              contractAddress: trade.itemTo.contractAddress,
-              contractType: this.contractTypes[trade.itemTo.traderType],
-              walletAddress: this.account,
-            })
-            await tx.wait()
+            tx = await this.$store.dispatch(
+              'bazaar-connector/setApprovalArray',
+              {
+                contractAddressArray,
+                contractTypeArray,
+                walletAddress: this.account,
+              }
+            )
+            // await tx.wait()
             // await this.checkIfContractIsApprovedForWallet()
           }
           if (trade.tradeStatus === 1) {
@@ -244,40 +244,27 @@ export default {
       // console.log(trade.tradeId)
       // console.log(this.TradeStatus[trade?.tradeStatus])
       // console.log('creator', this.UserStatus[trade?.creator.traderStatus])
-      // console.log('executer', this.UserStatus[trade?.executer.traderStatus])
+      // console.log('executor', this.UserStatus[trade?.executor.traderStatus])
 
       switch (true) {
         // case this.creator && trade.tradeStatus === 3:
         case this.creator &&
           trade.tradeStatus > 1 &&
-          trade.executer.traderStatus > 1 &&
+          trade.executor.traderStatus > 1 &&
           trade.creator.traderStatus !== 3:
         case !this.creator &&
           trade.tradeStatus > 1 &&
           trade.creator.traderStatus > 1 &&
-          trade.executer.traderStatus !== 3:
+          trade.executor.traderStatus !== 3:
           return CLAIM
         // return DEPOSIT
         case this.creator && trade.tradeStatus === 1:
           return CLAIM_BACK
-        case trade.tradeStatus === 1 && !this.creator:
+        case !this.creator && trade.tradeStatus === 1:
           return EXECUTE
         default:
           return false
-        // break
       }
-
-      // if (this.creator && trade.tradeStatus === 1) {
-      //   return CLAIM_BACK
-      // } else if (this.creator && trade.tradeStatus === 3) {
-      //   return CLAIM
-      // } else if (this.creator && trade.itemTo.traderStatus === 3) {
-      //   return CLAIM
-      // } else if (trade.tradeStatus === 2 && trade.itemTo.traderStatus === 2) {
-      //   return CLAIM
-      // } else if (trade.itemTo.traderStatus === 3) {
-      //   return this.UserStatus[trade?.creator?.traderStatus]
-      // }
     },
     getTradeStatus(trade, { to, from }) {
       this.$logger('trade: ', trade)
@@ -285,21 +272,17 @@ export default {
       // console.log(trade.tradeId)
       // console.log(this.TradeStatus[trade?.tradeStatus])
       // console.log('creator', this.UserStatus[trade?.creator.traderStatus])
-      // console.log('itemTo', this.UserStatus[trade?.itemTo.traderStatus])
 
       switch (true) {
         // case this.creator && trade.tradeStatus === 3:
 
         case this.creator && trade.creator.traderStatus === 3:
-        case !this.creator && trade.executer.traderStatus === 3:
+        case !this.creator && trade.executor.traderStatus === 3:
           return this.TradeStatusMessages.alreadyClaimed
 
-        case this.creator &&
-          trade.tradeStatus === 1 &&
-          trade.executer.traderStatus < 2:
+        case this.creator && trade.tradeStatus === 1:
           return this.TradeStatusMessages.waitingExecutor
-        case this.creator && trade.executer.traderStatus > 1:
-        case !this.creator && trade.creator.traderStatus > 1:
+        case !this.creator && trade.tradeStatus === 1:
           return this.TradeStatusMessages.depositExecutor
         default:
           return true

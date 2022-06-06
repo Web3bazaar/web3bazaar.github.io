@@ -1,11 +1,5 @@
 [
-  {
-    "inputs": [
-      { "internalType": "address payable", "name": "owner", "type": "address" }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
   {
     "anonymous": false,
     "inputs": [
@@ -17,7 +11,7 @@
       },
       {
         "indexed": false,
-        "internalType": "enum Web3Bazaar.TradeStatus",
+        "internalType": "enum BatchWeb3Bazaar.TradeStatus",
         "name": "toStatus",
         "type": "uint8"
       },
@@ -77,21 +71,23 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "tradeId", "type": "uint256" },
-      { "internalType": "uint8", "name": "debug", "type": "uint8" }
+      {
+        "internalType": "address payable",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    "name": "claim",
+    "name": "addOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "tradeId", "type": "uint256" },
-      { "internalType": "uint8", "name": "debug", "type": "uint8" }
+      { "internalType": "uint256", "name": "tradeId", "type": "uint256" }
     ],
-    "name": "claimBlack",
-    "outputs": [],
+    "name": "cancelTrade",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -108,14 +104,10 @@
     "inputs": [
       { "internalType": "uint256", "name": "tradeId", "type": "uint256" }
     ],
-    "name": "getTradeInfoCreator",
+    "name": "getTrade",
     "outputs": [
       { "internalType": "address", "name": "", "type": "address" },
       { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint8", "name": "", "type": "uint8" },
-      { "internalType": "uint8", "name": "", "type": "uint8" },
       { "internalType": "uint8", "name": "", "type": "uint8" }
     ],
     "stateMutability": "view",
@@ -123,17 +115,15 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "tradeId", "type": "uint256" }
+      { "internalType": "uint256", "name": "tradeId", "type": "uint256" },
+      { "internalType": "address", "name": "userWallet", "type": "address" }
     ],
-    "name": "getTradeInfoExecutor",
+    "name": "getTrade",
     "outputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint8", "name": "", "type": "uint8" },
-      { "internalType": "uint8", "name": "", "type": "uint8" },
-      { "internalType": "uint8", "name": "", "type": "uint8" }
+      { "internalType": "address[]", "name": "", "type": "address[]" },
+      { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
+      { "internalType": "uint8[]", "name": "", "type": "uint8[]" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -178,59 +168,64 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "addrContract", "type": "address" },
-      { "internalType": "uint256", "name": "idAsset", "type": "uint256" }
+      {
+        "internalType": "address payable",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    "name": "rmERC1155Balance",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "owner", "type": "address" },
-      { "internalType": "uint256", "name": "value", "type": "uint256" }
-    ],
-    "name": "stakeNative",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "payable",
+    "name": "removeOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
+        "internalType": "address[]",
+        "name": "creatorTokenAddress",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "creatorTokenId",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "creatorAmount",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "creatorTokenType",
+        "type": "uint8[]"
+      },
+      {
         "internalType": "address",
-        "name": "creatorAssetContract",
+        "name": "executerAddress",
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "creatorAssetId",
-        "type": "uint256"
-      },
-      { "internalType": "uint256", "name": "creatorAmount", "type": "uint256" },
-      { "internalType": "uint8", "name": "creatorAssetType", "type": "uint8" },
-      {
-        "internalType": "address",
-        "name": "executorWalletAdd",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "executorTokenAddress",
+        "type": "address[]"
       },
       {
-        "internalType": "address",
-        "name": "executorAssetContract",
-        "type": "address"
+        "internalType": "uint256[]",
+        "name": "executorTokenId",
+        "type": "uint256[]"
       },
       {
-        "internalType": "uint256",
-        "name": "executorAssetId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
+        "internalType": "uint256[]",
         "name": "executorAmount",
-        "type": "uint256"
+        "type": "uint256[]"
       },
-      { "internalType": "uint8", "name": "executorAssetType", "type": "uint8" }
+      {
+        "internalType": "uint8[]",
+        "name": "executorTokenType",
+        "type": "uint8[]"
+      }
     ],
     "name": "startTrade",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -247,6 +242,43 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "swapERC1155",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "swapERC20",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "swapERC721",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "u", "type": "address" }],
     "name": "tradePerUser",
     "outputs": [
@@ -257,15 +289,48 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "newOwner",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
     ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "verifyERC1155",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "verifyERC20",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "verifyERC721",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint8", "name": "tokenType", "type": "uint8" }
+    ],
+    "name": "verifyTradeIntegrity",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "pure",
     "type": "function"
   }
 ]

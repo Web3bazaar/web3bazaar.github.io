@@ -19,7 +19,7 @@
       >
         <v-card
           class="background_image"
-          :style="`--background-image: url(${project.backgroundImage})`"
+          :style="`--background-image: url('${project.backgroundImage}')`"
         >
           <v-row justify="start">
             <v-col
@@ -56,9 +56,6 @@ export default {
       return Object.keys(this.assetsByProject)[this.tab]
     },
   },
-  created() {
-    console.log(this.assetsByProject)
-  },
 }
 </script>
 <style lang="scss">
@@ -78,13 +75,13 @@ export default {
   position: relative;
 }
 
-.background_image::after {
+.background_image::before {
   content: '';
   background-image: var(--background-image);
   // background-image: var(--hero-image);
   background-size: cover;
   // background-position: center;
-  opacity: 0.05;
+  opacity: 0.09;
   top: 0;
   left: 0;
   bottom: 0;

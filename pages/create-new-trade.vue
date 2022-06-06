@@ -8,14 +8,9 @@
       </v-row>
       <v-row v-if="isWalletConnected">
         <v-col>
-          <trade-list-wrapper
-            :new-trade="true"
-            :projects="projects"
-            :project-to-items="projectToItems"
-            :project-from-items="projectFromItems"
-          />
+          <trade-list-wrapper :new-trade="true" :projects="projects" />
         </v-col>
-        <v-col cols="12" class="text-center">
+        <v-col cols="12" class="text-center mt-8">
           <ui-action-btn
             v-if="isSelectedContractApproved"
             class="mb-8"
@@ -40,6 +35,7 @@
 </template>
 
 <script>
+import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 
 const createNewTrade = {
@@ -50,48 +46,72 @@ const createNewTrade = {
 const ADD_TRADE = 'Create Trade'
 const APPROVE = 'Approve Contract'
 
+const TRADE_TYPE = {
+  NON: 0,
+  ERC20: 1,
+  ERC1155: 2,
+  ERC721: 3,
+  NATIVE: 4,
+}
+
 export default {
   data() {
     return {
       ADD_TRADE,
       APPROVE,
       isSelectedContractApproved: false,
+      contractsToApprove: [],
       loadingBtn: false,
     }
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
     ...mapState('trader', [
-      'projectFromItems',
-      'projectToItems',
       'projects',
-      'itemTo',
-      'tradeSelectedItemFrom',
-      'tradeSelectedItemTo',
+      'executorAddress',
+      'creatorSelectedAssets',
+      'executorSelectedAssets',
     ]),
   },
   watch: {
-    async tradeSelectedItemFrom(val) {
-      createNewTrade.log('tradeSelectedItemFrom', val)
-      if (val?.length) {
+    async creatorSelectedAssets(val) {
+      createNewTrade.log('creatorSelectedAssets watch', val)
+      this.loadingBtn = true
+      this.contractsToApprove = []
+      for (const project in val) {
         const {
           token_address: creatorAssetContract,
           contract_type: creatorAssetType,
-        } = val?.find?.((asset) => asset.selected > 0) || {}
+        } = val[project][0] || {}
+        createNewTrade.log(
+          'creatorAssetContract || !creatorAssetType watch',
+          creatorAssetContract || creatorAssetType
+        )
 
-        if (!creatorAssetContract || !creatorAssetType) return
-        this.loadingBtn = true
-        this.isSelectedContractApproved =
-          await this.checkIfContractIsApprovedForWallet(
+        if (!creatorAssetContract || !creatorAssetType) continue
+        const isApproved = await this.checkIfContractIsApprovedForWallet(
+          creatorAssetContract,
+          creatorAssetType,
+          this.account
+        )
+        createNewTrade.log('isApproved watch', isApproved)
+
+        if (!isApproved) {
+          this.contractsToApprove.push({
             creatorAssetContract,
             creatorAssetType,
-            this.account
-          )
-        this.loadingBtn = false
+          })
+        }
       }
+      this.loadingBtn = false
+      createNewTrade.log('contractsToApprove watch', this.contractsToApprove)
+
+      this.isSelectedContractApproved = this.contractsToApprove.length === 0
     },
   },
-  mounted() {},
+  mounted() {
+    this.$store.commit(`trader/resetSelectedAssets`)
+  },
   methods: {
     async checkIfContractIsApprovedForWallet(
       contractAddress,
@@ -121,13 +141,17 @@ export default {
     ) {
       let result
       try {
+        this.loadingBtn = true
         result = await this.$store.dispatch('bazaar-connector/setApproval', {
           contractAddress,
           contractType,
           walletAddress,
           approveValue,
         })
-        await result.wait()
+        if (result === 'REJECTED') {
+          return result
+        }
+        this.loadingBtn = false
       } catch (error) {
         createNewTrade.error('error', error)
       }
@@ -136,11 +160,11 @@ export default {
     },
 
     async removeApprove() {
-      if (!this.tradeSelectedItemFrom) return
+      if (!this.creatorSelectedAssets) return
       const {
         token_address: creatorAssetContract,
         contract_type: creatorAssetType,
-      } = this.tradeSelectedItemFrom.find((asset) => asset.selected > 0)
+      } = this.creatorSelectedAssets.find((asset) => asset.selected > 0)
 
       const res = await this.setApproval(
         creatorAssetContract,
@@ -152,51 +176,31 @@ export default {
     },
 
     async approveSelectedContract() {
-      createNewTrade.log('approveSelectedContract', this.tradeSelectedItemFrom)
+      createNewTrade.log('contractsToApprove', this.contractsToApprove)
       try {
-        if (!this.tradeSelectedItemFrom) return
+        if (this.contractsToApprove.length === 0) return
 
-        const {
-          token_address: creatorAssetContract,
-          contract_type: creatorAssetType,
-        } =
-          this.tradeSelectedItemFrom.find((asset) => asset?.selected > 0) || {}
+        for (let i = 0; i < this.contractsToApprove.length; i++) {
+          const { creatorAssetContract, creatorAssetType } =
+            this.contractsToApprove[i] || {}
 
-        if (!creatorAssetContract || !creatorAssetType) return
+          if (!creatorAssetContract || !creatorAssetType) return
 
-        this.loadingBtn = true
+          this.loadingBtn = true
 
-        const isApproved = await this.checkIfContractIsApprovedForWallet(
-          creatorAssetContract,
-          creatorAssetType,
-          this.account
-        )
-        createNewTrade.log('isApproved', isApproved)
-
-        if (!isApproved) {
-          const res = await this.setApproval(
+          const isApproved = await this.checkIfContractIsApprovedForWallet(
             creatorAssetContract,
             creatorAssetType,
             this.account
           )
-          if (res) {
-            this.loadingBtn = true
-            let numTries = 5
-            const t = setInterval(() => {
-              numTries--
-              if (numTries === 0) clearInterval(t)
-              this.checkIfContractIsApprovedForWallet(
-                creatorAssetContract,
-                creatorAssetType,
-                this.account
-              ).then((res) => {
-                if (res) {
-                  this.isSelectedContractApproved = true
-                  this.loadingBtn = false
-                  clearInterval(t)
-                }
-              })
-            }, 4 * 1000)
+          createNewTrade.log('isApproved', isApproved)
+
+          if (!isApproved) {
+            this.setApproval(
+              creatorAssetContract,
+              creatorAssetType,
+              this.account
+            )
           }
         }
       } catch (error) {
@@ -205,45 +209,80 @@ export default {
     },
     async newTrade() {
       try {
-        createNewTrade.log('tradeSelectedItemFrom', this.tradeSelectedItemFrom)
-        createNewTrade.log('tradeSelectedItemTo', this.tradeSelectedItemTo)
+        createNewTrade.log('creatorSelectedAssets', this.creatorSelectedAssets)
+        createNewTrade.log(
+          'executorSelectedAssets',
+          this.executorSelectedAssets
+        )
 
-        if (!this.tradeSelectedItemFrom) return
-        if (this.tradeSelectedItemTo?.length === 0) return
-
-        const {
-          token_address: creatorAssetContract,
-          token_id: creatorAssetId,
-          chosenAmount: creatorAmount,
-          contract_type: creatorAssetType,
-        } = this.tradeSelectedItemFrom.find((asset) => asset.selected > 0)
+        if (!this.creatorSelectedAssets) return
+        if (Object.keys(this.executorSelectedAssets).length === 0) return
 
         const creatorObject = {
-          creatorAssetContract,
-          creatorAssetId,
-          creatorAmount,
-          creatorAssetType,
+          creatorAssetContract: [],
+          creatorAssetId: [],
+          creatorAmount: [],
+          creatorAssetType: [],
         }
 
+        // const {
+        //   token_address: creatorAssetContract,
+        //   token_id: creatorAssetId,
+        //   chosenAmount: creatorAmount,
+        //   contract_type: creatorAssetType,
+        // } = this.creatorSelectedAssets.filter((asset) => asset.selected > 0)
+        for (const project in this.creatorSelectedAssets) {
+          this.creatorSelectedAssets[project].forEach((asset) => {
+            if (asset.selected) {
+              const amount =
+                asset.contract_type === 'ERC20'
+                  ? ethers.utils.parseEther(asset.chosenAmount.toString())
+                  : asset.chosenAmount
+
+              creatorObject.creatorAssetContract.push(asset.token_address)
+              creatorObject.creatorAssetId.push(asset.token_id)
+              creatorObject.creatorAmount.push(amount)
+              creatorObject.creatorAssetType.push(
+                TRADE_TYPE[asset.contract_type]
+              )
+            }
+          })
+        }
         createNewTrade.log('creatorObject', creatorObject)
 
-        const {
-          token_address: executorAssetContract,
-          token_id: executorAssetId,
-          chosenAmount: executorAmount,
-          contract_type: executorAssetType,
-        } = this.tradeSelectedItemTo.find((asset) => asset.selected > 0)
+        // const {
+        //   token_address: executorAssetContract,
+        //   token_id: executorAssetId,
+        //   chosenAmount: executorAmount,
+        //   contract_type: executorAssetType,
+        // } = this.executorSelectedAssets.find((asset) => asset.selected > 0)
 
-        const executorWalletAdd = this.itemTo.address
+        const executorWalletAdd = this.executorAddress
 
         const executorObject = {
-          executorAssetContract,
-          executorAssetId,
-          executorAmount,
-          executorAssetType,
+          executorAssetContract: [],
+          executorAssetId: [],
+          executorAmount: [],
+          executorAssetType: [],
           executorWalletAdd,
         }
+        for (const project in this.executorSelectedAssets) {
+          this.executorSelectedAssets[project].forEach((asset) => {
+            if (asset.selected) {
+              const amount =
+                asset.contract_type === 'ERC20'
+                  ? ethers.utils.parseEther(asset.chosenAmount.toString())
+                  : asset.chosenAmount
 
+              executorObject.executorAssetContract.push(asset.token_address)
+              executorObject.executorAssetId.push(asset.token_id)
+              executorObject.executorAmount.push(amount)
+              executorObject.executorAssetType.push(
+                TRADE_TYPE[asset.contract_type]
+              )
+            }
+          })
+        }
         createNewTrade.log('executorObject', executorObject)
 
         this.loadingBtn = true

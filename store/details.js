@@ -17,6 +17,7 @@ export const actions = {
       const project = rootState.trader.projects.find(
         (p) => p.contractAddress === contractAddress
       )
+      detailsLog(project)
 
       if (!project) return {}
 
