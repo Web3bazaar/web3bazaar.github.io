@@ -3,6 +3,9 @@ export const state = () => ({
   actionButton: new Audio(
     require('@/assets/audio/SFX/click-buttons.wav').default
   ),
+  successState: new Audio(
+    require('@/assets/audio/SFX/success_op1.wav').default
+  ),
 })
 
 export const actions = {

@@ -40,7 +40,7 @@
 
 <script>
 import { ethers } from 'ethers'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 const createNewTrade = {
   log: require('debug')('w3b:view:createNewTrade'),
@@ -117,6 +117,8 @@ export default {
     this.$store.commit(`trader/resetSelectedAssets`)
   },
   methods: {
+    ...mapActions('sound', ['playSFXAudio']),
+
     async checkIfContractIsApprovedForWallet(
       contractAddress,
       contractType,
@@ -365,6 +367,7 @@ export default {
                 'Your trade is now open in the Bazaar. Check its status in the Main Square.',
             },
           })
+          this.playSFXAudio({ audioToPlay: 'successState' })
         }
       } catch (error) {
         createNewTrade.log('error', error)

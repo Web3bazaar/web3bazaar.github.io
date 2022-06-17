@@ -133,6 +133,7 @@ export default {
   },
   methods: {
     ...mapActions(['getTradesInfo']),
+    ...mapActions('sound', ['playSFXAudio']),
 
     async handleTrade(trade) {
       this.loadingBtn = true
@@ -164,6 +165,7 @@ export default {
               message: 'You have successfully claimed your assets back.',
             },
           })
+          this.playSFXAudio({ audioToPlay: 'successState' })
         } else {
           const { contractAddressArray, contractTypeArray } =
             await this.$store.dispatch(
@@ -228,10 +230,13 @@ export default {
               message: 'Your new assets have been claimed.',
             },
           })
+          this.playSFXAudio({ audioToPlay: 'successState' })
         }
 
         // update the dashboard silently
-        this.getTradesInfo()
+        setTimeout(() => {
+          this.getTradesInfo()
+        }, 2.5 * 1000)
       } catch (error) {
         console.error(error)
         this.$store.commit('modals/closeModal')

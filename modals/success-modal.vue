@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     closePopup() {
-      // this.$router.push({ name: 'main-square' })
+      this.$router.push({ name: 'main-square' })
       this.$emit('close')
     },
   },
