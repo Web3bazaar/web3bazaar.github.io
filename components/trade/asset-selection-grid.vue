@@ -10,53 +10,28 @@
       >
         <v-container class="pa-0">
           <v-row no-gutters @click="changeSelection(index)">
+            <v-col
+              v-if="asset.contract_type !== $contractTypes.ERC20"
+              cols="12"
+              class="pa-0 asset-name"
+              :class="{ selected: asset.selected }"
+            >
+              <p class="text-center mb-0">
+                {{ asset.metadata.name | truncate(10) }}
+              </p>
+            </v-col>
             <v-col class="pa-0">
               <div class="img-wrapper">
                 <v-img :src="asset.metadata.image" contain />
               </div>
-
-              <v-fade-transition>
-                <v-overlay v-if="asset.selected" absolute color="transparent">
-                  <v-container class="pa-3">
-                    <v-row justify="center">
-                      <v-col cols="12" class="pa-0">
-                        <p class="text-center">
-                          {{ asset.metadata.name | truncate(10) }}
-                        </p>
-                      </v-col>
-                      <v-spacer />
-                      <!-- <v-col cols="2" class="pa-0">
-                            <v-btn
-                              dark
-                              fab
-                              x-small
-                              color="primary"
-                              @click.stop="decreaseAmount(index)"
-                            >
-                              <v-icon dark> mdi-minus </v-icon>
-                            </v-btn>
-                          </v-col> -->
-                      <!-- <v-col cols="2" class="pa-0">
-                            <v-text-field :value="getAmount(index)" />
-                          </v-col> -->
-
-                      <!-- <v-col cols="2" class="pa-0">
-                            <v-btn
-                              fab
-                              dark
-                              x-small
-                              @click.stop="increaseAmount(index)"
-                            >
-                              <v-icon dark> mdi-plus </v-icon>
-                            </v-btn>
-                          </v-col> -->
-                    </v-row>
-                  </v-container>
-                </v-overlay>
-              </v-fade-transition>
             </v-col>
           </v-row>
-          <div v-if="asset.selected" class="amount-wrapper">
+          <div
+            v-if="
+              asset.selected && asset.contract_type !== $contractTypes.ERC721
+            "
+            class="amount-wrapper"
+          >
             <label>Amount:</label>
             <div class="d-flex justify-space-around">
               <input
@@ -66,11 +41,11 @@
                 @input="updateAmount($event, index)"
               />
               <span
-                class="d-flex grey--text"
+                class="d-flex grey--text max-button"
                 style="cursor: pointer"
                 @click.prevent="updateAmount(getMaxAmount(index), index)"
               >
-                Max
+                Max ({{ getMaxAmount(index) }})
               </span>
             </div>
           </div>
@@ -247,6 +222,12 @@ export default {
   max-height: 250px;
   overflow: hidden;
   overflow-y: auto;
+
+  .asset-name {
+    p {
+      font-size: 0.75rem !important;
+    }
+  }
   p {
     font-size: 0.9em !important;
     color: white;
@@ -256,8 +237,11 @@ export default {
   }
   .amount-wrapper {
     margin-top: 2px;
-    span {
+    span.max-button {
       line-height: 14px;
+      border: solid 1px purple;
+      border-radius: 2px;
+      padding: 1px 2px;
     }
     .amount-input {
       height: 14px;
@@ -328,13 +312,13 @@ export default {
     .v-image {
       border-radius: 5px;
 
-      outline: solid 2px purple;
+      outline: solid 1px rgba(255, 110, 255, 0.781);
     }
   }
   .selected > div .img-wrapper {
     .v-image {
-      outline: solid 2px yellow;
-      filter: grayscale(100%);
+      outline: solid 3px green;
+      size: 120%;
     }
   }
 }

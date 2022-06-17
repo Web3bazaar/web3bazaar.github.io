@@ -1,3 +1,10 @@
+[0.2.1]
+    - Asset selection grid has a few UI tweaks
+        - Changed asset border, removed grayscale
+        - Number of selected assets only show when assets are selected
+    - Disabled new asset selection when contracts are being approved
+    - Added loading state when approving contracts
+    - Texts changes
 [0.2]
     Major rework to use new version of the contract:
     - Batch Trades, now you can select multiple assets and tokens 

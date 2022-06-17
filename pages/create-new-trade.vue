@@ -8,7 +8,11 @@
       </v-row>
       <v-row v-if="isWalletConnected">
         <v-col>
-          <trade-list-wrapper :new-trade="true" :projects="projects" />
+          <trade-list-wrapper
+            :new-trade="true"
+            :projects="projects"
+            :disabled="loadingBtn"
+          />
         </v-col>
         <v-col cols="12" class="text-center mt-8">
           <ui-action-btn
@@ -59,7 +63,6 @@ export default {
     return {
       ADD_TRADE,
       APPROVE,
-      isSelectedContractApproved: false,
       contractsToApprove: [],
       loadingBtn: false,
     }
@@ -72,6 +75,9 @@ export default {
       'creatorSelectedAssets',
       'executorSelectedAssets',
     ]),
+    isSelectedContractApproved() {
+      return this.contractsToApprove.length === 0
+    },
   },
   watch: {
     async creatorSelectedAssets(val) {
@@ -105,8 +111,6 @@ export default {
       }
       this.loadingBtn = false
       createNewTrade.log('contractsToApprove watch', this.contractsToApprove)
-
-      this.isSelectedContractApproved = this.contractsToApprove.length === 0
     },
   },
   mounted() {
@@ -141,7 +145,11 @@ export default {
     ) {
       let result
       try {
-        this.loadingBtn = true
+        this.$store.commit('modals/setPopupState', {
+          type: 'loading',
+          isShow: true,
+        })
+
         result = await this.$store.dispatch('bazaar-connector/setApproval', {
           contractAddress,
           contractType,
@@ -151,9 +159,12 @@ export default {
         if (result === 'REJECTED') {
           return result
         }
-        this.loadingBtn = false
       } catch (error) {
+        if (error === 'REJECTED') {
+          return error
+        }
         createNewTrade.error('error', error)
+        throw new Error(error)
       }
 
       return result
@@ -180,6 +191,8 @@ export default {
       try {
         if (this.contractsToApprove.length === 0) return
 
+        const promises = []
+
         for (let i = 0; i < this.contractsToApprove.length; i++) {
           const { creatorAssetContract, creatorAssetType } =
             this.contractsToApprove[i] || {}
@@ -187,6 +200,10 @@ export default {
           if (!creatorAssetContract || !creatorAssetType) return
 
           this.loadingBtn = true
+          this.$store.commit('modals/setPopupState', {
+            type: 'loading',
+            isShow: true,
+          })
 
           const isApproved = await this.checkIfContractIsApprovedForWallet(
             creatorAssetContract,
@@ -196,15 +213,24 @@ export default {
           createNewTrade.log('isApproved', isApproved)
 
           if (!isApproved) {
-            this.setApproval(
-              creatorAssetContract,
-              creatorAssetType,
-              this.account
+            promises.push(
+              this.setApproval(
+                creatorAssetContract,
+                creatorAssetType,
+                this.account
+              )
             )
           }
         }
+
+        await Promise.all(promises)
+        this.contractsToApprove = []
+        this.$store.commit('modals/closeModal')
+        this.loadingBtn = false
       } catch (error) {
         createNewTrade.error('approveSelectedContract error', error)
+        this.$store.commit('modals/closeModal')
+        this.loadingBtn = false
       }
     },
     async newTrade() {
@@ -284,6 +310,12 @@ export default {
           })
         }
         createNewTrade.log('executorObject', executorObject)
+
+        if (
+          creatorObject.creatorAmount.length === 0 ||
+          executorObject.executorAmount.length === 0
+        )
+          return
 
         this.loadingBtn = true
 

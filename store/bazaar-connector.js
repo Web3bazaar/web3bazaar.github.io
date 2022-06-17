@@ -411,12 +411,22 @@ export const actions = {
           {}
         )
         bazaarConnectorLog.log('is approved for all: ', tx)
-
+        commit(
+          'modals/setPopupState',
+          {
+            type: 'loading',
+            isShow: true,
+            data: {
+              state: 'mining',
+            },
+          },
+          { root: true }
+        )
         return await tx.wait()
       }
     } catch (error) {
       bazaarConnectorLog.error('isApproved', error)
-      if (error?.code === 4001) return 'REJECTED'
+      if (error?.code === 4001) throw new Error('REJECTED')
 
       throw error?.data || error
     }

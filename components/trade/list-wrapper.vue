@@ -1,5 +1,8 @@
 <template>
-  <v-container class="list-wrapper trades-wrapper-row">
+  <v-container
+    class="list-wrapper trades-wrapper-row"
+    :class="{ disabledContainer: disabled }"
+  >
     <v-row :class="{ 'new-trade': newTrade }" justify="center">
       <v-col cols="12" sm="5" class="item-col">
         <p class="">You</p>
@@ -54,6 +57,10 @@ export default {
       default: false,
     },
     newTrade: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -186,6 +193,9 @@ export default {
 </script>
 
 <style lang="scss">
+.disabledContainer {
+  pointer-events: none;
+}
 .trades-wrapper-row {
   .item-col:first-child .item-card section.list-item {
     left: 3px;

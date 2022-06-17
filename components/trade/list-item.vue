@@ -72,7 +72,7 @@
                       cols="auto"
                       class="selected-assets d-flex align-center"
                     >
-                      <div>
+                      <div v-if="numberSelectedAssets(getAssets(project)) > 0">
                         {{ numberSelectedAssets(getAssets(project)) }}
                       </div>
                     </v-col>
