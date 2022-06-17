@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row class="list-trade-row py-4" justify="center">
+    <v-row class="list-trade-row pb-4" justify="center">
       <v-col cols="12" sm="12" class="d-flex flex-column item-col">
         <div id="account_from">
           <p>
@@ -28,7 +28,7 @@
       <v-col
         cols="12"
         sm="12"
-        class="d-flex flex-column align-center text-center pt-7 pb-0"
+        class="d-flex flex-column align-center text-center py-0 pt-7"
       >
         <v-img
           contain
@@ -81,10 +81,10 @@
         v-if="tradeBtn(trade)"
         cols="12"
         sm="12"
-        class="d-flex justify-center"
+        class="d-flex justify-center pt-0"
       >
         <ui-action-btn
-          class="mb-7"
+          class="mb-7 mt-0"
           :loading="loadingBtn"
           :btn-text="tradeBtn(trade)"
           @click="handleTrade(trade)"

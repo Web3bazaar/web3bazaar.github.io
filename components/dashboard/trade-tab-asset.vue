@@ -4,20 +4,20 @@
       <!-- <v-col cols="12">
           <div id="account_from">{{ asset.address | truncate(9) }}</div>
         </v-col> -->
-      <v-col cols="12" sm="7" class="d-flex justify-center">
-        <v-img contain class="ml-0" max-height="150px" :src="baseImg" />
+      <v-col cols="auto" class="d-flex justify-center">
+        <v-img
+          contain
+          class="ml-0"
+          max-height="120px"
+          max-width="120px"
+          :src="baseImg"
+        />
       </v-col>
-      <v-col cols="12" sm="5" class="d-flex flex-column justify-space-around">
-        <!-- <div id="project_from" class="text-left pb-3">
-          <a
-            :href="projectLink"
-            target="_blank"
-            class="item-quantity text-left small-links white--text"
-          >
-            {{ projectName }}
-            <img :width="16" :src="linkIcon" />
-          </a>
-        </div> -->
+      <v-col
+        cols="12"
+        sm="5"
+        class="d-flex flex-column justify-space-around pl-0 item-info-col"
+      >
         <div class="item-info text-left mb-0">
           <a
             v-if="asset.contractTypeIndex !== 1"
@@ -84,8 +84,21 @@ export default {
 
 <style lang="scss">
 .trade-tab-asset {
-  .item-info * {
-    text-align: left !important;
+  // &:not(:nth-child(3)) {
+  //   .row {
+  //     .item-info-col {
+  //       border-right: solid 1px lightgray;
+  //     }
+  //   }
+  // }
+
+  .item-info {
+    * {
+      text-align: left !important;
+    }
+    .item-name.small-links {
+      font-size: 0.8rem;
+    }
   }
   @media (max-width: 620px) {
     .item-info * {
