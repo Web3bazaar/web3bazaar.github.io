@@ -26,6 +26,7 @@
               v-for="asset in project.assets"
               :key="asset.idAsset"
               cols="3"
+              sm="3"
               style=""
             >
               <dashboard-trade-tab-asset :asset="asset" />

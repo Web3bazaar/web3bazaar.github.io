@@ -1,13 +1,13 @@
 <template>
-  <v-container class="trade-tab-asset">
+  <v-container class="trade-tab-asset pa-2 pa-sm-3">
     <v-row class="justify-space-evenly">
       <!-- <v-col cols="12">
           <div id="account_from">{{ asset.address | truncate(9) }}</div>
         </v-col> -->
-      <v-col cols="7" class="d-flex justify-center">
+      <v-col cols="12" sm="7" class="d-flex justify-center">
         <v-img contain class="ml-0" max-height="150px" :src="baseImg" />
       </v-col>
-      <v-col cols="5" class="d-flex flex-column justify-space-around">
+      <v-col cols="12" sm="5" class="d-flex flex-column justify-space-around">
         <!-- <div id="project_from" class="text-left pb-3">
           <a
             :href="projectLink"
@@ -18,22 +18,20 @@
             <img :width="16" :src="linkIcon" />
           </a>
         </div> -->
-        <div
-          v-if="asset.contractTypeIndex !== 1"
-          class="item-name text-left mb-0"
-        >
+        <div class="item-info text-left mb-0">
           <a
+            v-if="asset.contractTypeIndex !== 1"
             :href="externalUrl"
             target="_blank"
-            class="item-name text-left small-links grey--text"
+            class="item-name small-links grey--text mb-6"
           >
             Token ID {{ asset.idAsset }}
             <img :width="16" :src="linkIcon" />
           </a>
+          <p class="item-quantity grey--text mb-0">
+            Amount {{ formattedQuantity }}
+          </p>
         </div>
-        <p class="item-quantity text-left grey--text mb-0">
-          Amount {{ formattedQuantity }}
-        </p>
       </v-col>
     </v-row>
   </v-container>
@@ -86,5 +84,16 @@ export default {
 
 <style lang="scss">
 .trade-tab-asset {
+  .item-info * {
+    text-align: left !important;
+  }
+  @media (max-width: 620px) {
+    .item-info * {
+      text-align: center !important;
+    }
+    .item-info > * {
+      font-size: 0.55rem !important;
+    }
+  }
 }
 </style>
