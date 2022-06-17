@@ -75,7 +75,7 @@ export const state = () => ({
       description: 'Test contract for weebazaar ERC1155',
       background_image: require('@/assets/img/banners/Twitter 3.jpg'),
 
-      contractAddress: '0x638A0ec36d2E89d8671e193854A56326a24455aA',
+      contractAddress: '0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
       baseUrl: 'https://api-testnet.polygonscan.com/',
       network: 'MUMBAI',
       contractType: 'ERC1155',
@@ -83,11 +83,11 @@ export const state = () => ({
       twitter: '',
       api_metadata: 'https://webazaar-meta-api.herokuapp.com/1155/detail/{id}',
       blockExplorerUrl:
-        'https://mumbai.polygonscan.com/address/0x638A0ec36d2E89d8671e193854A56326a24455aA',
+        'https://mumbai.polygonscan.com/address/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
       assetExternalLink:
-        'https://mumbai.polygonscan.com/token/0x638A0ec36d2E89d8671e193854A56326a24455aA?a=',
+        'https://mumbai.polygonscan.com/token/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f?a=',
       projectLink:
-        'https://mumbai.polygonscan.com/address/0x638A0ec36d2E89d8671e193854A56326a24455aA',
+        'https://mumbai.polygonscan.com/address/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
       api_metadata_sample: {
         name: '',
         description: '',
