@@ -134,8 +134,9 @@ export const actions = {
         throw new Error('Network did not change to ' + chainId)
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       // throw new Error(error)
+      return error
     }
   },
 }
@@ -148,4 +149,9 @@ export const mutations = {
 export const getters = {
   getActiveChain: (state) =>
     state.networksData.find((item) => item.chainId === state.activeNetwork),
+  getActiveChainBlockExplorerURL: (state) =>
+    (
+      state.networksData.find((item) => item.chainId === state.activeNetwork) ||
+      {}
+    ).blockExplorerUrls?.[0],
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="loading-popup">
+  <div class="loading-popup text-center">
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
@@ -9,10 +9,23 @@
       <v-img :src="successGIF" max-height="300" />
     </div>
     <p class="title text-center">{{ message }}</p>
+    <p class="title text-center">
+      You can check the transaction
+
+      <a
+        v-if="txHash"
+        :href="transactionUrl"
+        target="_blank"
+        class="title text-center"
+        >here
+        <img :width="16" :src="linkIcon" />
+      </a>
+    </p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import CloseButton from '~/assets/img/svg/CloseButton.vue'
 
 export default {
@@ -26,14 +39,25 @@ export default {
   data() {
     return {
       successGIF: require('../assets/gifs/success-trade.gif'),
+      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
   computed: {
+    ...mapGetters('networks', {
+      BlockExplorerURL: 'getActiveChainBlockExplorerURL',
+    }),
+
     message() {
       return this.modalData?.message
     },
     animated() {
       return this.modalData?.animated
+    },
+    txHash() {
+      return this.modalData?.txHash
+    },
+    transactionUrl() {
+      return this.BlockExplorerURL + 'tx/' + this.txHash
     },
   },
   methods: {

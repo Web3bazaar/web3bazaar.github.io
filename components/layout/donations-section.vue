@@ -86,7 +86,7 @@ export default {
   justify-content: center;
   align-items: center;
   .row {
-    max-width: 1200px;
+    max-width: 1260px;
 
     .donate-btn {
       position: relative;

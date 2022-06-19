@@ -98,7 +98,7 @@ export const actions = {
 
       return startTradeTx // Web3ABI.decodeParameter('bool', startTradeTx.data)
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       bazaarConnectorLog.error(error)
       throw error
     }
@@ -228,7 +228,7 @@ export const actions = {
     try {
       const executeTrade = await webazaarInstance.executeTrade(tradeId)
 
-      bazaarConnectorLog.log('Open trades for users ', executeTrade)
+      bazaarConnectorLog.log('executeTrade tx info ', executeTrade)
       return executeTrade
     } catch (err) {
       bazaarConnectorLog.error(err)

@@ -47,7 +47,7 @@ export default {
       default: () => {},
     },
   },
-  data: () => {
+  data() {
     return {
       linkIcon: require('@/assets/img/icons/link.png'),
       baseImg: null,
