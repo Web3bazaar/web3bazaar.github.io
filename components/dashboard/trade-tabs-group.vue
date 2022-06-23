@@ -62,11 +62,16 @@ export default {
 <style lang="scss">
 .trade-tabs-group-card {
   border-radius: 0;
+  height: 100%;
 }
 
 .trade-tabs {
+  .v-tabs-bar {
+    height: 42px;
+  }
   .v-tab {
     max-width: unset;
+    font-size: 0.8rem;
   }
 }
 .background_image {

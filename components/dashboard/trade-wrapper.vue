@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-row class="list-trade-row pb-4" justify="center">
-      <v-col cols="12" sm="12" class="d-flex flex-column item-col">
+      <v-col class="d-flex flex-column item-col">
         <div id="account_from">
-          <p>
+          <p class="mb-1">
             <span
               v-if="
                 account.toLowerCase() === trade.creator.address.toLowerCase()
@@ -27,21 +27,21 @@
 
       <v-col
         cols="12"
-        sm="12"
+        sm="1"
         class="d-flex flex-column align-center text-center py-0 pt-7"
       >
         <v-img
           contain
           class="mx-auto"
           max-width="40px"
-          style="transform: rotate(90deg)"
+          style="transform: rotate(0deg)"
           :src="require('@/assets/img/icons/switch.png')"
         />
       </v-col>
       <!-- To -->
-      <v-col cols="12" sm="12" class="d-flex flex-column item-col pt-0">
+      <v-col class="d-flex flex-column item-col">
         <div id="account_from">
-          <p>
+          <p class="mb-1">
             <span
               v-if="
                 account.toLowerCase() === trade.executor.address.toLowerCase()

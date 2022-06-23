@@ -56,7 +56,7 @@
         <v-col v-if="value" cols="12" sm="12">
           <p>Choose your assets</p>
 
-          <v-expansion-panels>
+          <v-expansion-panels class="projects-panels">
             <v-expansion-panel v-for="(project, i) in projects" :key="i">
               <v-expansion-panel-header
                 v-if="getAssets(project) && getAssets(project).length > 0"
@@ -180,6 +180,11 @@ export default {
     min-width: 20px;
     border-radius: 50%;
     background-color: #a6a6a65e;
+  }
+}
+.projects-panels {
+  .v-expansion-panel-content__wrap {
+    padding: 0 12px 16px;
   }
 }
 </style>

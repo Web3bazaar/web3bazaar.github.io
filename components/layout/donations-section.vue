@@ -19,7 +19,7 @@
             cols="auto"
             class="d-flex align-center"
           >
-            <button class="pixel2" @click="callDonateAmount(percentage)">
+            <button class="pixel2 ma-1" @click="callDonateAmount(percentage)">
               {{ getCurrentChainValue(percentage) }}
             </button>
           </v-col>

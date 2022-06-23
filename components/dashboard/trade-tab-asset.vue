@@ -1,37 +1,34 @@
 <template>
   <v-container class="trade-tab-asset pa-2 pa-sm-3">
-    <v-row class="justify-space-evenly">
+    <v-row class="justify-center">
       <!-- <v-col cols="12">
           <div id="account_from">{{ asset.address | truncate(9) }}</div>
         </v-col> -->
       <v-col cols="auto" class="d-flex justify-center">
-        <v-img
+        <img
           contain
           class="ml-0"
-          max-height="120px"
-          max-width="120px"
+          style="max-height: 100px; max-width: 120px"
           :src="baseImg"
         />
       </v-col>
       <v-col
         cols="12"
-        sm="5"
-        class="d-flex flex-column justify-space-around pl-0 item-info-col"
+        md="auto"
+        class="d-flex flex-column justify-center item-info"
       >
-        <div class="item-info text-left mb-0">
-          <a
-            v-if="asset.contractTypeIndex !== 1"
-            :href="externalUrl"
-            target="_blank"
-            class="item-name small-links grey--text mb-6"
-          >
-            Token ID {{ asset.idAsset }}
-            <img :width="16" :src="linkIcon" />
-          </a>
-          <p class="item-quantity grey--text mb-0">
-            Amount {{ formattedQuantity }}
-          </p>
-        </div>
+        <a
+          v-if="asset.contractTypeIndex !== 1"
+          :href="externalUrl"
+          target="_blank"
+          class="item-name small-links grey--text mb-1"
+        >
+          Token ID {{ asset.idAsset }}
+          <img :width="16" :src="linkIcon" />
+        </a>
+        <p class="item-quantity grey--text mb-0">
+          Amount {{ formattedQuantity }}
+        </p>
       </v-col>
     </v-row>
   </v-container>
@@ -91,16 +88,19 @@ export default {
   //     }
   //   }
   // }
-
+  .item-quantity {
+    display: inline;
+    font-size: 0.7rem;
+  }
   .item-info {
     * {
       text-align: left !important;
     }
     .item-name.small-links {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
     }
   }
-  @media (max-width: 620px) {
+  @media (max-width: 720px) {
     .item-info * {
       text-align: center !important;
     }
