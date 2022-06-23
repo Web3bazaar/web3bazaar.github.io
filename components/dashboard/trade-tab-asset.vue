@@ -4,6 +4,24 @@
       <!-- <v-col cols="12">
           <div id="account_from">{{ asset.address | truncate(9) }}</div>
         </v-col> -->
+      <v-col
+        cols="12"
+        md="auto"
+        class="d-flex flex-column justify-center item-info pb-0"
+      >
+        <a
+          v-if="asset.contractTypeIndex !== 1"
+          :href="externalUrl"
+          target="_blank"
+          class="item-name small-links grey--text"
+        >
+          Token ID:
+          <span>
+            {{ asset.idAsset }}
+          </span>
+          <img :width="16" :src="linkIcon" />
+        </a>
+      </v-col>
       <v-col cols="auto" class="d-flex justify-center">
         <img
           contain
@@ -15,19 +33,10 @@
       <v-col
         cols="12"
         md="auto"
-        class="d-flex flex-column justify-center item-info"
+        class="d-flex flex-column justify-center item-info pt-0"
       >
-        <a
-          v-if="asset.contractTypeIndex !== 1"
-          :href="externalUrl"
-          target="_blank"
-          class="item-name small-links grey--text mb-1"
-        >
-          Token ID {{ asset.idAsset }}
-          <img :width="16" :src="linkIcon" />
-        </a>
         <p class="item-quantity grey--text mb-0">
-          Amount {{ formattedQuantity }}
+          Amount:<span> {{ formattedQuantity }} </span>
         </p>
       </v-col>
     </v-row>
@@ -90,14 +99,21 @@ export default {
   // }
   .item-quantity {
     display: inline;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   .item-info {
     * {
       text-align: left !important;
     }
     .item-name.small-links {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
+    }
+    .item-name,
+    .item-quantity {
+      span {
+        color: rgb(204, 0, 177);
+        font-size: 0.85rem;
+      }
     }
   }
   @media (max-width: 720px) {
@@ -105,7 +121,7 @@ export default {
       text-align: center !important;
     }
     .item-info > * {
-      font-size: 0.55rem !important;
+      font-size: 0.65rem !important;
     }
   }
 }

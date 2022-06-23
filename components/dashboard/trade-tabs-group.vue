@@ -74,11 +74,12 @@ export default {
     font-size: 0.8rem;
   }
 }
-.background_image {
+.background_image.v-card {
   // width: 200px;
   // height: 200px;
   display: block;
   position: relative;
+  background-color: #393939;
 }
 
 .background_image::before {
@@ -87,7 +88,7 @@ export default {
   // background-image: var(--hero-image);
   background-size: cover;
   // background-position: center;
-  opacity: 0.09;
+  opacity: 0.16;
   top: 0;
   left: 0;
   bottom: 0;
