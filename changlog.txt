@@ -1,3 +1,7 @@
+
+[0.2.2]
+    - The trades created/canceled in the last 3 days now show up on Main Square
+    - Added better contrast in some labels
 [0.2.1]
     - Asset selection grid has a few UI tweaks
         - Changed asset border, removed grayscale
