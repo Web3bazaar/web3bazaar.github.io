@@ -155,7 +155,7 @@ export const actions = {
             ...e,
             metadata: await getAssetMetadata(e),
             amount:
-              e.contract_type === 'ERC1155'
+              e.contract_type === 'ERC1155' && e.amount?.length >= 18
                 ? ethers.utils.formatUnits(e.amount)
                 : e.amount,
           }))
