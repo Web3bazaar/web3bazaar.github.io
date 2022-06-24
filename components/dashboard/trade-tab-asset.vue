@@ -13,7 +13,7 @@
           v-if="asset.contractTypeIndex !== 1"
           :href="externalUrl"
           target="_blank"
-          class="item-name small-links grey--text"
+          class="item-name small-links"
         >
           Token ID:
           <span>
@@ -35,7 +35,7 @@
         md="auto"
         class="d-flex flex-column justify-center item-info pt-0"
       >
-        <p class="item-quantity grey--text mb-0">
+        <p class="item-quantity mb-0">
           Amount:<span> {{ formattedQuantity }} </span>
         </p>
       </v-col>
@@ -110,8 +110,9 @@ export default {
     }
     .item-name,
     .item-quantity {
+      color: lightgray;
       span {
-        color: rgb(204, 0, 177);
+        color: lightpink;
         font-size: 0.85rem;
       }
     }
