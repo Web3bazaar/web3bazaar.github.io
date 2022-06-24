@@ -133,6 +133,7 @@ export const actions = {
         wallet: wa,
         options: {
           chain: 'mumbai',
+          // chain: activeChain.code,
         },
       }
       const { nfts: nftsList } = await getNFTList(params)

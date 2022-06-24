@@ -149,7 +149,7 @@ export const actions = {
     }
   },
 
-  async getTradeInfo({ commit }, { walletAddress, tradeId }) {
+  async getTradeInfo({ commit }, { walletAddress, tradeId, eventLogsList }) {
     const webazaarABI = require('../const/abis/webazaar.json')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
@@ -162,7 +162,13 @@ export const actions = {
     const [creatorWalletAddress, executorWalletAddress, tradeStatus] =
       await webazaarInstance['getTrade(uint256)'](tradeId)
 
-    if (tradeStatus !== 1) {
+    const found = eventLogsList.find(
+      (event) =>
+        ethers.utils.defaultAbiCoder.decode(['uint256'], event.data)[0]._hex ===
+        tradeId
+    )
+
+    if (tradeStatus !== 1 && !found) {
       return { tradeStatus, tradeId }
     }
 

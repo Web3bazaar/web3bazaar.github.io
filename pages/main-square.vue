@@ -108,18 +108,6 @@ export default {
         projectLink,
       }
     },
-
-    async getTradesIds() {
-      return await this.$store.dispatch('bazaar-connector/getOpenTrades', {
-        walletAddress: this.account,
-      })
-    },
-    async getSingleTradeInfo(tradeId) {
-      return await this.$store.dispatch('bazaar-connector/getTradeInfo', {
-        walletAddress: this.account,
-        tradeId,
-      })
-    },
   },
 }
 </script>

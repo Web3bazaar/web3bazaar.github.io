@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 import { ethers } from 'ethers'
 
@@ -134,61 +134,7 @@ export default {
 
     this.$store.commit('modals/closeModal')
   },
-  methods: {
-    ...mapActions('bazaar-connector', ['getTradeInfo']),
-
-    async checkForTrade(tradeId, status) {
-      const res = await this.$store.dispatch('bazaar-connector/getTradeInfo', {
-        walletAddress: this.account,
-        tradeId,
-      })
-
-      if (res.tradeStatus === status) {
-        return true
-      }
-
-      await this.$sleeper(4 * 1000)
-
-      return await this.checkForTrade(tradeId, status)
-    },
-    // checkIfContractIsApprovedForWallet(
-    //   contractAddress,
-    //   contractType,
-    //   walletAddress
-    // ) {
-    //   try {
-    //     return new Promise((resolve) => {
-    //       resolve(
-    //         this.$store.dispatch('bazaar-connector/isApproved', {
-    //           contractAddress,
-    //           contractType,
-    //           walletAddress,
-    //         })
-    //       )
-    //     }).then((result) => {
-    //       if (result) return result
-    //       else {
-    //         const t = setInterval(() => {
-    //           this.numTries--
-    //           if (this.numTries === 0) clearInterval(t)
-    //           return this.checkIfContractIsApprovedForWallet(
-    //             contractAddress,
-    //             contractType,
-    //             this.account
-    //           ).then((res) => {
-    //             if (res) {
-    //               clearInterval(t)
-    //               return res
-    //             }
-    //           })
-    //         }, 4 * 1000)
-    //       }
-    //     })
-    //   } catch (error) {
-    //     console.error('error', error)
-    //   }
-    // },
-  },
+  methods: {},
 }
 </script>
 
@@ -213,11 +159,11 @@ export default {
   }
 }
 
-.new-trade {
-  .v-card.item-card {
-    // height: 500px;
-  }
-}
+// .new-trade {
+//   .v-card.item-card {
+//     // height: 500px;
+//   }
+// }
 .trade-item {
   div[class^='col'] {
     position: relative;

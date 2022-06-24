@@ -1,5 +1,25 @@
 import { ethers } from 'ethers'
 
+const MUMBAI_API_KEY = '2XSDG5S2EBJ8SDMXU9YJ7B7N75I6V8HPGW'
+
+const BAZAAR_CONTRACT_ADDRESS = process.env.BAZAAR_CONTRACT_ADDRESS
+
+const BASE_URL = 'https://api-testnet.polygonscan.com/api'
+
+const polygonscanUrlGenerator = (fromBlock) => `${BASE_URL}
+?module=logs&action=getLogs
+&fromBlock=${fromBlock}
+&toBlock=latest
+&address=${BAZAAR_CONTRACT_ADDRESS}
+&apikey=${MUMBAI_API_KEY}`
+
+const getLatestBlockUrl = (timestamp) => `${BASE_URL}
+?module=block
+&action=getblocknobytime
+&timestamp=${timestamp}
+&closest=before
+&apikey=${MUMBAI_API_KEY}`
+
 const contractTypes = ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE']
 
 const logger = {
@@ -14,9 +34,34 @@ export const state = () => ({
   tradesExecutor: [],
 })
 
+function getLast3DaysDate() {
+  const now = new Date()
+
+  return Math.round(
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3).getTime() /
+      1000
+  )
+}
+
 export const actions = {
+  async getLastedBlockInfo({ commit, dispatch, rootGetters }) {
+    const timestamp = getLast3DaysDate()
+
+    const { result: latestBlock } = (
+      await this.$axios.get(getLatestBlockUrl(timestamp))
+    ).data
+
+    const { result: eventLogs } = (
+      await this.$axios.get(polygonscanUrlGenerator(latestBlock))
+    ).data
+
+    return eventLogs
+  },
   async getTradesInfo({ commit, dispatch, rootGetters }) {
     logger.log('******* getTradesInfo ***** ')
+
+    const eventLogsList = await dispatch('getLastedBlockInfo')
+
     try {
       commit(
         'modals/setPopupState',
@@ -53,6 +98,7 @@ export const actions = {
             {
               walletAddress: rootGetters['connector/account'],
               tradeId: e._hex,
+              eventLogsList,
             },
             { root: true }
           )
@@ -66,10 +112,10 @@ export const actions = {
 
       for (let i = 0; i < resolvedPromises.length; i++) {
         const e = resolvedPromises[i]
-
-        if (e.tradeStatus !== 1) continue
-
         logger.log('Trade:  ', e)
+        if (!e) continue
+
+        // if (e.tradeStatus !== 1 && !found) continue
 
         if (
           e?.creatorWalletAddress ===

@@ -63,7 +63,7 @@
 
       <v-col cols="12" sm="12" class="align-center pt-0">
         <h6 class="text-left">
-          {{ getTradeStatus(trade, { from: true }) }}
+          {{ getTradeStatus(trade) }}
         </h6>
         <a
           :href="`https://mumbai.polygonscan.com/address/${bazaarContractAddress}`"
@@ -123,6 +123,11 @@ export default {
         alreadyClaimed:
           'You have already claimed these assets (waiting for counterparty to close the trade)',
         // 'TRADE_COMPLETED': ,
+      },
+      tradeStatusMessagesMap: {
+        1: 'TRADE_CREATED',
+        2: 'This trade was already completed',
+        3: 'This trade was cancelled',
       },
       linkIcon: require('@/assets/img/icons/link.png'),
       bazaarContractAddress: process.env.BAZAAR_CONTRACT_ADDRESS,
@@ -241,28 +246,49 @@ export default {
           return false
       }
     },
-    getTradeStatus(trade, { to, from }) {
-      this.$logger('trade: ', trade)
+    getTradeStatus(trade) {
+      this.$logger('trade: ', trade, this.creator)
 
       // console.log(trade.tradeId)
       // console.log(this.TradeStatus[trade?.tradeStatus])
       // console.log('creator', this.UserStatus[trade?.creator.traderStatus])
 
-      switch (true) {
-        // case this.creator && trade.tradeStatus === 3:
-
-        case this.creator && trade.creator.traderStatus === 3:
-        case !this.creator && trade.executor.traderStatus === 3:
-          return this.TradeStatusMessages.alreadyClaimed
-
-        case this.creator && trade.tradeStatus === 1:
+      if (this.creator) {
+        if (trade.tradeStatus === 1) {
           return this.TradeStatusMessages.waitingExecutor
-        case !this.creator && trade.tradeStatus === 1:
-          return this.TradeStatusMessages.depositExecutor
-        default:
-          return true
-        // break
+        } else {
+          return this.tradeStatusMessagesMap[trade.tradeStatus]
+        }
+      } else if (trade.tradeStatus === 1) {
+        return this.TradeStatusMessages.depositExecutor
+      } else {
+        return this.tradeStatusMessagesMap[trade.tradeStatus]
       }
+
+      // switch (true) {
+      //   // case this.creator && trade.tradeStatus === 3:
+      //   case this.creator && trade.tradeStatus === 1:
+      //     return this.TradeStatusMessages.waitingExecutor
+      //   case !this.creator && trade.tradeStatus === 1:
+      //     return this.TradeStatusMessages.depositExecutor
+      //   case this.creator:
+      //     console.log(this.tradeStatusMessagesMap[trade.tradeStatus])
+      //     return this.tradeStatusMessagesMap[trade.tradeStatus]
+      //   case !this.creator:
+      //     return this.tradeStatusMessagesMap[trade.tradeStatus]
+
+      //   // case this.creator && trade.creator.traderStatus === 3:
+      //   // case !this.creator && trade.executor.traderStatus === 3:
+      //   //   return this.TradeStatusMessages.alreadyClaimed
+
+      //   // case this.creator && trade.tradeStatus === 1:
+      //   //   return this.TradeStatusMessages.waitingExecutor
+      //   // case !this.creator && trade.tradeStatus === 1:
+      //   //   return this.TradeStatusMessages.depositExecutor
+      //   default:
+      //     return true
+      //   // break
+      // }
     },
   },
 }
