@@ -64,10 +64,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    projects: {
-      type: Array,
-      default: () => [],
-    },
   },
 
   data() {
@@ -89,6 +85,7 @@ export default {
   },
   computed: {
     ...mapState('connector', ['account']),
+    ...mapState('trader', ['projects']),
     executorAddress: {
       get() {
         return this.$store.state.trader.executorAddress
@@ -107,13 +104,12 @@ export default {
         val.toLowerCase() !== this.account.toLowerCase()
       ) {
         this.$store.dispatch('trader/listOwnedIds', {
-          selectedProjects: this.projects,
           wa: val,
         })
       }
     },
   },
-  async mounted() {
+  mounted() {
     // just for testing
     // this.$store.commit('trader/itemFrom', {
     //   ...this.itemFrom,
@@ -125,11 +121,6 @@ export default {
       data: {
         reading: true,
       },
-    })
-    await this.$store.dispatch('trader/listOwnedIds', {
-      selectedProjects: this.projects,
-      wa: this.account,
-      creator: true,
     })
 
     this.$store.commit('modals/closeModal')

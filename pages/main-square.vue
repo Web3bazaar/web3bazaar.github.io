@@ -95,14 +95,14 @@ export default {
         }
       )
 
-      const { projectName, assetExternalLink, projectLink } =
+      const { assetName, assetExternalLink, projectLink } =
         this.projects.find((p) => p.contractAddress === contractAddress) || {}
 
       const externalUrl = assetExternalLink + idAsset
 
       return {
         baseImg: image || tokenImage,
-        projectName,
+        assetName,
         itemName: name,
         externalUrl,
         projectLink,

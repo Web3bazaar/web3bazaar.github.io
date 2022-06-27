@@ -35,14 +35,14 @@
             label="Choose projects"
             :items="projects"
             return-object
-            item-text="projectName"
-            :value="value.projectName"
+            item-text="assetName"
+            :value="value.assetName"
             :disabled="!value.address"
-            @input="update('projectName', $event)"
+            @input="update('assetName', $event)"
           >
             <template #selection="{ item, index }">
               <v-chip v-if="index < maxProjectsToShow">
-                <span>{{ item.projectName | truncate(8, 'start') }}</span>
+                <span>{{ item.assetName | truncate(8, 'start') }}</span>
               </v-chip>
               <span
                 v-if="index === maxProjectsToShow"
@@ -65,7 +65,7 @@
                   <v-row justify="space-between">
                     <v-col cols="auto" class="pa-0 d-flex align-center">
                       <p class="bold mb-0">
-                        {{ project.projectName }}
+                        {{ project.assetName || project.projectName }}
                       </p>
                     </v-col>
                     <v-col
@@ -107,16 +107,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   components: {},
   props: {
     creator: {
       type: String,
       default: '',
-    },
-    projects: {
-      type: Array,
-      default: () => [],
     },
     value: {
       type: String,
@@ -133,7 +130,9 @@ export default {
       selectedProjects: [],
     }
   },
-  computed: {},
+  computed: {
+    ...mapState('trader', ['projects']),
+  },
   watch: {},
   methods: {
     numberSelectedAssets(assets) {
@@ -151,7 +150,7 @@ export default {
       })
 
       this.$store.commit('trader/updateProject', {
-        projectName: project.projectName,
+        contractAddress: project.contractAddress,
         [`${destination}Assets`]: val,
       })
       await this.$nextTick()

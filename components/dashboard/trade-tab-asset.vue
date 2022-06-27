@@ -58,7 +58,7 @@ export default {
       linkIcon: require('@/assets/img/icons/link.png'),
       baseImg: null,
       projectLink: null,
-      projectName: null,
+      assetName: null,
       externalUrl: null,
     }
   },
@@ -71,7 +71,7 @@ export default {
 
     this.baseImg = projectInfo.baseImg
     this.projectLink = projectInfo.projectLink
-    this.projectName = projectInfo.projectName
+    this.assetName = projectInfo.assetName
     this.externalUrl = projectInfo.externalUrl
   },
   computed: {

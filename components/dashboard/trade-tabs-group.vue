@@ -8,7 +8,7 @@
       dark
     >
       <v-tab v-for="project in assetsByProject" :key="project.contractAddress">
-        {{ project.projectName | truncate(30) }}
+        {{ project.assetName | truncate(30) }}
       </v-tab>
     </v-tabs>
 
@@ -19,7 +19,7 @@
       >
         <v-card
           class="background_image"
-          :style="`--background-image: url('${project.backgroundImage}')`"
+          :style="`--background-image: url('${project.banner}')`"
         >
           <v-row justify="start">
             <v-col

@@ -27,22 +27,34 @@ const getNFTList = async function (params) {
   }
 }
 
-const getAssetMetadata = async function (e) {
-  if (e.contract_type === 'ERC721') {
-    return (
-      await axios.get(
-        'https://webazaar-meta-api.herokuapp.com/721/detail/' + e.token_id
-      )
-    ).data
-  } else if (e.contract_type === 'ERC1155') {
-    return (
-      await axios.get(
-        'https://webazaar-meta-api.herokuapp.com/1155/detail/' + e.token_id
-      )
-    ).data
-  } else {
-    return JSON.parse(e.metadata || '{}')
+const getAssetMetadata = async function (
+  e,
+  metadataURL,
+  tokenId,
+  { defaultImage }
+) {
+  try {
+    return (await axios.get(metadataURL.replace('{id}', tokenId))).data
+    //     )
+  } catch (e) {
+    console.log(e)
+    return { ...JSON.parse(e.metadata || '{}'), image: defaultImage }
   }
+  // if (e.contract_type === 'ERC721') {
+  //   return (
+  //     await axios.get(
+  //       metadataURL + tokenId
+  //     )
+  //   ).data
+  // } else if (e.contract_type === 'ERC1155') {
+  //   return (
+  //     await axios.get(
+  //       'https://webazaar-meta-api.herokuapp.com/1155/detail/' + e.token_id
+  //     )
+  //   ).data
+  // } else {
+  // return JSON.parse(e.metadata || '{}')
+  // }
 }
 
 export const state = () => ({
@@ -51,7 +63,7 @@ export const state = () => ({
   executorAddress: '',
   projects: [
     {
-      projectName: 'Bazaar ERC721 Collection',
+      assetName: 'Bazaar ERC721 Collection',
       description: 'Test contract for weebazaar ERC721',
       backgroundBanner: require('@/assets/img/banners/Twitter 3.jpg'),
       contractAddress: '0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
@@ -70,7 +82,7 @@ export const state = () => ({
         'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
     },
     {
-      projectName: 'Bazaar ERC1155 Collection',
+      assetName: 'Bazaar ERC1155 Collection',
       description: 'Test contract for weebazaar ERC1155',
       backgroundBanner: require('@/assets/img/banners/Twitter 3.jpg'),
 
@@ -90,7 +102,7 @@ export const state = () => ({
         'https://mumbai.polygonscan.com/address/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
     },
     {
-      projectName: 'BAZCOIN',
+      assetName: 'BAZCOIN',
       description: 'Test contract for weebazaar ERC20',
       tokenImage: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
       contractAddress: '0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
@@ -113,7 +125,7 @@ export const actions = {
 
   async listOwnedIds(
     { commit, dispatch, state, rootGetters },
-    { wa, selectedProjects, creator }
+    { wa, creator }
   ) {
     try {
       const activeChain = rootGetters['networks/getActiveChain']
@@ -134,85 +146,115 @@ export const actions = {
       // }
 
       traderLogger.log('nftsList:', nftsList)
+      traderLogger.log('projects:', state.projects)
 
-      selectedProjects.forEach(async (project) => {
-        const groupByProject = await nftsList
-          .filter(
-            (e) =>
-              e.token_address.toLowerCase() ===
-              project.contractAddress.toLowerCase()
-          )
-          .map(async (e) => ({
-            ...e,
-            metadata: await getAssetMetadata(e),
-            amount:
-              e.contract_type === 'ERC1155' && e.amount?.length >= 18
-                ? ethers.utils.formatUnits(e.amount)
-                : e.amount,
-          }))
+      state.projects.forEach(async (project) => {
+        let groupByProject
+        if (project.contractType === 'ERC20') {
+          // const ownedTokens =
+
+          // ownedTokens[0].metadata.image = project.tokenImage
+
+          groupByProject = [
+            await dispatch(
+              'relayer-erc20/listERC20',
+              { ...project, wa, contractType: project.contractType },
+              { root: true }
+            ),
+          ]
+
+          groupByProject[0].metadata.image = project.tokenImage
+        } else {
+          groupByProject = nftsList
+            .filter(
+              (e) =>
+                e.token_address.toLowerCase() ===
+                project.contractAddress.toLowerCase()
+            )
+            .map(async (e) => {
+              return {
+                ...e,
+                metadata: await getAssetMetadata(
+                  e,
+                  project.apiMetadata,
+                  e.token_id,
+                  project
+                ),
+                amount:
+                  e.contract_type === 'ERC1155' && e.amount?.length >= 18
+                    ? ethers.utils.formatUnits(e.amount)
+                    : e.amount,
+              }
+            })
+        }
 
         const groupByProjectResolved = await Promise.all(groupByProject)
-        traderLogger.log('groupByProject : ', groupByProjectResolved)
+        traderLogger.log(
+          'groupByProject : ',
+          groupByProjectResolved,
+          project.contractAddress
+        )
         if (groupByProjectResolved) {
           if (creator) {
             commit('updateProject', {
-              projectName: project.projectName,
+              contractAddress: project.contractAddress,
               creatorAssets: groupByProjectResolved,
             })
           } else {
             commit('updateProject', {
-              projectName: project.projectName,
+              contractAddress: project.contractAddress,
               executorAssets: groupByProjectResolved,
             })
           }
         }
       })
 
-      await Promise.all(
-        selectedProjects.map(async (project) => {
-          let ownedIds = []
-          // let listDetails
-          switch (project.contractType) {
-            case 'ERC20':
-              ownedIds = await dispatch(
-                'relayer-erc20/listERC20',
-                { ...project, wa, contractType: project.contractType },
-                { root: true }
-              )
-              traderLogger.log('******* ownedIds ***** ', ownedIds)
+      // await Promise.all(
+      //   selectedProjects.map(async (project) => {
+      //     let ownedIds = []
+      //     // let listDetails
+      //     switch (project.contractType) {
+      //       case 'ERC20':
+      //         ownedIds = await dispatch(
+      //           'relayer-erc20/listERC20',
+      //           { ...project, wa, contractType: project.contractType },
+      //           { root: true }
+      //         )
+      //         traderLogger.log('******* ownedIds ***** ', ownedIds)
 
-              ownedIds[0].metadata.image = project.tokenImage
+      //         ownedIds[0].metadata.image = project.tokenImage
 
-              // listDetails = (
-              //   await dispatch(
-              //     'details/getListDetails',
-              //     {
-              //       listIds: ownedIds,
-              //       contractAddress: project.contractAddress,
-              //       contractType: project.contractType,
-              //     },
-              //     { root: true }
-              //   )
-              // ).filter(Boolean)
-              if (ownedIds) {
-                if (creator) {
-                  traderLogger.log('creatorAssets : ', ownedIds)
-                  commit('updateProject', {
-                    projectName: project.projectName,
-                    creatorAssets: ownedIds,
-                  })
-                } else {
-                  traderLogger.log('executorAssets : ', ownedIds)
-                  commit('updateProject', {
-                    projectName: project.projectName,
-                    executorAssets: ownedIds,
-                  })
-                }
-              }
-              break
-          }
-        })
-      )
+      //         // listDetails = (
+      //         //   await dispatch(
+      //         //     'details/getListDetails',
+      //         //     {
+      //         //       listIds: ownedIds,
+      //         //       contractAddress: project.contractAddress,
+      //         //       contractType: project.contractType,
+      //         //     },
+      //         //     { root: true }
+      //         //   )
+      //         // ).filter(Boolean)
+      //         if (ownedIds) {
+      //           if (creator) {
+      //             traderLogger.log('creatorAssets : ', ownedIds)
+      //             commit('updateProject', {
+      //               contractAddress: project.contractAddress,
+      //               creatorAssets: ownedIds,
+      //             })
+      //           } else {
+      //             traderLogger.log('executorAssets : ', ownedIds)
+      //             commit('updateProject', {
+      //               assetName: project.assetName,
+      //               executorAssets: ownedIds,
+      //             })
+      //           }
+      //         }
+      //         break
+      //     }
+      //   })
+      // )
+      traderLogger.log('projects:', state.projects)
     } catch (error) {
       traderLogger.error('Error listing ids -> ', error)
     }
@@ -250,7 +292,7 @@ export const actions = {
             projects.push({
               ...a,
               ...plObject,
-              contractAddress: pl.contractAddress.toLowerCase(),
+              contractAddress: a.contractAddress.toLowerCase(),
             })
           })
         }
@@ -284,11 +326,11 @@ export const mutations = {
   },
   updateProject(state, updatedItem) {
     state.projects = [
-      ...state.projects.map((item) =>
-        item.projectName !== updatedItem.projectName
+      ...state.projects.map((item) => {
+        return item.contractAddress !== updatedItem.contractAddress
           ? item
           : { ...item, ...updatedItem }
-      ),
+      }),
     ]
   },
 }

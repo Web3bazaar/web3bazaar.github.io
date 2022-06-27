@@ -203,7 +203,7 @@ export const actions = {
         amount: tokenAmount[i].toString(),
       }
 
-      const { projectName, assetExternalLink, projectLink, backgroundImage } =
+      const { assetName, assetExternalLink, projectLink, backgroundImage } =
         state.trader.projects.find(
           (p) => p.contractAddress === contractAddress
         ) || {}
@@ -213,7 +213,7 @@ export const actions = {
       } else {
         projects[contractAddress] = {}
         projects[contractAddress].contractAddress = contractAddress
-        projects[contractAddress].projectName = projectName
+        projects[contractAddress].assetName = assetName
         projects[contractAddress].assetExternalLink = assetExternalLink
         projects[contractAddress].projectLink = projectLink
         projects[contractAddress].backgroundImage = backgroundImage
@@ -248,7 +248,7 @@ export const actions = {
     )
 
     const {
-      projectName,
+      assetName,
       assetExternalLink,
       projectLink,
       backgroundImage,
@@ -263,7 +263,7 @@ export const actions = {
 
     return {
       baseImg: image || tokenImage,
-      projectName,
+      assetName,
       itemName: name,
       externalUrl,
       projectLink,

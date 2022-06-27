@@ -8,11 +8,7 @@
       </v-row>
       <v-row v-if="isWalletConnected">
         <v-col>
-          <trade-list-wrapper
-            :new-trade="true"
-            :projects="projects"
-            :disabled="loadingBtn"
-          />
+          <trade-list-wrapper :new-trade="true" :disabled="loadingBtn" />
         </v-col>
         <v-col cols="12" class="text-center mt-8">
           <ui-action-btn
@@ -69,11 +65,14 @@ export default {
   },
   async fetch() {
     await this.$store.dispatch('trader/GET_PROJECT_DATA')
+    await this.$store.dispatch('trader/listOwnedIds', {
+      wa: this.account,
+      creator: true,
+    })
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
     ...mapState('trader', [
-      'projects',
       'executorAddress',
       'creatorSelectedAssets',
       'executorSelectedAssets',

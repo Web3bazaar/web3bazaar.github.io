@@ -49,8 +49,6 @@ export const actions = {
       throw ex
     }
 
-    return [
-      { amount: ethers.utils.formatUnits(balance), metadata, ...assetData },
-    ]
+    return { amount: ethers.utils.formatUnits(balance), metadata, ...assetData }
   },
 }
