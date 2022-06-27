@@ -72,21 +72,21 @@ export default {
         isShow: true,
       })
     },
-    async networkClickHandler() {
+    networkClickHandler() {
       // only use mumbai
 
-      const chainId = '0x13881'
-      try {
-        await this.$store.dispatch('networks/switchNetwork', {
-          chainId,
-        })
-      } catch (error) {
-        console.log(error)
-      }
-      // this.$store.commit('modals/setPopupState', {
-      //   type: 'network',
-      //   isShow: true,
-      // })
+      // const chainId = '0x13881'
+      // try {
+      //   await this.$store.dispatch('networks/switchNetwork', {
+      //     chainId,
+      //   })
+      // } catch (error) {
+      //   console.log(error)
+      // }
+      this.$store.commit('modals/setPopupState', {
+        type: 'network',
+        isShow: true,
+      })
     },
   },
 }

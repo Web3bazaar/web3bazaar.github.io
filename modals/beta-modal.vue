@@ -53,9 +53,9 @@ export default {
         await this.$store.dispatch('connector/connectAccount', window.ethereum)
         if (this.isWalletConnected) {
           // switch to mumbai
-          await this.$store.dispatch('networks/switchNetwork', {
-            chainId: '0x13881',
-          })
+          // await this.$store.dispatch('networks/switchNetwork', {
+          //   chainId: '0x13881',
+          // })
 
           this.$router.push({ name: 'main-square' })
         }

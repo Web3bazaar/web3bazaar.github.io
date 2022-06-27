@@ -26,9 +26,10 @@ export default {
       return this.networksData.find((item) => item.chainId === this.networkType)
     },
     getNetworkName() {
-      return this.activeNetwork?.chainId === '0x13881'
-        ? this.activeNetwork.chainName
-        : 'Switch to mumbai testnet'
+      // return this.activeNetwork?.chainId === '0x13881'
+      //   ? this.activeNetwork.chainName
+      //   : 'Switch to mumbai testnet'
+      return this.activeNetwork.chainName
     },
   },
   methods: {
