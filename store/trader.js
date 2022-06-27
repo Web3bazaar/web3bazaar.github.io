@@ -7,14 +7,18 @@ const traderLogger = {
   error: require('debug')('w3b:store:error:trader'),
 }
 
-const getNFTListURL =
-  'https://nft-ownership-backend.herokuapp.com/api/v1/chainquery'
+const BASE_URL = 'https://nft-ownership-backend.herokuapp.com/api/v1'
+const GET_PROJECT_DATA_ENDPOINT = '/projects'
+const GET_USER_NFT_DATA_ENDPOINT = '/chainquery'
 
 const getNFTList = async function (params) {
   try {
     traderLogger.log('******* getNFTList ***** ', params)
 
-    const response = await axios.post(getNFTListURL, params)
+    const response = await axios.post(
+      BASE_URL + GET_USER_NFT_DATA_ENDPOINT,
+      params
+    )
     traderLogger.log('******* response ***** ', response)
 
     return response.data.data
@@ -49,50 +53,41 @@ export const state = () => ({
     {
       projectName: 'Bazaar ERC721 Collection',
       description: 'Test contract for weebazaar ERC721',
-      background_image: require('@/assets/img/banners/Twitter 3.jpg'),
+      backgroundBanner: require('@/assets/img/banners/Twitter 3.jpg'),
       contractAddress: '0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
       baseUrl: 'https://api-testnet.polygonscan.com/',
-      network: 'MUMBAI',
+      chainId: '0x13881',
       contractType: 'ERC721',
+      decimals: 1,
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/721/detail/{id}',
+      apiMetadata: 'https://webazaar-meta-api.herokuapp.com/721/detail/{id}',
       blockExplorerUrl:
         'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
       assetExternalLink:
         'https://mumbai.polygonscan.com/token/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B?a=',
       projectLink:
         'https://mumbai.polygonscan.com/address/0x8ba96897cA8A95B39C639BEa1e5E9ce60d22BD2B',
-
-      api_metadata_sample: {
-        name: '',
-        description: '',
-        image: '',
-      },
     },
     {
       projectName: 'Bazaar ERC1155 Collection',
       description: 'Test contract for weebazaar ERC1155',
-      background_image: require('@/assets/img/banners/Twitter 3.jpg'),
+      backgroundBanner: require('@/assets/img/banners/Twitter 3.jpg'),
 
       contractAddress: '0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
       baseUrl: 'https://api-testnet.polygonscan.com/',
-      network: 'MUMBAI',
+      chainId: '0x13881',
       contractType: 'ERC1155',
+      decimals: 1,
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/1155/detail/{id}',
+      apiMetadata: 'https://webazaar-meta-api.herokuapp.com/1155/detail/{id}',
       blockExplorerUrl:
         'https://mumbai.polygonscan.com/address/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
       assetExternalLink:
         'https://mumbai.polygonscan.com/token/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f?a=',
       projectLink:
         'https://mumbai.polygonscan.com/address/0xC70d6b33882dE18BDBD0a372B142aC96ceb1366f',
-      api_metadata_sample: {
-        name: '',
-        description: '',
-        image: '',
-      },
     },
     {
       projectName: 'BAZCOIN',
@@ -100,18 +95,13 @@ export const state = () => ({
       tokenImage: require('@/assets/img/site-logos/Web3Bazaar_ProfilePicture_NonTransparent_300px.png'),
       contractAddress: '0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
       baseUrl: 'https://api-testnet.polygonscan.com/',
-      network: 'MUMBAI',
+      chainId: '0x13881',
       contractType: 'ERC20',
       discord: '',
       twitter: '',
-      api_metadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
+      apiMetadata: 'https://webazaar-meta-api.herokuapp.com/detail/{id}',
       projectLink:
         'https://mumbai.polygonscan.com/token/0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
-      api_metadata_sample: {
-        name: '',
-        description: '',
-        image: '',
-      },
     },
   ],
 })
@@ -227,9 +217,58 @@ export const actions = {
       traderLogger.error('Error listing ids -> ', error)
     }
   },
+
+  async GET_PROJECT_DATA({ commit, dispatch, state, rootGetters }) {
+    try {
+      const { projects: projectData } = (
+        await this.$axios.get(BASE_URL + GET_PROJECT_DATA_ENDPOINT)
+      ).data
+
+      traderLogger.log('projectData api :', projectData)
+
+      // TODO: FORMAT/MAP data to specific format
+      const projects = []
+
+      const activeChain = rootGetters['networks/getActiveChain']
+      traderLogger.log('activeChain : ', activeChain.chainId)
+
+      projectData?.forEach((pl) => {
+        traderLogger.log('pl : ', pl.chainId)
+        traderLogger.log('activeChain code: ', activeChain.code)
+
+        if (
+          pl.chainId === activeChain.chainId ||
+          pl.chainId === activeChain.code
+        ) {
+          pl?.assets?.forEach((a) => {
+            const {
+              opensea_collections: openseaCollections,
+              assets,
+              ...plObject
+            } = pl
+
+            projects.push({
+              ...a,
+              ...plObject,
+              contractAddress: pl.contractAddress.toLowerCase(),
+            })
+          })
+        }
+      })
+      if (projects.length > 0) {
+        commit('projects', projects)
+      }
+      traderLogger.log('projects mapped: ', projects)
+    } catch (e) {
+      traderLogger.error('Error getting project data: ', e)
+    }
+  },
 }
 
 export const mutations = {
+  projects(state, value) {
+    state.projects = value
+  },
   executorAddress(state, value) {
     state.executorAddress = value
   },

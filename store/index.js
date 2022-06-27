@@ -203,14 +203,10 @@ export const actions = {
         amount: tokenAmount[i].toString(),
       }
 
-      const {
-        projectName,
-        assetExternalLink,
-        projectLink,
-        background_image: backgroundImage,
-      } = state.trader.projects.find(
-        (p) => p.contractAddress === contractAddress
-      ) || {}
+      const { projectName, assetExternalLink, projectLink, backgroundImage } =
+        state.trader.projects.find(
+          (p) => p.contractAddress === contractAddress
+        ) || {}
 
       if (contractAddress in projects) {
         projects[contractAddress].assets.push(newObj)
@@ -255,11 +251,12 @@ export const actions = {
       projectName,
       assetExternalLink,
       projectLink,
-      background_image: backgroundImage,
+      backgroundImage,
       blockExplorerUrl,
-    } = state.trader.projects.find(
-      (p) => p.contractAddress === contractAddress
-    ) || {}
+    } =
+      state.trader.projects.find(
+        (p) => p.contractAddress === contractAddress
+      ) || {}
 
     const externalUrl =
       contractTypeIndex === 1 ? blockExplorerUrl : assetExternalLink + idAsset

@@ -24,10 +24,10 @@ export const actions = {
       if (contractType?.toLowerCase() === 'erc20') {
         return { ...project, ...asset, contractAddress, contractType }
       } else {
-        detailsLog(project.api_metadata)
+        detailsLog(project.apiMetadata)
 
         const response = await axios.get(
-          project.api_metadata?.replace?.('{id}', asset.id)
+          project.apiMetadata?.replace?.('{id}', asset.id)
         )
         if (response.data.id) {
           return { ...response.data, ...asset, contractAddress, contractType }

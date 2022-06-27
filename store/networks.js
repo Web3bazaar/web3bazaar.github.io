@@ -8,7 +8,7 @@ export const state = () => ({
     {
       chainId: '0x38',
       name: 'BSC',
-      code: 56,
+      code: '56',
       apiURL: 'https://api.bscscan.com',
       chainName: 'Binance Smart Chain',
       nativeCurrency: {
@@ -29,7 +29,7 @@ export const state = () => ({
     {
       chainId: '0xfa',
       name: 'FANTOM',
-      code: 250,
+      code: '250',
       apiURL: 'https://api.ftmscan.com',
       chainName: 'Fantom',
       rpcUrls: [
@@ -47,7 +47,7 @@ export const state = () => ({
     {
       chainId: '0xa86a',
       name: 'Avalanche',
-      code: 43114,
+      code: '43114',
       apiURL: 'https://api.avax.network',
       chainName: 'Avalanche',
       rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
@@ -64,7 +64,7 @@ export const state = () => ({
     {
       chainId: '0x89',
       name: 'POLYGON',
-      code: 137,
+      code: '137',
       chainName: 'Polygon',
       rpcUrls: ['https://polygon-rpc.com/'],
       iconUrls: ['https://polygonscan.com/images/logo.svg?v=0.0.3'],
@@ -79,7 +79,7 @@ export const state = () => ({
     {
       chainId: '0x13881',
       name: 'mumbai',
-      code: 80001,
+      code: '80001',
       chainName: 'Mumbai testnet',
       rpcUrls: [
         'https://rpc-mumbai.matic.today',
