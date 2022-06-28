@@ -19,7 +19,7 @@
       <v-col cols="12" sm="1" class="d-flex align-center">
         <v-img
           contain
-          class="mx-auto mt-11"
+          class="mx-auto mt-16"
           max-width="40px"
           :src="require('@/assets/img/icons/switch.png')"
         />

@@ -64,6 +64,7 @@
                 <v-container class="pa-0">
                   <v-row justify="space-between">
                     <v-col cols="auto" class="pa-0 d-flex align-center">
+                      <img class="mr-1 mt-n1" :src="iconCheckmark" />
                       <p class="bold mb-0">
                         {{ project.assetName || project.projectName }}
                       </p>
@@ -109,7 +110,6 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  components: {},
   props: {
     creator: {
       type: String,
@@ -128,6 +128,7 @@ export default {
     return {
       maxProjectsToShow: 3,
       selectedProjects: [],
+      iconCheckmark: require('@/assets/img/icons/checkmark.png'),
     }
   },
   computed: {
