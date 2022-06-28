@@ -1,12 +1,14 @@
+[0.3.1]
+    - Added checkmark on verified projects
 [0.3.0]
     - Mainnet preparations:
         - Site is no longer being forced to only use mumbai network
         - Refactor some var names to standardize with template for new projects submissions
         - Reworked how user asset data/info is retrieved, Polygon network initial tests
+
 [0.2.3] 
     - Update Bazaar contract address
     - Query to get NFT List now uses hexadecimal chainId
-
 [0.2.2]
     - The trades created/canceled in the last 3 days now show up on Main Square
     - Added better contrast in some labels
