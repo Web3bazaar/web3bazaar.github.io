@@ -8,7 +8,9 @@
       dark
     >
       <v-tab v-for="project in assetsByProject" :key="project.contractAddress">
-        {{ project.assetName | truncate(30) }}
+        <img class="mr-1 mt-n1" :src="iconCheckmark" />
+
+        {{ (project.assetName || project.projectName) | truncate(30) }}
       </v-tab>
     </v-tabs>
 
@@ -19,7 +21,9 @@
       >
         <v-card
           class="background_image"
-          :style="`--background-image: url('${project.banner}')`"
+          :style="`--background-image: url('${
+            project.banner || project.backgroundBanner
+          }')`"
         >
           <v-row justify="start">
             <v-col
@@ -49,7 +53,7 @@ export default {
   data() {
     return {
       tab: 0,
-      heroImage: 'https://vuejs.org/images/logo.png',
+      iconCheckmark: require('@/assets/img/icons/checkmark.png'),
     }
   },
   computed: {

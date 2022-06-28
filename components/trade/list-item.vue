@@ -23,36 +23,6 @@
           </div>
         </v-col>
 
-        <!-- <v-col cols="12" sm="12">
-          <p>Choose projects</p>
-
-          <v-select
-            v-model="selectedProjects"
-            solo
-            dense
-            hide-details
-            multiple
-            label="Choose projects"
-            :items="projects"
-            return-object
-            item-text="assetName"
-            :value="value.assetName"
-            :disabled="!value.address"
-            @input="update('assetName', $event)"
-          >
-            <template #selection="{ item, index }">
-              <v-chip v-if="index < maxProjectsToShow">
-                <span>{{ item.assetName | truncate(8, 'start') }}</span>
-              </v-chip>
-              <span
-                v-if="index === maxProjectsToShow"
-                class="grey--text text-caption"
-              >
-                (+{{ value.length - maxProjectsToShow }} others)
-              </span>
-            </template>
-          </v-select>
-        </v-col> -->
         <v-col v-if="value" cols="12" sm="12">
           <p>Choose your assets</p>
 

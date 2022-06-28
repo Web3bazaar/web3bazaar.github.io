@@ -180,7 +180,6 @@ export const actions = {
       return true
     } catch (ex) {
       logger.error(ex)
-      console.error(ex)
       //   throw new Error('Not able to retrieve data from heroku api: ', ex)
     }
   },
@@ -193,17 +192,23 @@ export const actions = {
     const totalAssetsLength = tokenAddress.length
 
     for (let i = 0; i < totalAssetsLength; i++) {
-      const contractAddress = tokenAddress[i]
+      const contractAddress = tokenAddress[i].toLowerCase()
 
       const newObj = {
         idAsset: tokenIds[i].toString(),
-        contractAddress: tokenAddress[i],
+        contractAddress,
         contractType: contractTypes[tokenType[i]],
         contractTypeIndex: tokenType[i],
         amount: tokenAmount[i].toString(),
       }
 
-      const { assetName, assetExternalLink, projectLink, backgroundImage } =
+      const {
+        assetName,
+        assetExternalLink,
+        projectLink,
+        backgroundImage,
+        projectName,
+      } =
         state.trader.projects.find(
           (p) => p.contractAddress === contractAddress
         ) || {}
@@ -213,7 +218,7 @@ export const actions = {
       } else {
         projects[contractAddress] = {}
         projects[contractAddress].contractAddress = contractAddress
-        projects[contractAddress].assetName = assetName
+        projects[contractAddress].assetName = assetName || projectName
         projects[contractAddress].assetExternalLink = assetExternalLink
         projects[contractAddress].projectLink = projectLink
         projects[contractAddress].backgroundImage = backgroundImage
@@ -232,7 +237,7 @@ export const actions = {
     { state, dispatch, rootGetters },
     { contractAddress, idAsset, contractTypeIndex }
   ) {
-    logger.log('getProjectInfo idAsset', idAsset)
+    logger.log('getProjectInfo idAsset', idAsset, contractAddress)
 
     const { image, tokenImage, name } = await dispatch(
       'details/getAssetDetails',
@@ -251,13 +256,14 @@ export const actions = {
       assetName,
       assetExternalLink,
       projectLink,
-      backgroundImage,
+      backgroundBanner,
       blockExplorerUrl,
+
+      projectName,
     } =
       state.trader.projects.find(
         (p) => p.contractAddress === contractAddress
       ) || {}
-
     const externalUrl =
       contractTypeIndex === 1 ? blockExplorerUrl : assetExternalLink + idAsset
 
@@ -267,8 +273,9 @@ export const actions = {
       itemName: name,
       externalUrl,
       projectLink,
-      backgroundImage,
+      backgroundBanner,
       contractType: contractTypes[contractTypeIndex],
+      projectName,
     }
   },
 }

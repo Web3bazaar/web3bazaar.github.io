@@ -365,6 +365,7 @@ export default {
             type: 'success',
             isShow: true,
             data: {
+              txHash: startTrade.hash,
               message:
                 'Your trade is now open in the Bazaar. Check its status in the Main Square.',
             },

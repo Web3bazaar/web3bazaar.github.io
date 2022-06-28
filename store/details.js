@@ -17,7 +17,7 @@ export const actions = {
       const project = rootState.trader.projects.find(
         (p) => p.contractAddress === contractAddress
       )
-      detailsLog(project)
+      detailsLog('project found:', project, rootState.trader.projects)
 
       if (!project) return {}
 
@@ -29,14 +29,13 @@ export const actions = {
         const response = await axios.get(
           project.apiMetadata?.replace?.('{id}', asset.id)
         )
-        if (response.data.id) {
+        if (response.data) {
           return { ...response.data, ...asset, contractAddress, contractType }
         } else {
           return {}
         }
       }
     } catch (ex) {
-      console.error(ex)
       throw new Error('Not able to retrieve data from heroku api: ', ex)
     }
   },

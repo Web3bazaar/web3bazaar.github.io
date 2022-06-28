@@ -82,32 +82,6 @@ export default {
         return p.assetExternalLink + assetId
       }
     },
-    async getProjectInfo(contractAddress, idAsset, contractTypeIndex) {
-      const { image, tokenImage, name } = await this.$store.dispatch(
-        'details/getAssetDetails',
-        {
-          walletAddress: this.account,
-          asset: {
-            id: idAsset,
-          },
-          contractAddress,
-          contractType: this.contractTypes[contractTypeIndex],
-        }
-      )
-
-      const { assetName, assetExternalLink, projectLink } =
-        this.projects.find((p) => p.contractAddress === contractAddress) || {}
-
-      const externalUrl = assetExternalLink + idAsset
-
-      return {
-        baseImg: image || tokenImage,
-        assetName,
-        itemName: name,
-        externalUrl,
-        projectLink,
-      }
-    },
   },
 }
 </script>

@@ -68,10 +68,9 @@ export default {
       idAsset: this.asset.idAsset,
       contractTypeIndex: this.asset.contractTypeIndex,
     })
-
     this.baseImg = projectInfo.baseImg
     this.projectLink = projectInfo.projectLink
-    this.assetName = projectInfo.assetName
+    this.assetName = projectInfo.assetName || projectInfo.projectName
     this.externalUrl = projectInfo.externalUrl
   },
   computed: {

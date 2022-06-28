@@ -9,7 +9,7 @@
       <v-img :src="successGIF" max-height="300" />
     </div>
     <p class="title text-center">{{ message }}</p>
-    <p class="title text-center">
+    <p v-if="txHash" class="title text-center">
       You can check the transaction
 
       <a
