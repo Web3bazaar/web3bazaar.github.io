@@ -4,7 +4,7 @@
       <CloseButton />
     </div>
 
-    <p class="title">select your network</p>
+    <p class="title">Choose network</p>
 
     <div class="networks-wrap">
       <div
@@ -20,7 +20,7 @@
     </div>
 
     <div class="info-wrap">
-      <p class="block-title">Your MetaMask current network</p>
+      <p class="block-title">Currently connected to:</p>
       <p class="network-name">{{ currentNetwork }}</p>
     </div>
   </div>

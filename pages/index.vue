@@ -246,6 +246,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'IndexPage',
   head() {
@@ -253,12 +255,20 @@ export default {
       title: 'Home - ',
     }
   },
+  computed: {
+    ...mapState('networks', ['activeNetwork']),
+  },
+
   methods: {
     openBetaModal() {
-      this.$store.commit('modals/setPopupState', {
-        type: 'beta',
-        isShow: true,
-      })
+      if (this.activeNetwork.chainId === '0x13881') {
+        this.$store.commit('modals/setPopupState', {
+          type: 'beta',
+          isShow: true,
+        })
+      } else {
+        this.$router.push({ name: 'main-square' })
+      }
     },
   },
 }
