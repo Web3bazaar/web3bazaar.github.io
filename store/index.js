@@ -243,9 +243,7 @@ export const actions = {
       'details/getAssetDetails',
       {
         walletAddress: rootGetters['connector/account'],
-        asset: {
-          id: idAsset,
-        },
+        tokenId: idAsset,
         contractAddress,
         contractType: contractTypes[contractTypeIndex],
       },
@@ -258,7 +256,6 @@ export const actions = {
       projectLink,
       backgroundBanner,
       blockExplorerUrl,
-
       projectName,
     } =
       state.trader.projects.find(

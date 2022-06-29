@@ -64,11 +64,7 @@ export default {
     }
   },
   async fetch() {
-    await this.$store.dispatch('trader/GET_PROJECT_DATA')
-    await this.$store.dispatch('trader/listOwnedIds', {
-      wa: this.account,
-      creator: true,
-    })
+    // await this.$store.dispatch('trader/GET_PROJECT_DATA')
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),

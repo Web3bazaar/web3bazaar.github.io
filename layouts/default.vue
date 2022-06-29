@@ -54,6 +54,9 @@ export default {
       audio: null,
     }
   },
+  async fetch() {
+    await this.$store.dispatch('trader/GET_PROJECT_DATA')
+  },
   head() {
     return {
       htmlAttrs: {

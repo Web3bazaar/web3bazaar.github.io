@@ -17,7 +17,7 @@
               :class="{ selected: asset.selected }"
             >
               <p class="text-center mb-0">
-                {{ asset.metadata.name | truncate(10) }}
+                {{ asset.metadata.name | truncate(16) }}
               </p>
             </v-col>
             <v-col class="pa-0">

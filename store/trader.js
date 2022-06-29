@@ -11,7 +11,7 @@ const BASE_URL = 'https://nft-ownership-backend.herokuapp.com/api/v1'
 const GET_PROJECT_DATA_ENDPOINT = '/projects'
 const GET_USER_NFT_DATA_ENDPOINT = '/chainquery'
 
-const getNFTList = async function (params) {
+const getNFTList = async function (params, self) {
   try {
     traderLogger.log('******* getNFTList ***** ', params)
 
@@ -27,35 +27,36 @@ const getNFTList = async function (params) {
   }
 }
 
-const getAssetMetadata = async function (
-  e,
-  metadataURL,
-  tokenId,
-  { defaultImage }
-) {
-  try {
-    return (await axios.get(metadataURL.replace('{id}', tokenId))).data
-    //     )
-  } catch (e) {
-    console.log(e)
-    return { ...JSON.parse(e.metadata || '{}'), image: defaultImage }
-  }
-  // if (e.contract_type === 'ERC721') {
-  //   return (
-  //     await axios.get(
-  //       metadataURL + tokenId
-  //     )
-  //   ).data
-  // } else if (e.contract_type === 'ERC1155') {
-  //   return (
-  //     await axios.get(
-  //       'https://webazaar-meta-api.herokuapp.com/1155/detail/' + e.token_id
-  //     )
-  //   ).data
-  // } else {
-  // return JSON.parse(e.metadata || '{}')
-  // }
-}
+// const getAssetMetadata = async function (
+//   e,
+//   metadataURL,
+//   tokenId,
+//   { defaultImage },
+//   self
+// ) {
+//   try {
+//     return (await self.$axios.get(metadataURL.replace('{id}', tokenId))).data
+//     //     )
+//   } catch (e) {
+//     console.log(e)
+//     return { ...JSON.parse(e.metadata || '{}'), image: defaultImage }
+//   }
+//   // if (e.contract_type === 'ERC721') {
+//   //   return (
+//   //     await axios.get(
+//   //       metadataURL + tokenId
+//   //     )
+//   //   ).data
+//   // } else if (e.contract_type === 'ERC1155') {
+//   //   return (
+//   //     await axios.get(
+//   //       'https://webazaar-meta-api.herokuapp.com/1155/detail/' + e.token_id
+//   //     )
+//   //   ).data
+//   // } else {
+//   // return JSON.parse(e.metadata || '{}')
+//   // }
+// }
 
 export const state = () => ({
   creatorSelectedAssets: [],
@@ -174,11 +175,14 @@ export const actions = {
             .map(async (e) => {
               return {
                 ...e,
-                metadata: await getAssetMetadata(
-                  e,
-                  project.apiMetadata,
-                  e.token_id,
-                  project
+                metadata: await dispatch(
+                  'details/getAssetMetadata',
+                  {
+                    apiMetadata: project.apiMetadata,
+                    tokenId: e.token_id,
+                    project,
+                  },
+                  { root: true }
                 ),
                 amount:
                   e.contract_type === 'ERC1155' && e.amount?.length >= 18
@@ -209,51 +213,6 @@ export const actions = {
         }
       })
 
-      // await Promise.all(
-      //   selectedProjects.map(async (project) => {
-      //     let ownedIds = []
-      //     // let listDetails
-      //     switch (project.contractType) {
-      //       case 'ERC20':
-      //         ownedIds = await dispatch(
-      //           'relayer-erc20/listERC20',
-      //           { ...project, wa, contractType: project.contractType },
-      //           { root: true }
-      //         )
-      //         traderLogger.log('******* ownedIds ***** ', ownedIds)
-
-      //         ownedIds[0].metadata.image = project.tokenImage
-
-      //         // listDetails = (
-      //         //   await dispatch(
-      //         //     'details/getListDetails',
-      //         //     {
-      //         //       listIds: ownedIds,
-      //         //       contractAddress: project.contractAddress,
-      //         //       contractType: project.contractType,
-      //         //     },
-      //         //     { root: true }
-      //         //   )
-      //         // ).filter(Boolean)
-      //         if (ownedIds) {
-      //           if (creator) {
-      //             traderLogger.log('creatorAssets : ', ownedIds)
-      //             commit('updateProject', {
-      //               contractAddress: project.contractAddress,
-      //               creatorAssets: ownedIds,
-      //             })
-      //           } else {
-      //             traderLogger.log('executorAssets : ', ownedIds)
-      //             commit('updateProject', {
-      //               assetName: project.assetName,
-      //               executorAssets: ownedIds,
-      //             })
-      //           }
-      //         }
-      //         break
-      //     }
-      //   })
-      // )
       traderLogger.log('projects:', state.projects)
     } catch (error) {
       traderLogger.error('Error listing ids -> ', error)
@@ -288,10 +247,21 @@ export const actions = {
               assets,
               ...plObject
             } = pl
+            const blockExplorerUrl =
+              rootGetters['networks/getActiveChainBlockExplorerURL'] +
+              'address/' +
+              a.contractAddress.toLowerCase()
+            const assetExternalLink =
+              rootGetters['networks/getActiveChainBlockExplorerURL'] +
+              'token/' +
+              a.contractAddress.toLowerCase() +
+              '?a='
 
             projects.push({
               ...a,
               ...plObject,
+              blockExplorerUrl,
+              assetExternalLink,
               contractAddress: a.contractAddress.toLowerCase(),
             })
           })

@@ -109,7 +109,7 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     // just for testing
     // this.$store.commit('trader/itemFrom', {
     //   ...this.itemFrom,
@@ -121,6 +121,12 @@ export default {
       data: {
         reading: true,
       },
+    })
+
+    await this.$store.dispatch('trader/listOwnedIds', {
+      selectedProjects: this.projects,
+      wa: this.account,
+      creator: true,
     })
 
     this.$store.commit('modals/closeModal')

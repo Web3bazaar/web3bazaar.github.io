@@ -71,9 +71,7 @@ export default {
       linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
-  async fetch() {
-    await this.$store.dispatch('trader/GET_PROJECT_DATA')
-  },
+
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
     ...mapState('trader', ['projects']),

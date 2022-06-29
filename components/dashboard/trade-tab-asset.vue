@@ -23,12 +23,14 @@
         </a>
       </v-col>
       <v-col cols="auto" class="d-flex justify-center">
-        <img
-          contain
-          class="ml-0"
-          style="max-height: 100px; max-width: 120px"
-          :src="baseImg"
-        />
+        <a :href="externalUrl" target="_blank">
+          <img
+            contain
+            class="ml-0"
+            style="max-height: 100px; max-width: 120px"
+            :src="baseImg"
+          />
+        </a>
       </v-col>
       <v-col
         cols="12"

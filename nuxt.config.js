@@ -4,6 +4,7 @@
 
 // batch version (v2)
 const BAZAAR_CONTRACT_ADDRESS = '0x0A50B369f107aeF88E83B79F8E437EB623ac4a0a'
+const BASE_URL = 'https://nft-ownership-backend.herokuapp.com/api/v1'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -133,6 +134,7 @@ export default {
   env: {
     dev: process.env.NODE_ENV !== 'production',
     BAZAAR_CONTRACT_ADDRESS,
+    BASE_URL,
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
