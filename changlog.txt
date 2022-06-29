@@ -1,3 +1,7 @@
+[0.3.2]
+    - Added a proxy call to get asset data, this was being blocked by CORS
+    - Beta modal will only show when on Mumbai
+    - Added missing asset link in Main Square
 [0.3.1]
     - Added checkmark on verified projects
 [0.3.0]
