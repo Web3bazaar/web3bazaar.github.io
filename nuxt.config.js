@@ -1,10 +1,11 @@
 // import colors from 'vuetify/es5/util/colors'
 
-// const BAZAAR_CONTRACT_ADDRESS = '0x670bc34b16e0994fd64D90F127fDe38c0f1Afb83'
-
 // batch version (v2)
-const BAZAAR_CONTRACT_ADDRESS = '0x0A50B369f107aeF88E83B79F8E437EB623ac4a0a'
-const BASE_URL = 'https://nft-ownership-backend.herokuapp.com/api/v1'
+const BAZAAR_CONTRACT_ADDRESS_LIST = {
+ '0x13881' : '0x0A50B369f107aeF88E83B79F8E437EB623ac4a0a', // MUMBAI
+ '0x89' : '0x93cdc98317A07e83a9AA96F69AdA7Af4b37EBf44' // POLYGON
+}
+ const BASE_URL = 'https://nft-ownership-backend.herokuapp.com/api/v1'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -133,7 +134,7 @@ export default {
   },
   env: {
     dev: process.env.NODE_ENV !== 'production',
-    BAZAAR_CONTRACT_ADDRESS,
+    BAZAAR_CONTRACT_ADDRESS_LIST,
     BASE_URL,
   },
   // Global CSS: https://go.nuxtjs.dev/config-css

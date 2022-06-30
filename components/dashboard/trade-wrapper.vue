@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 const CLAIM = 'Claim assets'
 const CLAIM_BACK = 'Cancel Trade'
@@ -130,11 +130,21 @@ export default {
         3: 'This trade was cancelled',
       },
       linkIcon: require('@/assets/img/icons/link.png'),
-      bazaarContractAddress: process.env.BAZAAR_CONTRACT_ADDRESS,
+      bazaarContractAddress: process.env.BAZAAR_CONTRACT_ADDRESS_LIST,
     }
   },
   computed: {
     ...mapState('connector', ['isWalletConnected', 'account']),
+    ...mapGetters('networks', [
+      'getActiveChainBlockExplorerURL',
+      'getActiveChain',
+    ]),
+    bazaarContractAddressUrl() {
+      return (
+        this.getActiveChainBlockExplorerURL +
+        this.bazaarContractAddress[this.getActiveChain.chainId]
+      )
+    },
   },
   methods: {
     ...mapActions(['getTradesInfo']),

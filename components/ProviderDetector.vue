@@ -72,14 +72,15 @@ export default {
         this.checkInProgress = false
         return false
       }
-      this.$store.commit('connector/setWalletConnection', true)
       const chainId = await this.$store.dispatch(
         'connector/fetchChainId',
         window.ethereum
       )
-      // console.log(chainId)
+      providerDetector.log(chainId)
 
       this.compareNetworkSupport(chainId)
+
+      this.$store.commit('connector/setWalletConnection', true)
       this.setAccountListeners()
       this.checkInProgress = false
 

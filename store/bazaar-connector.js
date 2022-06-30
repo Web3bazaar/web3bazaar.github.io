@@ -9,7 +9,7 @@ const bazaarConnectorLog = {
   error: require('debug')('w3b:store:error:bazaarConnector'),
 }
 
-const BAZAAR_CONTRACT_ADDRESS = process.env.BAZAAR_CONTRACT_ADDRESS
+const BAZAAR_CONTRACT_ADDRESS_LIST = process.env.BAZAAR_CONTRACT_ADDRESS_LIST
 
 // const BN = Web3Utils.BN
 // const EtherUnit = Web3Utils.toWei('1')
@@ -34,7 +34,7 @@ export const actions = {
    * @returns
    */
   async startTrade(
-    { commit, rootState },
+    { commit, rootGetters },
     {
       creatorAssetContract,
       creatorAssetId,
@@ -66,10 +66,12 @@ export const actions = {
 
     try {
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-      // const gasPrice = await estimate(userProvider);
+
+      const { chainId } = rootGetters['networks/getActiveChain']
+      bazaarConnectorLog.log('activeChain : ', chainId)
 
       const bazaarInstance = new ethers.Contract(
-        BAZAAR_CONTRACT_ADDRESS,
+        BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
         webBazaarABI,
         userProvider.getSigner()
       )
@@ -104,17 +106,18 @@ export const actions = {
     }
   },
 
-  async claimBack({ commit }, { tradeId }) {
+  async claimBack({ rootGetters }, { tradeId }) {
     bazaarConnectorLog.log('******* Claim Back *******')
 
     const webazaarABI = require('../const/abis/webazaar.json')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
-    // const gasPrice = await estimate(userProvider);
+    const { chainId } = rootGetters['networks/getActiveChain']
+    bazaarConnectorLog.log('activeChain : ', chainId)
 
     const webazaarInstance = new ethers.Contract(
-      BAZAAR_CONTRACT_ADDRESS,
+      BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
       webazaarABI,
       userProvider.getSigner()
     )
@@ -128,15 +131,18 @@ export const actions = {
     }
   },
 
-  async claim({ commit }, { tradeId }) {
+  async claim({ rootGetters }, { tradeId }) {
     bazaarConnectorLog.log('******* Claim *******', tradeId)
 
     const webazaarABI = require('../const/abis/webazaar.json')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
+    const { chainId } = rootGetters['networks/getActiveChain']
+    bazaarConnectorLog.log('activeChain : ', chainId)
+
     const webazaarInstance = new ethers.Contract(
-      BAZAAR_CONTRACT_ADDRESS,
+      BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
       webazaarABI,
       userProvider.getSigner()
     )
@@ -149,13 +155,19 @@ export const actions = {
     }
   },
 
-  async getTradeInfo({ commit }, { walletAddress, tradeId, eventLogsList }) {
+  async getTradeInfo(
+    { rootGetters },
+    { walletAddress, tradeId, eventLogsList }
+  ) {
     const webazaarABI = require('../const/abis/webazaar.json')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
+    const { chainId } = rootGetters['networks/getActiveChain']
+    bazaarConnectorLog.log('activeChain : ', chainId)
+
     const webazaarInstance = new ethers.Contract(
-      BAZAAR_CONTRACT_ADDRESS,
+      BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
       webazaarABI,
       userProvider.getSigner()
     )
@@ -219,15 +231,19 @@ export const actions = {
       tradeId,
     }
   },
-  async executeTrade({ commit }, { walletAddress, tradeId, contractType }) {
+  async executeTrade(
+    { rootGetters },
+    { walletAddress, tradeId, contractType }
+  ) {
     bazaarConnectorLog.log('******* executeTrade *******')
 
     const webazaarABI = require('../const/abis/webazaar.json')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-
+    const { chainId } = rootGetters['networks/getActiveChain']
+    bazaarConnectorLog.log('activeChain : ', chainId)
     const webazaarInstance = new ethers.Contract(
-      BAZAAR_CONTRACT_ADDRESS,
+      BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
       webazaarABI,
       userProvider.getSigner()
     )
@@ -241,7 +257,7 @@ export const actions = {
       throw err
     }
   },
-  async getOpenTrades({ commit }, { walletAddress }) {
+  async getOpenTrades({ rootGetters }, { walletAddress }) {
     bazaarConnectorLog.log('******* getOpenTrades *******', walletAddress)
 
     const webazaarABI = require('../const/abis/webazaar.json')
@@ -250,8 +266,11 @@ export const actions = {
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
     bazaarConnectorLog.log('userProvider')
 
+    const { chainId } = rootGetters['networks/getActiveChain']
+    bazaarConnectorLog.log('activeChain : ', chainId)
+
     const webazaarInstance = new ethers.Contract(
-      BAZAAR_CONTRACT_ADDRESS,
+      BAZAAR_CONTRACT_ADDRESS_LIST,
       webazaarABI,
       userProvider.getSigner()
     )
@@ -297,7 +316,7 @@ export const actions = {
   },
 
   async isApproved(
-    { commit },
+    { rootGetters },
     { contractAddress, contractType, walletAddress }
   ) {
     bazaarConnectorLog.log(
@@ -311,6 +330,9 @@ export const actions = {
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
 
+      const { chainId } = rootGetters['networks/getActiveChain']
+      bazaarConnectorLog.log('activeChain : ', chainId)
+
       const webazaarInstance = new ethers.Contract(
         contractAddress,
         webazaarABI,
@@ -319,7 +341,7 @@ export const actions = {
       if (contractType.toLowerCase() === 'erc20') {
         const allowance = await webazaarInstance.allowance(
           walletAddress,
-          BAZAAR_CONTRACT_ADDRESS
+          BAZAAR_CONTRACT_ADDRESS_LIST[chainId]
         )
         bazaarConnectorLog.log('is approved for all: ', allowance.toString())
 
@@ -327,7 +349,7 @@ export const actions = {
       } else {
         const isApproved = await webazaarInstance.isApprovedForAll(
           walletAddress,
-          BAZAAR_CONTRACT_ADDRESS
+          BAZAAR_CONTRACT_ADDRESS_LIST[chainId]
         )
         bazaarConnectorLog.log('is approved for all: ', isApproved)
 
@@ -380,7 +402,7 @@ export const actions = {
     }
   },
   async setApproval(
-    { commit },
+    { commit, rootGetters },
     { contractAddress, contractType, walletAddress, approveValue = true }
   ) {
     bazaarConnectorLog.log(
@@ -394,7 +416,8 @@ export const actions = {
       const webazaarABI = require(`../const/abis/${contractType?.toLowerCase?.()}.json`)
 
       const userProvider = new ethers.providers.Web3Provider(window.ethereum)
-
+      const { chainId } = rootGetters['networks/getActiveChain']
+      bazaarConnectorLog.log('activeChain : ', chainId)
       const contractInstance = new ethers.Contract(
         contractAddress,
         webazaarABI,
@@ -405,14 +428,14 @@ export const actions = {
         const approveAmount = ethers.utils.parseUnits('100000')
 
         const tx = await contractInstance.approve(
-          BAZAAR_CONTRACT_ADDRESS,
+          BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
           approveAmount
         )
 
         return await tx.wait()
       } else {
         const tx = await contractInstance.setApprovalForAll(
-          BAZAAR_CONTRACT_ADDRESS,
+          BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
           Web3ABI.encodeParameter('bool', approveValue),
           {}
         )

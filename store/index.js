@@ -2,11 +2,14 @@ import { ethers } from 'ethers'
 
 const MUMBAI_API_KEY = '2XSDG5S2EBJ8SDMXU9YJ7B7N75I6V8HPGW'
 
-const BAZAAR_CONTRACT_ADDRESS = process.env.BAZAAR_CONTRACT_ADDRESS
+const BAZAAR_CONTRACT_ADDRESS_LIST = process.env.BAZAAR_CONTRACT_ADDRESS_LIST
 
 const BASE_URL = 'https://api-testnet.polygonscan.com/api'
 
-const polygonscanUrlGenerator = (fromBlock) => `${BASE_URL}
+const polygonscanUrlGenerator = (
+  fromBlock,
+  BAZAAR_CONTRACT_ADDRESS
+) => `${BASE_URL}
 ?module=logs&action=getLogs
 &fromBlock=${fromBlock}
 &toBlock=latest
@@ -51,8 +54,15 @@ export const actions = {
       await this.$axios.get(getLatestBlockUrl(timestamp))
     ).data
 
+    const { chainId } = rootGetters['networks/getActiveChain']
+
     const { result: eventLogs } = (
-      await this.$axios.get(polygonscanUrlGenerator(latestBlock))
+      await this.$axios.get(
+        polygonscanUrlGenerator(
+          latestBlock,
+          BAZAAR_CONTRACT_ADDRESS_LIST[chainId]
+        )
+      )
     ).data
 
     return eventLogs
