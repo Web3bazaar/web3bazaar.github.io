@@ -163,8 +163,9 @@ export const actions = {
               { root: true }
             ),
           ]
-
-          groupByProject[0].metadata.image = project.tokenImage
+          if (groupByProject[0]) {
+            groupByProject[0].metadata.image = project.tokenImage
+          }
         } else {
           groupByProject = nftsList
             .filter(
@@ -195,10 +196,10 @@ export const actions = {
         const groupByProjectResolved = await Promise.all(groupByProject)
         traderLogger.log(
           'groupByProject : ',
-          groupByProjectResolved,
+          groupByProjectResolved?.[0],
           project.contractAddress
         )
-        if (groupByProjectResolved) {
+        if (groupByProjectResolved && groupByProjectResolved?.[0]) {
           if (creator) {
             commit('updateProject', {
               contractAddress: project.contractAddress,
@@ -235,7 +236,6 @@ export const actions = {
 
       projectData?.forEach((pl) => {
         traderLogger.log('pl : ', pl.chainId)
-        traderLogger.log('activeChain code: ', activeChain.code)
 
         if (
           pl.chainId === activeChain.chainId ||

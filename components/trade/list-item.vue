@@ -25,7 +25,6 @@
 
         <v-col v-if="value" cols="12" sm="12">
           <p>Choose your assets</p>
-
           <v-expansion-panels class="projects-panels">
             <v-expansion-panel v-for="(project, i) in projects" :key="i">
               <v-expansion-panel-header
@@ -107,7 +106,7 @@ export default {
   watch: {},
   methods: {
     numberSelectedAssets(assets) {
-      return assets.filter((a) => a.selected).length
+      return assets.filter((a) => a?.selected).length
     },
 
     async selectedProjectsAssets(val, project) {

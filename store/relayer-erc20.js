@@ -32,7 +32,7 @@ export const actions = {
       const contract = new ethers.Contract(
         contractAddress,
         genericErc20Abi,
-        userProvider.getSigner()
+        await userProvider.getSigner()
       )
 
       balance = (await contract.balanceOf(wa)).toString()
@@ -44,11 +44,19 @@ export const actions = {
         token_id: '1',
         contract_type: contractType,
       }
+
+      const decimals = await contract.decimals()
+
+      const amount = ethers.utils.formatUnits(balance, decimals)
+
+      if (parseInt(balance) === 0) {
+        return null
+      }
+
+      return { amount, metadata, ...assetData }
     } catch (ex) {
       console.error('Error listing listERC20 balance: ', ex)
       throw ex
     }
-
-    return { amount: ethers.utils.formatUnits(balance), metadata, ...assetData }
   },
 }
