@@ -270,7 +270,7 @@ export const actions = {
     bazaarConnectorLog.log('activeChain : ', chainId)
 
     const webazaarInstance = new ethers.Contract(
-      BAZAAR_CONTRACT_ADDRESS_LIST,
+      BAZAAR_CONTRACT_ADDRESS_LIST[chainId],
       webazaarABI,
       userProvider.getSigner()
     )
