@@ -131,6 +131,7 @@ export const actions = {
     try {
       const activeChain = rootGetters['networks/getActiveChain']
       traderLogger.log('activeChain : ', activeChain)
+      console.log('ACTIVE chain ', activeChain )
 
       const params = {
         wallet: wa,
@@ -148,6 +149,7 @@ export const actions = {
 
       traderLogger.log('nftsList:', nftsList)
       traderLogger.log('projects:', state.projects)
+      console.log('Project listed : ', state.projects )
 
       state.projects.forEach(async (project) => {
         let groupByProject
@@ -227,6 +229,7 @@ export const actions = {
       ).data
 
       traderLogger.log('projectData api :', projectData)
+      console.log('Projects readed : ',  projectData)
 
       // TODO: FORMAT/MAP data to specific format
       const projects = []
@@ -268,6 +271,7 @@ export const actions = {
         }
       })
       if (projects.length > 0) {
+        console.log('Projects loaded : ',  projects)
         commit('projects', projects)
       }
       traderLogger.log('projects mapped: ', projects)
