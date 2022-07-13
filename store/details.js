@@ -53,7 +53,9 @@ export const actions = {
     detailsLog(asset, contractAddress, contractType)
     try {
       const project = rootState.trader.projects.find(
-        (p) => p.contractAddress === contractAddress
+        (p) =>
+          p.contractAddress === contractAddress &&
+          p.contractType === contractType
       )
       detailsLog('project found:', project, rootState.trader.projects)
 

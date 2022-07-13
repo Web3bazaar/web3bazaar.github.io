@@ -216,12 +216,13 @@ export const actions = {
         assetName,
         assetExternalLink,
         projectLink,
-        backgroundImage,
+        banner: backgroundImage,
         projectName,
-      } =
-        state.trader.projects.find(
-          (p) => p.contractAddress === contractAddress
-        ) || {}
+      } = state.trader.projects.find(
+        (p) =>
+          p.contractAddress === contractAddress &&
+          p.contractType === contractTypes[tokenType[i]]
+      ) || {}
 
       if (contractAddress in projects) {
         projects[contractAddress].assets.push(newObj)
@@ -249,7 +250,12 @@ export const actions = {
   ) {
     logger.log('getProjectInfo idAsset', idAsset, contractAddress)
 
-    const { image, tokenImage, name } = await dispatch(
+    const {
+      image,
+      image_data: imageData,
+      tokenImage,
+      name,
+    } = await dispatch(
       'details/getAssetDetails',
       {
         walletAddress: rootGetters['connector/account'],
@@ -269,13 +275,16 @@ export const actions = {
       projectName,
     } =
       state.trader.projects.find(
-        (p) => p.contractAddress === contractAddress
+        (p) =>
+          p.contractAddress === contractAddress &&
+          p.contractType === contractTypes[contractTypeIndex]
       ) || {}
     const externalUrl =
       contractTypeIndex === 1 ? blockExplorerUrl : assetExternalLink + idAsset
 
     return {
       baseImg: image || tokenImage,
+      imageData,
       assetName,
       itemName: name,
       externalUrl,

@@ -50,7 +50,7 @@ export const actions = {
       const amount = ethers.utils.formatUnits(balance, decimals)
 
       if (parseInt(balance) === 0) {
-        return null
+        return
       }
 
       return { amount, metadata, ...assetData }

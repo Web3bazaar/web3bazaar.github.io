@@ -15,11 +15,7 @@
                 {{ 'Enter the Bazaar' }}
               </v-btn> -->
 
-              <ui-action-btn
-                :loading="loadingBtn"
-                :btn-text="'Enter Bazaar'"
-                @click="openBetaModal"
-              >
+              <ui-action-btn :btn-text="'Enter Bazaar'" @click="openBetaModal">
               </ui-action-btn>
             </div>
           </v-col>

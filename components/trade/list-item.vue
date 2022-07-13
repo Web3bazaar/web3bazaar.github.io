@@ -121,6 +121,8 @@ export default {
 
       this.$store.commit('trader/updateProject', {
         contractAddress: project.contractAddress,
+        contractType: project.contractType,
+
         [`${destination}Assets`]: val,
       })
       await this.$nextTick()

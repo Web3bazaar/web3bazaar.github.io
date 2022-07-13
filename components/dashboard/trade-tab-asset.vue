@@ -10,21 +10,32 @@
         class="d-flex flex-column justify-center item-info pb-0"
       >
         <a
-          v-if="asset.contractTypeIndex !== 1"
           :href="externalUrl"
           target="_blank"
-          class="item-name small-links"
+          class="item-name small-links d-flex align-center"
         >
-          Token ID:
-          <span>
-            {{ asset.idAsset }}
-          </span>
-          <img :width="16" :src="linkIcon" />
+          <div v-if="asset.contractTypeIndex !== 1" class="">
+            Token ID:
+            <span>
+              {{ asset.idAsset }}
+            </span>
+          </div>
+          <div v-else>
+            {{ assetName }}
+          </div>
+          <img class="ml-1" style="width: 16px; height: 16px" :src="linkIcon" />
         </a>
       </v-col>
       <v-col cols="auto" class="d-flex justify-center">
         <a :href="externalUrl" target="_blank">
+          <div
+            v-if="imageData"
+            class="svg-img"
+            style="width: 100px"
+            v-html="imageData"
+          ></div>
           <img
+            v-else
             contain
             class="ml-0"
             style="max-height: 100px; max-width: 120px"
@@ -62,6 +73,7 @@ export default {
       projectLink: null,
       assetName: null,
       externalUrl: null,
+      imageData: null,
     }
   },
   async fetch() {
@@ -71,6 +83,7 @@ export default {
       contractTypeIndex: this.asset.contractTypeIndex,
     })
     this.baseImg = projectInfo.baseImg
+    this.imageData = projectInfo.imageData
     this.projectLink = projectInfo.projectLink
     this.assetName = projectInfo.assetName || projectInfo.projectName
     this.externalUrl = projectInfo.externalUrl

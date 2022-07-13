@@ -5,7 +5,7 @@
         v-for="(asset, index) in value"
         :key="asset.token_id"
         cols="4"
-        class="pa-3 d-flex align-center flex-column"
+        class="asset-col pa-3 d-flex align-center flex-column justify-space-between"
         :class="{ selected: asset.selected }"
       >
         <v-container class="pa-0">
@@ -17,12 +17,23 @@
               :class="{ selected: asset.selected }"
             >
               <p class="text-center mb-0">
-                {{ asset.metadata.name | truncate(16) }}
+                {{ asset.metadata.name | truncate(14) }}
               </p>
             </v-col>
             <v-col class="pa-0">
               <div class="img-wrapper">
-                <v-img :src="asset.metadata.image" contain />
+                <div
+                  v-if="asset.metadata.image_data"
+                  class="svg-img"
+                  style="width: 100px"
+                  v-html="asset.metadata.image_data"
+                ></div>
+                <v-img
+                  v-else
+                  :src="asset.metadata.image"
+                  contain
+                  :min-width="100"
+                />
               </div>
             </v-col>
           </v-row>
@@ -309,14 +320,20 @@ export default {
     display: flex;
     justify-content: center;
     height: 110px;
-    .v-image {
+    .svg-img {
+      display: flex;
+      justify-content: center;
+    }
+    .v-image,
+    div.svg-img {
       border-radius: 5px;
 
       outline: solid 1px rgba(255, 110, 255, 0.781);
     }
   }
   .selected > div .img-wrapper {
-    .v-image {
+    .v-image,
+    div.svg-img {
       outline: solid 3px green;
       size: 120%;
     }

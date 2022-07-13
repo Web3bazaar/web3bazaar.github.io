@@ -150,21 +150,60 @@ export const actions = {
       traderLogger.log('projects:', state.projects)
 
       state.projects.forEach(async (project) => {
-        let groupByProject
-        if (project.contractType === 'ERC20') {
+        let groupByProject = []
+
+        if (project.graphql) {
+          traderLogger.log('graphql:', project.graphql)
+
+          const { user } = (
+            await this.$axios.post(project.graphql, {
+              query: `{
+            user(id: "${wa.toLowerCase()}") {
+              gotchisOwned {
+                id
+              }
+            }
+          }`,
+            })
+          )?.data?.data
+          traderLogger.log('user:', user)
+
+          const { gotchisOwned } = user || {}
+          traderLogger.log('graphqlResult:', gotchisOwned)
+          if (gotchisOwned) {
+            groupByProject = gotchisOwned.map(async (g) => {
+              return {
+                id: g.id,
+                token_address: project.contractAddress,
+                token_id: g.id,
+                contract_type: project.contractType,
+                metadata: await dispatch(
+                  'details/getAssetMetadata',
+                  {
+                    apiMetadata: project.apiMetadata,
+                    tokenId: g.id,
+                    project,
+                  },
+                  { root: true }
+                ),
+                amount: 1,
+              }
+            })
+          }
+        } else if (project.contractType === 'ERC20') {
           // const ownedTokens =
 
           // ownedTokens[0].metadata.image = project.tokenImage
 
-          groupByProject = [
-            await dispatch(
-              'relayer-erc20/listERC20',
-              { ...project, wa, contractType: project.contractType },
-              { root: true }
-            ),
-          ]
-          if (groupByProject[0]) {
-            groupByProject[0].metadata.image = project.tokenImage
+          const resultListERC20Balance = await dispatch(
+            'relayer-erc20/listERC20',
+            { ...project, wa, contractType: project.contractType },
+            { root: true }
+          )
+
+          if (resultListERC20Balance) {
+            resultListERC20Balance.metadata.image = project.tokenImage
+            groupByProject.push(resultListERC20Balance)
           }
         } else {
           groupByProject = nftsList
@@ -196,18 +235,20 @@ export const actions = {
         const groupByProjectResolved = await Promise.all(groupByProject)
         traderLogger.log(
           'groupByProject : ',
-          groupByProjectResolved?.[0],
+          groupByProjectResolved,
           project.contractAddress
         )
         if (groupByProjectResolved && groupByProjectResolved?.[0]) {
           if (creator) {
             commit('updateProject', {
               contractAddress: project.contractAddress,
+              contractType: project.contractType,
               creatorAssets: groupByProjectResolved,
             })
           } else {
             commit('updateProject', {
               contractAddress: project.contractAddress,
+              contractType: project.contractType,
               executorAssets: groupByProjectResolved,
             })
           }
@@ -297,9 +338,10 @@ export const mutations = {
   updateProject(state, updatedItem) {
     state.projects = [
       ...state.projects.map((item) => {
-        return item.contractAddress !== updatedItem.contractAddress
-          ? item
-          : { ...item, ...updatedItem }
+        return item.contractAddress === updatedItem.contractAddress &&
+          item.contractType === updatedItem.contractType
+          ? { ...item, ...updatedItem }
+          : item
       }),
     ]
   },
