@@ -9,7 +9,6 @@
     >
       <v-tab v-for="project in assetsByProject" :key="project.contractAddress">
         <img class="mr-1 mt-n1" :src="iconCheckmark" />
-
         {{ (project.assetName || project.projectName) | truncate(30) }}
       </v-tab>
     </v-tabs>
@@ -22,7 +21,7 @@
         <v-card
           class="background_image"
           :style="`--background-image: url('${
-            project.banner || project.backgroundBanner
+            project.banner || project.backgroundImage
           }')`"
         >
           <v-row justify="start">
@@ -33,7 +32,10 @@
               sm="3"
               style=""
             >
-              <dashboard-trade-tab-asset :asset="asset" />
+              <dashboard-trade-tab-asset
+                :asset="asset"
+                :asset-name="project.assetName"
+              />
             </v-col>
           </v-row>
         </v-card>

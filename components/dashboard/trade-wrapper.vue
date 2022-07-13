@@ -66,7 +66,7 @@
           {{ getTradeStatus(trade) }}
         </h6>
         <a
-          :href="`https://mumbai.polygonscan.com/address/${bazaarContractAddress}`"
+          :href="bazaarContractAddressUrl"
           target="_blank"
           class="text-left small-links white--text"
         >
@@ -119,13 +119,13 @@ export default {
 
       TradeStatusMessages: {
         waitingExecutor: 'Waiting for counterparty',
-        depositExecutor: 'Counterparty assets deposited',
+        // depositExecutor: 'Counterparty assets deposited',
         alreadyClaimed:
           'You have already claimed these assets (waiting for counterparty to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
       tradeStatusMessagesMap: {
-        1: 'TRADE_CREATED',
+        1: 'This trade was created by your counterparty for you',
         2: 'This trade was already completed',
         3: 'This trade was cancelled',
       },
@@ -142,7 +142,9 @@ export default {
     bazaarContractAddressUrl() {
       return (
         this.getActiveChainBlockExplorerURL +
-        this.bazaarContractAddress[this.getActiveChain.chainId]
+        'address/' +
+        this.bazaarContractAddress[this.getActiveChain.chainId] +
+        '#readContract'
       )
     },
   },
@@ -269,8 +271,8 @@ export default {
         } else {
           return this.tradeStatusMessagesMap[trade.tradeStatus]
         }
-      } else if (trade.tradeStatus === 1) {
-        return this.TradeStatusMessages.depositExecutor
+        // } else if (trade.tradeStatus === 1) {
+        //   return this.TradeStatusMessages.depositExecutor
       } else {
         return this.tradeStatusMessagesMap[trade.tradeStatus]
       }
