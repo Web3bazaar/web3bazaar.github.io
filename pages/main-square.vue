@@ -20,6 +20,8 @@
         </v-col>
       </v-row>
       <dashboard-trades-section> </dashboard-trades-section>
+
+      <history-section> </history-section>
     </v-container>
   </section>
 </template>
