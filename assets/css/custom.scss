@@ -189,6 +189,12 @@ $bgPurple: rgba(116, 80, 254, 0.7);
     color: #fff;
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1);
     border-radius: 0px;
+  
+
+    &.v-size--small{
+      height: 36px;
+      min-width: unset;
+    }
   }
 
   .more-btn,
