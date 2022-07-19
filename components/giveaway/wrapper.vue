@@ -1,13 +1,8 @@
 <template>
-  <v-card
-    class="background-wrapper"
-    :style="`--background-image: url('${
-      project.banner || project.backgroundImage
-    }')`"
-  >
+  <v-card class="background-wrapper">
     <v-row justify="start">
       <v-col cols="12" sm="12" class="pt-6">
-        <giveaway-card :project="project" />
+        <giveaway-card :project-name="projectName" />
       </v-col>
     </v-row>
   </v-card>
@@ -16,14 +11,13 @@
 <script>
 export default {
   props: {
-    project: {
+    projectName: {
       type: String,
-      default: 'aavegotchi',
+      default: '',
     },
   },
   data() {
     return {
-      currentGiveawaysProjects: ['aavegotchi'],
       tab: 0,
       iconCheckmark: require('@/assets/img/icons/checkmark.png'),
     }
@@ -52,6 +46,7 @@ export default {
   display: block;
   position: relative;
   background-color: transparent;
+  box-shadow: none !important;
 }
 
 .background_image::before {

@@ -1,6 +1,6 @@
 <template>
-  <v-card class="mx-auto" max-width="400" tile>
-    <v-container class="giveaway-rules">
+  <v-card class="mx-auto giveaway-rules" max-width="400">
+    <v-container>
       <v-row>
         <v-col class="">
           <h5>Giveaway rules:</h5>
@@ -44,6 +44,7 @@ export default {}
 
 <style lang="scss">
 .giveaway-rules {
+  border-radius: 8px;
   .rules-list-dot {
     top: 2px;
     position: relative;

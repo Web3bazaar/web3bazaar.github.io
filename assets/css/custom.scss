@@ -162,7 +162,9 @@ $bgPurple: rgba(116, 80, 254, 0.7);
   // UI
   // #######################
 
-
+  .capitalize {
+    text-transform: capitalize;
+  }
   a.small-links{
 
     display: block;

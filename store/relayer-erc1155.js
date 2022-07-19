@@ -16,8 +16,9 @@ const relayerLogger = {
 // const getQuery = (BASE_URL, CONTRACT, API_KEY) =>
 //   `${BASE_URL}/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&sort=desc&address=${CONTRACT}&apikey=${API_KEY}`
 
-const getNFTListURL =
-  'https://nft-ownership-backend.herokuapp.com/api/v1/chainquery'
+const BASE_URL = process.env.BASE_URL
+
+const getNFTListURL = BASE_URL + '/chainquery'
 
 // const singleTransfer = 'TransferSingle(address,address,address,uint256,uint256)'
 // const batchTranfer =

@@ -25,7 +25,7 @@
       <a
         href="http://docs.web3bazaar.org/"
         target="_blank"
-        class="btn login-btn ml-50 pixel2 w3b-c-purple"
+        class="btn login-btn ml-50 pixel2"
         @click="playSound"
         >Wiki</a
       >
@@ -37,9 +37,21 @@
     >
       <router-link
         to="/main-square"
-        class="btn login-btn ml-50 pixel2 w3b-c-purple px-4"
+        class="btn login-btn ml-50 pixel2 px-4"
         @click.native="playSound"
         >Main Square</router-link
+      >
+    </v-col>
+    <v-col
+      v-if="activeNetwork === '0x13881'"
+      cols="auto"
+      class="lh-55px d-none d-sm-flex"
+    >
+      <nuxt-link
+        to="/giveaways"
+        class="btn login-btn ml-50 pixel2 px-4"
+        @click.native="playSound"
+        >Giveaways</nuxt-link
       >
     </v-col>
     <v-col cols="auto" class="lh-55px m">

@@ -43,11 +43,9 @@
                   :class="{
                     disabled: !ticketAmount[index] || ticketAmount[index] === 0,
                   }"
-                  @click.prevent="
-                    updateAmount(getTokenMaxAmount(ticket), index)
-                  "
+                  @click.prevent="updateAmount(getTokenMaxAmount(index), index)"
                 >
-                  Max ({{ getTokenMaxAmount(ticket) }})
+                  Max ({{ getTokenMaxAmount(index) }})
                 </span>
               </div>
             </div>
@@ -58,14 +56,14 @@
               contain
               class="mx-auto"
               style="max-height: 120px; max-width: 155px; cursor: pointer"
-              :src="ticketImg(ticket)"
+              :src="ticketImg(index)"
               @click.prevent="
                 updateAmount((ticketAmount[index] || 0) + 1, index)
               "
             />
             <v-spacer />
             <p class="text-center mt-n4">
-              Price: {{ getTicketPrice(ticket) }}
+              Price: {{ getTicketPrice(index) }}
               <img
                 contain
                 class="mt-n1"
@@ -81,8 +79,8 @@
                 disabled: !ticketAmount[index] || ticketAmount[index] === 0,
               }"
             >
-              {{ totalTicketCost(ticket, ticketAmount[index]) }}
-              {{ tokenSymbol[project] }}
+              {{ totalTicketCost(index, ticketAmount[index]) }}
+              {{ tokenSymbol }}
             </div>
             <!-- <img
               contain
@@ -115,7 +113,7 @@
                 disabled: !ticketAmount[index] || ticketAmount[index] === 0,
               }"
               style="max-height: 100px; max-width: 80px"
-              :src="require(`./assets/${project}-prize.png`)"
+              :src="prizeImage"
             />
           </v-col>
         </v-row>
@@ -136,7 +134,7 @@ import { mapGetters, mapState } from 'vuex'
 
 export default {
   props: {
-    project: {
+    projectName: {
       type: String,
       default: '',
     },
@@ -145,9 +143,7 @@ export default {
     return {
       tickets: [1, 8, 20],
       projectBaseCost: 0.08,
-      tokenSymbol: {
-        aavegotchi: 'GHST',
-      },
+      tokenSymbol: null,
       loadingBtn: false,
       isContractApproved: false,
       ticketAmount: [],
@@ -175,6 +171,7 @@ export default {
       }
     },
   },
+
   watch: {
     account(val) {
       if (val) {
@@ -182,15 +179,22 @@ export default {
       }
     },
   },
+  async created() {
+    const project = await this.$store.dispatch('giveaway/getProject', {
+      project: this.projectName,
+    })
+    Object.keys(project).forEach((cName) => (this[cName] = project[cName]))
+  },
+
   mounted() {
     this.getMaxAmount()
   },
   methods: {
-    totalTicketCost(ticket, amount) {
-      return +(this.getTicketPrice(ticket) * amount || 0 * 100).toFixed(2)
+    totalTicketCost(index, amount) {
+      return +(this.getTicketPrice(index) * amount || 0 * 100).toFixed(2)
     },
-    getTokenMaxAmount(ticket) {
-      return Math.floor(this.tokenMaxAmount / this.getTicketPrice(ticket))
+    getTokenMaxAmount(index) {
+      return Math.floor(this.tokenMaxAmount / this.getTicketPrice(index))
     },
 
     async getMaxAmount() {
@@ -198,7 +202,7 @@ export default {
         'relayer-erc20/listERC20',
         {
           // this needs to be the project erc20 token
-          contractAddress: '0x89A84dc58ABA7909818C471B2EbFBc94e6C96c41',
+          contractAddress: this.erc20TokenAddress,
           wa: this.account,
           contractType: 'ERC20',
         },
@@ -206,16 +210,14 @@ export default {
       )
       console.log(resultListERC20Balance)
 
-      this.tokenMaxAmount = Math.round(resultListERC20Balance?.amount)
+      this.tokenMaxAmount = Math.floor(resultListERC20Balance?.amount)
+      this.tokenSymbol = resultListERC20Balance?.metadata?.name
     },
     updateAmount(event, index) {
       console.log(event)
       const value = parseInt(event?.target ? event?.target?.value || 0 : event)
 
-      const newAmount = Math.min(
-        this.getTokenMaxAmount(this.tickets[index]),
-        value
-      )
+      const newAmount = Math.min(this.getTokenMaxAmount(index), value)
 
       this.ticketAmount = []
       this.totalTicketAmount = []
@@ -227,24 +229,48 @@ export default {
         Math.round(newAmount * this.tickets[index])
       )
     },
-    ticketImg(ticket) {
-      return require(`./assets/${this.project}-${ticket}.png`)
+    ticketImg(index) {
+      return this.ticketsImages?.[index] // require(`./assets/${this.project}-${ticket}.png`)
     },
-    getTicketPrice(ticket) {
-      return this.projectBaseCost * ticket
+    getTicketPrice(index) {
+      return ethers.utils.formatUnits(
+        this.ticketPrice?.[index] || '0',
+        this.erc20TokenDecimals || 18
+      )
     },
     async enterGiveaway(index) {
       this.loadingBtn = true
-
-      console.log(this.ticketAmount)
-      const tx = await this.$store.dispatch('giveaway/enterGiveaway', {
-        raffleType: this.tickets[index],
-        quantity: this.ticketAmount[index],
-        project: this.project,
+      this.$store.commit('modals/setPopupState', {
+        type: 'loading',
+        isShow: true,
       })
-      this.loadingBtn = false
+      console.log(this.ticketAmount)
 
-      console.log(tx)
+      try {
+        const tx = await this.$store.dispatch('giveaway/enterGiveaway', {
+          raffleType: this.tickets[index],
+          quantity: this.ticketAmount[index],
+          projectName: this.projectName,
+          raffleContractAddress: this.raffleContractAddress,
+        })
+        this.$store.commit('modals/setPopupState', {
+          type: 'loading',
+          isShow: true,
+          data: {
+            state: 'mining',
+          },
+        })
+        await tx.wait()
+        this.$store.commit('modals/closeModal')
+      } catch (error) {
+        this.$store.commit('modals/setPopupState', {
+          type: 'error',
+          isShow: true,
+          data: {},
+        })
+      }
+
+      this.loadingBtn = false
     },
   },
 }

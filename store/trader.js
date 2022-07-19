@@ -7,7 +7,8 @@ const traderLogger = {
   error: require('debug')('w3b:store:error:trader'),
 }
 
-const BASE_URL = 'https://nft-ownership-backend.herokuapp.com/api/v1'
+const BASE_URL = process.env.BASE_URL
+
 const GET_PROJECT_DATA_ENDPOINT = '/projects'
 const GET_USER_NFT_DATA_ENDPOINT = '/chainquery'
 
@@ -131,7 +132,6 @@ export const actions = {
     try {
       const activeChain = rootGetters['networks/getActiveChain']
       traderLogger.log('activeChain : ', activeChain)
-      console.log('ACTIVE chain ', activeChain )
 
       const params = {
         wallet: wa,
@@ -141,7 +141,6 @@ export const actions = {
         },
       }
       const { nfts: nftsList } = await getNFTList(params)
-      traderLogger.log('getNFTList result:', nftsList)
 
       // if (!nftsList || !nftsList.length || nftsList.length === 0) {
       //   throw new Error("User hasn't got any NFTs")
@@ -149,7 +148,6 @@ export const actions = {
 
       traderLogger.log('nftsList:', nftsList)
       traderLogger.log('projects:', state.projects)
-      console.log('Project listed : ', state.projects )
 
       state.projects.forEach(async (project) => {
         let groupByProject = []
@@ -270,7 +268,6 @@ export const actions = {
       ).data
 
       traderLogger.log('projectData api :', projectData)
-      console.log('Projects readed : ',  projectData)
 
       // TODO: FORMAT/MAP data to specific format
       const projects = []
@@ -312,7 +309,6 @@ export const actions = {
         }
       })
       if (projects.length > 0) {
-        console.log('Projects loaded : ',  projects)
         commit('projects', projects)
       }
       traderLogger.log('projects mapped: ', projects)
