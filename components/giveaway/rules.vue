@@ -51,6 +51,7 @@ export default {}
   }
   P {
     color: white;
+    font-size: 14px;
   }
 }
 </style>

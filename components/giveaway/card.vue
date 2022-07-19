@@ -9,11 +9,12 @@
         md="12"
         class="d-flex flex-column justify-center item-info"
       >
-        <v-row class="d-flex justify-start align-center">
+        <v-row class="d-flex justify-start align-center pl-4">
           <v-col cols="2"> Amount</v-col>
-          <v-col cols="3"> </v-col>
-          <v-col cols="2">
-            <p class="item-quantity mb-0">Total Cost</p>
+          <v-col cols="3" class=""> Ticket Type </v-col>
+          <v-col cols="4" class="pl-sm-0"> Total Cost </v-col>
+          <v-col v-if="ticketAmount && ticketAmount.length > 0" cols="auto">
+            Raffle Ticket
           </v-col>
         </v-row>
       </v-col>
@@ -27,7 +28,7 @@
           :key="ticket"
           class="d-flex align-center justify-left pl-4"
         >
-          <v-col cols="2">
+          <v-col cols="2" class="pr-0">
             <div class="amount-wrapper">
               <div class="d-flex justify-start">
                 <input
@@ -52,11 +53,11 @@
             </div>
           </v-col>
 
-          <v-col cols="auto" class="">
+          <v-col cols="3" class="pr-0">
             <img
               contain
-              class="mx-4"
-              style="max-height: 120px; max-width: 160px; cursor: pointer"
+              class="mx-auto"
+              style="max-height: 120px; max-width: 155px; cursor: pointer"
               :src="ticketImg(ticket)"
               @click.prevent="
                 updateAmount((ticketAmount[index] || 0) + 1, index)
@@ -73,7 +74,7 @@
               />
             </p>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="2" class="pl-sm-0">
             <div
               class="ticket-cost"
               :class="{
