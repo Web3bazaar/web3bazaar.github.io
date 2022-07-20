@@ -35,13 +35,14 @@ export const state = () => ({
   hasTradesPendingExecutor: false,
   tradesCreator: [],
   tradesExecutor: [],
+  tradesHistory: [],
 })
 
 function getLast3DaysDate() {
   const now = new Date()
 
   return Math.round(
-    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3).getTime() /
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30).getTime() /
       1000
   )
 }
@@ -88,6 +89,7 @@ export const actions = {
 
       const tradesCreator = []
       const tradesExecutor = []
+      const tradesHistory = []
 
       const tradesIdsList = await dispatch(
         'bazaar-connector/getOpenTrades',
@@ -126,8 +128,33 @@ export const actions = {
         if (!e) continue
 
         // here we should check if trade is finished and split into a new list
-        // if (e.tradeStatus !== 1 ) // TODO: history
-
+        if (e.tradeStatus !== 1) {
+          // TODO: history
+          tradesHistory.push({
+            tradeStatus: e.tradeStatus,
+            tradeId: e.tradeId,
+            creator: {
+              address: e.creatorWalletAddress,
+              assetsByProject: await dispatch('groupAssetsByProject', {
+                tokenAddress: e.creatorTokenAddress,
+                tokenIds: e.creatorTokenIds,
+                tokenAmount: e.creatorTokenAmount,
+                tokenType: e.creatorTokenType,
+              }),
+              ...e.creator,
+            },
+            executor: {
+              address: e.executorWalletAddress,
+              assetsByProject: await dispatch('groupAssetsByProject', {
+                tokenAddress: e.executorTokenAddress,
+                tokenIds: e.executorTokenIds,
+                tokenAmount: e.executorTokenAmount,
+                tokenType: e.executorTokenType,
+              }),
+            },
+          })
+          continue
+        }
         if (
           e?.creatorWalletAddress ===
           ethers.utils.getAddress(rootGetters['connector/account'])
@@ -186,6 +213,7 @@ export const actions = {
       }
       commit('tradesCreator', tradesCreator.slice())
       commit('tradesExecutor', tradesExecutor.slice())
+      commit('tradesHistory', tradesHistory.slice())
       commit('modals/closeModal')
 
       return true
@@ -303,6 +331,9 @@ export const mutations = {
   },
   tradesExecutor(state, value) {
     state.tradesExecutor = value
+  },
+  tradesHistory(state, value) {
+    state.tradesHistory = value
   },
 }
 

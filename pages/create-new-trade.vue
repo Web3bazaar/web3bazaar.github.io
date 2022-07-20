@@ -30,6 +30,8 @@
           </ui-action-btn>
         </v-col>
       </v-row>
+
+      <history-section class="mt-14"> </history-section>
     </v-container>
   </section>
 </template>

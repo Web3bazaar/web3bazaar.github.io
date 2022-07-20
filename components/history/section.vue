@@ -1,25 +1,12 @@
 <template>
   <v-container class="trades-history">
-    <div class="trades--title">Your trades history</div>
-    <v-row
-      v-for="trade in tradesHistory"
-      :key="trade.id"
-      class="trades-wrapper-row py-4"
-      justify="center"
-    >
-      <DashboardTradeWrapper :trade="trade" />
-    </v-row>
+    <div class="trades--title">Your last 3 days trades</div>
+    <history-table> </history-table>
   </v-container>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
-export default {
-  computed: {
-    ...mapState(['tradesHistory']),
-  },
-}
+export default {}
 </script>
 
 <style></style>
