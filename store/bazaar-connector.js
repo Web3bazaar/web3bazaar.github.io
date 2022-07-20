@@ -174,12 +174,14 @@ export const actions = {
     const [creatorWalletAddress, executorWalletAddress, tradeStatus] =
       await webazaarInstance['getTrade(uint256)'](tradeId)
 
+    // here we lookup trade in the event log
     const found = eventLogsList.find(
       (event) =>
         ethers.utils.defaultAbiCoder.decode(['uint256'], event.data)[0]._hex ===
         tradeId
     )
 
+    //  if trade is closed and isn't in event log we don't show it
     if (tradeStatus !== 1 && !found) {
       return { tradeStatus, tradeId }
     }

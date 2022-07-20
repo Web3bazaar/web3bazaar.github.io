@@ -179,14 +179,12 @@ export default {
       }
     },
   },
-  async created() {
+  async mounted() {
     const project = await this.$store.dispatch('giveaway/getProject', {
       project: this.projectName,
     })
     Object.keys(project).forEach((cName) => (this[cName] = project[cName]))
-  },
 
-  mounted() {
     this.getMaxAmount()
   },
   methods: {

@@ -125,7 +125,8 @@ export const actions = {
         logger.log('Trade:  ', e)
         if (!e) continue
 
-        // if (e.tradeStatus !== 1 && !found) continue
+        // here we should check if trade is finished and split into a new list
+        // if (e.tradeStatus !== 1 ) // TODO: history
 
         if (
           e?.creatorWalletAddress ===
