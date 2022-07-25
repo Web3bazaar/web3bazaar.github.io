@@ -35,7 +35,7 @@ export const state = () => ({
   hasTradesPendingExecutor: false,
   tradesCreator: [],
   tradesExecutor: [],
-  tradesHistory: [],
+  userTradesHistory: [],
 })
 
 function getLast3DaysDate() {
@@ -48,7 +48,7 @@ function getLast3DaysDate() {
 }
 
 export const actions = {
-  async getLastedBlockInfo({ commit, dispatch, rootGetters }) {
+  async getLatestBlockInfo({ commit, dispatch, rootGetters }) {
     const timestamp = getLast3DaysDate()
 
     const { result: latestBlock } = (
@@ -71,7 +71,7 @@ export const actions = {
   async getTradesInfo({ commit, dispatch, rootGetters }) {
     logger.log('******* getTradesInfo ***** ')
 
-    const eventLogsList = await dispatch('getLastedBlockInfo')
+    const eventLogsList = await dispatch('getLatestBlockInfo')
 
     try {
       commit(
@@ -89,7 +89,7 @@ export const actions = {
 
       const tradesCreator = []
       const tradesExecutor = []
-      const tradesHistory = []
+      const userTradesHistory = []
 
       const tradesIdsList = await dispatch(
         'bazaar-connector/getOpenTrades',
@@ -130,7 +130,7 @@ export const actions = {
         // here we should check if trade is finished and split into a new list
         if (e.tradeStatus !== 1) {
           // TODO: history
-          tradesHistory.push({
+          userTradesHistory.push({
             tradeStatus: e.tradeStatus,
             tradeId: e.tradeId,
             creator: {
@@ -213,7 +213,7 @@ export const actions = {
       }
       commit('tradesCreator', tradesCreator.slice())
       commit('tradesExecutor', tradesExecutor.slice())
-      commit('tradesHistory', tradesHistory.slice())
+      commit('userTradesHistory', userTradesHistory.slice())
       commit('modals/closeModal')
 
       return true
@@ -332,8 +332,8 @@ export const mutations = {
   tradesExecutor(state, value) {
     state.tradesExecutor = value
   },
-  tradesHistory(state, value) {
-    state.tradesHistory = value
+  userTradesHistory(state, value) {
+    state.userTradesHistory = value
   },
 }
 

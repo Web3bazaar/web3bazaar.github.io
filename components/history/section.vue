@@ -1,6 +1,6 @@
 <template>
   <v-container class="trades-history">
-    <div class="trades--title">Your last 3 days trades</div>
+    <div class="trades--title">Your last trades</div>
     <history-table> </history-table>
   </v-container>
 </template>

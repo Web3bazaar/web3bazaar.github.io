@@ -4,7 +4,7 @@
       <template #default>
         <thead>
           <tr>
-            <th class="text-left">Date</th>
+            <th class="text-left">Trade ID</th>
             <th class="text-left">Creator Wallet</th>
             <th class="text-left">Project/Asset</th>
             <th class="text-left">Amount</th>
@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="trade in tradesHistory" :key="trade.tradeId">
+          <tr v-for="trade in userTradesHistory" :key="trade.tradeId">
             <td>
               <div>
                 {{ trade.tradeId }}
@@ -64,7 +64,7 @@ import { ethers } from 'ethers'
 
 export default {
   computed: {
-    ...mapState(['tradesHistory']),
+    ...mapState(['userTradesHistory']),
   },
   methods: {
     getAssetsAmount(projects) {

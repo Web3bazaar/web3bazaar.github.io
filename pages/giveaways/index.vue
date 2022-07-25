@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
-          <h1 class="gradient-text capitalize">On going Giveaways</h1>
+          <h1 class="gradient-text capitalize">Active Giveaways</h1>
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -11,11 +11,15 @@
           v-for="project in currentGiveawaysProjects"
           :key="project.name"
           cols="12"
-          lg="5"
+          lg="12"
           class="d-flex justify-center"
         >
           <nuxt-link :to="'/giveaways/' + project.nameId">
-            <giveaway-small-card :project="project"> </giveaway-small-card>
+            <giveaway-small-card
+              v-if="project.nameId !== 'web3bazaar'"
+              :project="project"
+            >
+            </giveaway-small-card>
           </nuxt-link>
         </v-col>
       </v-row>

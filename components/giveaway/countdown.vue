@@ -1,25 +1,25 @@
 <template>
   <v-row class="countdown d-flex justify-center align-center">
-    <v-col v-if="timeToEndDate.days >= 0" cols="auto">
-      <div class="outside">
-        <div class="inside">
+    <v-col v-if="timeToEndDate.days >= 0" cols="auto" class="gradient-text">
+      <div>
+        <div>
           {{ timeToEndDate.days }}
         </div>
       </div>
       <span> Days </span>
     </v-col>
-    <v-col v-if="timeToEndDate.hours >= 0" cols="auto">
-      <div class="outside">
-        <div class="inside">
+    <v-col v-if="timeToEndDate.hours >= 0" cols="auto" class="gradient-text">
+      <div>
+        <div>
           {{ timeToEndDate.hours }}
         </div>
       </div>
       <span> Hours </span>
     </v-col>
-    <v-col v-if="timeToEndDate.hours >= 0" cols="auto">
-      <div class="outside">
-        <div class="inside">
-          {{ timeToEndDate.hours }}
+    <v-col v-if="timeToEndDate.minutes >= 0" cols="auto" class="gradient-text">
+      <div>
+        <div>
+          {{ timeToEndDate.minutes }}
         </div>
       </div>
       <span> Minutes </span>
@@ -68,10 +68,12 @@ export default {
       const days = Math.floor(distance / DAY)
       const hours = Math.floor((distance % DAY) / HOUR)
       const minutes = Math.floor((distance % HOUR) / MINUTE)
+      const seconds = Math.floor((distance % MINUTE) / SECOND)
 
       this.timeToEndDate.days = days || -1
       this.timeToEndDate.hours = hours || -1
       this.timeToEndDate.minutes = minutes || -1
+      this.timeToEndDate.seconds = seconds || -1
     },
   },
 }
@@ -79,6 +81,9 @@ export default {
 
 <style lang="scss">
 .countdown {
+  .gradient-text {
+    font-size: 30px;
+  }
   .col {
     display: flex;
     align-content: center;
@@ -113,7 +118,7 @@ export default {
     }
     span {
       color: lightpink;
-      line-height: 36px;
+      // line-height: 36px;
       margin-left: 4px;
     }
   }

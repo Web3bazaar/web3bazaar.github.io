@@ -175,6 +175,7 @@ export const actions = {
       await webazaarInstance['getTrade(uint256)'](tradeId)
 
     // here we lookup trade in the event log
+    // TODO store tx hash
     const found = eventLogsList.find(
       (event) =>
         ethers.utils.defaultAbiCoder.decode(['uint256'], event.data)[0]._hex ===

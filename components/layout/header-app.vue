@@ -15,21 +15,6 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
 
-    <v-col cols="auto" class="">
-      <ui-network-btn
-        :network-type="activeNetwork"
-        @click="networkClickHandler"
-      />
-    </v-col>
-    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
-      <a
-        href="http://docs.web3bazaar.org/"
-        target="_blank"
-        class="btn login-btn ml-50 pixel2"
-        @click="playSound"
-        >Wiki</a
-      >
-    </v-col>
     <v-col
       v-if="isWalletConnected && $route.path !== '/'"
       cols="auto"
@@ -53,6 +38,21 @@
         @click.native="playSound"
         >Giveaways</nuxt-link
       >
+    </v-col>
+    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
+      <a
+        href="http://docs.web3bazaar.org/"
+        target="_blank"
+        class="btn login-btn ml-50 pixel2"
+        @click="playSound"
+        >Wiki</a
+      >
+    </v-col>
+    <v-col cols="auto" class="">
+      <ui-network-btn
+        :network-type="activeNetwork"
+        @click="networkClickHandler"
+      />
     </v-col>
     <v-col cols="auto" class="lh-55px m">
       <div>
