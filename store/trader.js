@@ -152,26 +152,25 @@ export const actions = {
       state.projects.forEach(async (project) => {
         let groupByProject = []
 
-        if (project.graphql) {
-          traderLogger.log('graphql:', project.graphql)
+        if (project.graphqlUrl) {
+          traderLogger.log('graphqlUrl:', project.graphqlUrl)
+          traderLogger.log('graphqlQuery:', project.graphqlQuery)
+          traderLogger.log('graphqlField:', project.graphqlField)
 
           const { user } = (
-            await this.$axios.post(project.graphql, {
-              query: `{
-            user(id: "${wa.toLowerCase()}") {
-              gotchisOwned {
-                id
-              }
-            }
-          }`,
+            await this.$axios.post(project.graphqlUrl, {
+              query: project.graphqlQuery.replace(
+                '{wa}',
+                `"${wa.toLowerCase()}"`
+              ),
             })
           )?.data?.data
           traderLogger.log('user:', user)
 
-          const { gotchisOwned } = user || {}
-          traderLogger.log('graphqlResult:', gotchisOwned)
-          if (gotchisOwned) {
-            groupByProject = gotchisOwned.map(async (g) => {
+          const { [project.graphqlField]: graphqlAssets } = user || {}
+          traderLogger.log('graphqlAssets:', graphqlAssets)
+          if (graphqlAssets) {
+            groupByProject = graphqlAssets.map(async (g) => {
               return {
                 id: g.id,
                 token_address: project.contractAddress,
