@@ -8,27 +8,31 @@
       </v-row>
       <v-row justify="center">
         <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
-        <v-col cols="12" sm="6" class="px-0">
-          <giveaway-countdown :giveaway-end-date="giveawayEndDate">
-          </giveaway-countdown>
-          <p class="text-center mb-0">To win:</p>
+
+        <v-col cols="12" sm="6">
+          <p class="text-center mb-0">Prizes:</p>
+          <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
         </v-col>
+        <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
         <v-col
           cols="12"
-          md="3"
-          class="d-flex justify-center align-center item-info px-0"
+          sm="3"
+          class="d-flex justify-center align-center tickets-info px-0"
         >
           <img
             class="mx-4"
             :src="raffleTicketImage"
-            style="max-height: 120px; max-width: 55px"
+            style="max-height: 120px; max-width: 85px"
           />
           <!-- this needs to be dynamic -->
-          {{ totalIssued }} / {{ projectMaxSupply }}
+          {{ totalIssued }} / {{ projectMaxSupply }} left
         </v-col>
-        <v-col cols="12" sm="7">
-          <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
+        <v-col cols="12" sm="6" class="px-0">
+          <giveaway-countdown :giveaway-end-date="giveawayEndDate">
+          </giveaway-countdown>
         </v-col>
+
+        <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
       </v-row>
       <v-row justify="space-between">
         <v-col cols="12" sm="3">
@@ -76,6 +80,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tickets-info {
+  font-size: 1.2rem;
+}
 .prizes-box img {
   border: solid 5px purple;
   border-radius: 12px;

@@ -262,8 +262,10 @@ export default {
           type: 'success',
           isShow: true,
           data: {
+            title: 'Almost there',
             message:
-              'You now need accept the trade in Main Square to get the raffle tickets you just minted in your wallet.',
+              'Your ticket is minted and ready to be sent to you.\n Make sure to EXECUTE the TRADE in the Main square to spend your ghost and get the tickets in your wallet.',
+            button: 'Complete in Main Square',
           },
         })
       } catch (error) {

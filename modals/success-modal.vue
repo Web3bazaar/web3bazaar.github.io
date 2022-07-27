@@ -3,12 +3,12 @@
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
-    <h3 class="title text-center">Hurray!</h3>
+    <h3 class="title text-center">{{ title }}</h3>
 
     <div class="networks-wrap">
       <v-img :src="successGIF" max-height="300" />
     </div>
-    <p class="title text-center">{{ message }}</p>
+    <p class="modal-message text-center">{{ message }}</p>
     <p v-if="txHash" class="title text-center">
       You can check the transaction
 
@@ -21,6 +21,15 @@
         <img :width="16" :src="linkIcon" />
       </a>
     </p>
+
+    <ui-action-btn
+      v-if="button"
+      class="mt-6"
+      :loading="loadingBtn"
+      :btn-text="button"
+      @click="closePopup"
+    >
+    </ui-action-btn>
   </div>
 </template>
 
@@ -46,9 +55,14 @@ export default {
     ...mapGetters('networks', {
       BlockExplorerURL: 'getActiveChainBlockExplorerURL',
     }),
-
+    title() {
+      return this.modalData?.title || 'Hurray!'
+    },
     message() {
       return this.modalData?.message
+    },
+    button() {
+      return this.modalData?.button
     },
     animated() {
       return this.modalData?.animated
@@ -115,6 +129,16 @@ export default {
     margin-bottom: 0px;
     position: relative;
     z-index: 2;
+  }
+
+  .modal-message {
+    font-size: 16px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    position: relative;
+    z-index: 2;
+    white-space: pre-line;
   }
   .networks-wrap {
     display: flex;
