@@ -61,21 +61,36 @@ export const actions = {
       return error
     }
   },
-  async getProjectData({ state }, { project }) {
-    console.log('project', project)
-    const { data: giveawayResult } = await this.$axios.post(
-      BASE_URL + PROXY_ENDPOINT,
-      {
-        url: raffleTicketsUrl + project + '/index.json',
-        method: 'get',
-      }
+  getProjectData({ state }, { projectName }) {
+    giveawayLogger.log('getProjectData', projectName)
+    // const { data: giveawayResult } = await this.$axios.post(
+    //   BASE_URL + PROXY_ENDPOINT,
+    //   {
+    //     url: raffleTicketsUrl + projectName + '/index.json',
+    //     method: 'get',
+    //   }
+    // )
+    // giveawayLogger.log('getProjectData', giveawayResult)
+    return state.currentGiveawaysProjects.find((e) => e.nameId === projectName)
+  },
+
+  async getProjectMaxSupply({ state }, { nameId, raffleContractAddress }) {
+    giveawayLogger.log('getProjectMaxSupply', nameId)
+    const projectABI = require(`@/components/giveaway/abi/${nameId}.json`)
+
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum)
+    const contract = new ethers.Contract(
+      raffleContractAddress,
+      projectABI,
+      await userProvider.getSigner()
     )
-    giveawayLogger.log(giveawayResult)
-    return state.currentGiveawaysProjects.find((e) => e.nameId === project)
+
+    const maxSupply = (await contract.MAX_SUPPLY()).toString()
+    const totalIssued = (await contract.getId()).toString()
+    giveawayLogger.log(maxSupply, totalIssued)
+    return { maxSupply, totalIssued }
   },
   getProject({ state }, { project }) {
-    console.log('project', project)
-
     return state.currentGiveawaysProjects.find((e) => e.nameId === project)
   },
   async enterGiveaway(

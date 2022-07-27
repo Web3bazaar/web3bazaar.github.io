@@ -22,7 +22,7 @@
     >
       <router-link
         to="/main-square"
-        class="btn login-btn ml-50 pixel2 px-4"
+        class="btn login-btn ml-50 pixel2"
         @click.native="playSound"
         >Main Square</router-link
       >
@@ -34,7 +34,7 @@
     >
       <nuxt-link
         to="/giveaways"
-        class="btn login-btn ml-50 pixel2 px-4"
+        class="btn login-btn ml-50 pixel2"
         @click.native="playSound"
         >Giveaways</nuxt-link
       >
@@ -109,6 +109,14 @@ export default {
   background-color: transparent;
   z-index: 999;
 
+  .pixel2:not(.w3b-c-purple) {
+    background: none;
+    margin: 0 auto;
+    &::before,
+    &::after {
+      content: none;
+    }
+  }
   &.v-app-bar--is-scrolled {
     background-color: #03091f;
   }

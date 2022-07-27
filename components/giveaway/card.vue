@@ -113,7 +113,7 @@
                 disabled: !ticketAmount[index] || ticketAmount[index] === 0,
               }"
               style="max-height: 100px; max-width: 80px"
-              :src="prizeImage"
+              :src="raffleTicketImage"
             />
           </v-col>
         </v-row>
@@ -184,7 +184,6 @@ export default {
       project: this.projectName,
     })
     Object.keys(project).forEach((cName) => (this[cName] = project[cName]))
-
     this.getMaxAmount()
   },
   methods: {
@@ -206,13 +205,11 @@ export default {
         },
         { root: true }
       )
-      console.log(resultListERC20Balance)
 
       this.tokenMaxAmount = Math.floor(resultListERC20Balance?.amount)
       this.tokenSymbol = resultListERC20Balance?.metadata?.name
     },
     updateAmount(event, index) {
-      console.log(event)
       const value = parseInt(event?.target ? event?.target?.value || 0 : event)
 
       const newAmount = Math.min(this.getTokenMaxAmount(index), value)
@@ -242,7 +239,6 @@ export default {
         type: 'loading',
         isShow: true,
       })
-      console.log(this.ticketAmount)
 
       try {
         const tx = await this.$store.dispatch('giveaway/enterGiveaway', {
@@ -259,7 +255,17 @@ export default {
           },
         })
         await tx.wait()
-        this.$store.commit('modals/closeModal')
+
+        // this.$store.commit('modals/closeModal')
+
+        this.$store.commit('modals/setPopupState', {
+          type: 'success',
+          isShow: true,
+          data: {
+            message:
+              'You now need accept the trade in Main Square to get the raffle tickets you just minted in your wallet.',
+          },
+        })
       } catch (error) {
         this.$store.commit('modals/setPopupState', {
           type: 'error',

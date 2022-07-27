@@ -11,7 +11,7 @@
           v-for="project in currentGiveawaysProjects"
           :key="project.name"
           cols="12"
-          lg="12"
+          lg="8"
           class="d-flex justify-center"
         >
           <nuxt-link :to="'/giveaways/' + project.nameId">

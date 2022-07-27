@@ -7,10 +7,27 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <v-col cols="12" sm="12">
+        <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
+        <v-col cols="12" sm="6" class="px-0">
           <giveaway-countdown :giveaway-end-date="giveawayEndDate">
           </giveaway-countdown>
           <p class="text-center mb-0">To win:</p>
+        </v-col>
+        <v-col
+          cols="12"
+          md="3"
+          class="d-flex justify-center align-center item-info px-0"
+        >
+          <img
+            class="mx-4"
+            :src="raffleTicketImage"
+            style="max-height: 120px; max-width: 55px"
+          />
+          <!-- this needs to be dynamic -->
+          {{ totalIssued }} / {{ projectMaxSupply }}
+        </v-col>
+        <v-col cols="12" sm="7">
+          <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
         </v-col>
       </v-row>
       <v-row justify="space-between">
@@ -38,11 +55,22 @@ export default {
     store.commit('modals/closeModal')
 
     return await store.dispatch('giveaway/getProjectData', {
-      project: aavegotchi,
+      projectName: aavegotchi,
     })
   },
   data() {
-    return { project: aavegotchi }
+    return {
+      project: aavegotchi,
+      projectMaxSupply: 0,
+      totalIssued: 0,
+    }
+  },
+  async mounted() {
+    ;({ maxSupply: this.projectMaxSupply, totalIssued: this.totalIssued } =
+      await this.$store.dispatch('giveaway/getProjectMaxSupply', {
+        nameId: this.nameId,
+        raffleContractAddress: this.raffleContractAddress,
+      }))
   },
 }
 </script>

@@ -35,7 +35,7 @@ export default {
     store.commit('modals/closeModal')
 
     return await store.dispatch('giveaway/getProjectData', {
-      project: web3bazaar,
+      projectName: web3bazaar,
     })
   },
   data() {

@@ -3,6 +3,7 @@
     <v-container>
       <v-row>
         <v-col class="">
+          <img class="d-flex mx-auto mb-2" :src="IconRules" :width="55" />
           <h5>Giveaway rules:</h5>
 
           <p>
@@ -37,7 +38,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      IconRules: require('assets/img/icons/rules.png'),
+    }
+  },
+}
 </script>
 
 <style lang="scss">

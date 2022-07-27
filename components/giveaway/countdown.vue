@@ -24,6 +24,18 @@
       </div>
       <span> Minutes </span>
     </v-col>
+    <!-- <v-col
+      v-if="timeToEndDate.seconds >= 0"
+      cols="auto"
+      class="gradient-text px-2"
+    >
+      <div>
+        <div>
+          {{ timeToEndDate.seconds }}
+        </div>
+      </div>
+      <span> Seconds </span>
+    </v-col> -->
   </v-row>
 </template>
 
@@ -71,9 +83,9 @@ export default {
       const seconds = Math.floor((distance % MINUTE) / SECOND)
 
       this.timeToEndDate.days = days || -1
-      this.timeToEndDate.hours = hours || -1
-      this.timeToEndDate.minutes = minutes || -1
-      this.timeToEndDate.seconds = seconds || -1
+      this.timeToEndDate.hours = hours
+      this.timeToEndDate.minutes = minutes
+      this.timeToEndDate.seconds = seconds
     },
   },
 }

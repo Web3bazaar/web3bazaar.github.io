@@ -1,30 +1,12 @@
 <template>
-  <v-container>
+  <v-container class="prizes-box">
     <v-row>
       <v-col class="d-flex">
         <img
+          v-for="prize in prizesList"
+          :key="prize"
           class="mx-auto"
-          :src="'https://app.aavegotchi.com/images/items/10.svg'"
-          style="max-height: 120px; max-width: 55px; cursor: pointer"
-        />
-        <img
-          class="mx-auto"
-          :src="'https://app.aavegotchi.com/images/items/11.svg'"
-          style="max-height: 120px; max-width: 55px; cursor: pointer"
-        />
-        <img
-          class="mx-auto"
-          :src="'https://app.aavegotchi.com/images/items/12.svg'"
-          style="max-height: 120px; max-width: 55px; cursor: pointer"
-        />
-        <img
-          class="mx-auto"
-          :src="'https://app.aavegotchi.com/images/items/13.svg'"
-          style="max-height: 120px; max-width: 55px; cursor: pointer"
-        />
-        <img
-          class="mx-auto"
-          :src="'https://app.aavegotchi.com/images/items/15.svg'"
+          :src="prize"
           style="max-height: 120px; max-width: 55px; cursor: pointer"
         />
       </v-col>
@@ -43,4 +25,14 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.prizes-box img {
+  border: solid 5px purple;
+  border-radius: 12px;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 0px 15px 1px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 15px 1px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 15px 1px rgba(255, 255, 255, 1);
+}
+</style>
