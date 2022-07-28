@@ -2,10 +2,10 @@
 
 // batch version (v2)
 const BAZAAR_CONTRACT_ADDRESS_LIST = {
- '0x13881' : '0x0A50B369f107aeF88E83B79F8E437EB623ac4a0a', // MUMBAI
- '0x89' : '0x93cdc98317A07e83a9AA96F69AdA7Af4b37EBf44' // POLYGON
+  '0x13881': '0xa1111D70cc4731256077113bB8Ae81003760f590', // MUMBAI
+  '0x89': '0x93cdc98317A07e83a9AA96F69AdA7Af4b37EBf44', // POLYGON
 }
- const BASE_URL = 'https://webazaar-meta-api.herokuapp.com/api/v1'
+const BASE_URL = 'https://webazaar-meta-api.herokuapp.com/api/v1'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head

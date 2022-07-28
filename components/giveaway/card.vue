@@ -264,7 +264,7 @@ export default {
           data: {
             title: 'Almost there',
             message:
-              'Your ticket is minted and ready to be sent to you.\n Make sure to EXECUTE the TRADE in the Main square to spend your ghost and get the tickets in your wallet.',
+              'Your ticket is minted and ready to be sent to you.\n Make sure to EXECUTE the TRADE in the Main Square to spend your Ghost and get the tickets in your wallet.',
             button: 'Complete in Main Square',
           },
         })
