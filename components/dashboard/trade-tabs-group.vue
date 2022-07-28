@@ -20,9 +20,7 @@
       >
         <v-card
           class="background_image"
-          :style="`--background-image: url('${
-            project.banner || project.backgroundImage
-          }')`"
+          :style="`--background-image: url('${getBackgroundImg(project)}')`"
         >
           <v-row justify="start">
             <v-col
@@ -61,6 +59,15 @@ export default {
   computed: {
     currentSelectedProject() {
       return Object.keys(this.assetsByProject)[this.tab]
+    },
+  },
+  methods: {
+    getBackgroundImg(project) {
+      return (
+        project.banner ||
+        project.backgroundImage ||
+        require('assets/img/bg-img/pattern.png')
+      )
     },
   },
 }

@@ -68,7 +68,6 @@ export default {
           'You have already claimed these assets (waiting for counterparty to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
-      linkIcon: require('@/assets/img/icons/link.png'),
     }
   },
 

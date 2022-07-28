@@ -14,6 +14,7 @@
             class="d-flex justify-center align-center flex-column tickets-info px-0"
           >
             <img
+              v-if="raffleTicketImage"
               class="mx-4"
               :src="raffleTicketImage"
               style="max-height: 120px; max-width: 100%"
