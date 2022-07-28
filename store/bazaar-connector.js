@@ -171,8 +171,10 @@ export const actions = {
       webazaarABI,
       userProvider.getSigner()
     )
+    bazaarConnectorLog.log('Calling method getTrade: getTrade(uint256)')
+
     const [creatorWalletAddress, executorWalletAddress, tradeStatus] =
-      await webazaarInstance['getTrade(uint256)'](tradeId)
+      await webazaarInstance.getTrade(tradeId)
 
     // here we lookup trade in the event log
     // TODO store tx hash
@@ -192,7 +194,7 @@ export const actions = {
       creatorTokenIds,
       creatorTokenAmount,
       creatorTokenType,
-    ] = await webazaarInstance['getTrade(uint256,address)'](
+    ] = await webazaarInstance.getTradeWithAddress(
       tradeId,
       creatorWalletAddress
     )
@@ -202,7 +204,7 @@ export const actions = {
       executorTokenIds,
       executorTokenAmount,
       executorTokenType,
-    ] = await webazaarInstance['getTrade(uint256,address)'](
+    ] = await webazaarInstance.getTradeWithAddress(
       tradeId,
       executorWalletAddress
     )

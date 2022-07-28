@@ -6,31 +6,6 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "claimOwner",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "enum BatchWeb3Bazaar.TradeStatus",
-        "name": "toStatus",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tradeId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ClaimToken",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
         "name": "executor",
         "type": "address"
       },
@@ -118,13 +93,20 @@
       { "internalType": "uint256", "name": "tradeId", "type": "uint256" },
       { "internalType": "address", "name": "userWallet", "type": "address" }
     ],
-    "name": "getTrade",
+    "name": "getTradeWithAddress",
     "outputs": [
       { "internalType": "address[]", "name": "", "type": "address[]" },
       { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
       { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
       { "internalType": "uint8[]", "name": "", "type": "uint8[]" }
     ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "numAssetsPerTrade",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -167,14 +149,34 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "openTradeCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address payable",
-        "name": "newOwner",
+        "name": "existingOwner",
         "type": "address"
       }
     ],
     "name": "removeOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newMaxAseetPerTrade",
+        "type": "uint256"
+      }
+    ],
+    "name": "setAssetPerTrade",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -242,40 +244,10 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "from", "type": "address" },
-      { "internalType": "address", "name": "to", "type": "address" },
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "swapERC1155",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "from", "type": "address" },
-      { "internalType": "address", "name": "to", "type": "address" },
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "swapERC20",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "from", "type": "address" },
-      { "internalType": "address", "name": "to", "type": "address" },
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-    ],
-    "name": "swapERC721",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "nonpayable",
+    "inputs": [],
+    "name": "totalCompletedTrade",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -285,52 +257,6 @@
       { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "from", "type": "address" },
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-    ],
-    "name": "verifyERC1155",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "from", "type": "address" },
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "verifyERC20",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "from", "type": "address" },
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-    ],
-    "name": "verifyERC721",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint8", "name": "tokenType", "type": "uint8" }
-    ],
-    "name": "verifyTradeIntegrity",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "pure",
     "type": "function"
   }
 ]
