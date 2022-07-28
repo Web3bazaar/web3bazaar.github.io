@@ -7,39 +7,39 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
-
-        <v-col cols="12" sm="6">
-          <p class="text-center mb-0">Prizes:</p>
-          <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
-        </v-col>
-        <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
-        <v-col
-          cols="12"
-          sm="3"
-          class="d-flex justify-center align-center tickets-info px-0"
-        >
-          <img
-            class="mx-4"
-            :src="raffleTicketImage"
-            style="max-height: 120px; max-width: 85px"
-          />
-          <!-- this needs to be dynamic -->
-          {{ totalIssued }} / {{ projectMaxSupply }} left
-        </v-col>
-        <v-col cols="12" sm="6" class="px-0">
-          <giveaway-countdown :giveaway-end-date="giveawayEndDate">
-          </giveaway-countdown>
-        </v-col>
-
-        <v-col cols="12" sm="3" class="d-none d-sm-flex"> </v-col>
-      </v-row>
-      <v-row justify="space-between">
-        <v-col cols="12" sm="3">
-          <giveaway-rules> </giveaway-rules>
+        <v-col cols="12" sm="3" class="">
+          <v-col
+            cols="12"
+            sm="12"
+            class="d-flex justify-center align-center flex-column tickets-info px-0"
+          >
+            <img
+              class="mx-4"
+              :src="raffleTicketImage"
+              style="max-height: 120px; max-width: 100%"
+            />
+            <div>
+              {{ projectMaxSupply - totalIssued }} / {{ projectMaxSupply }} left
+            </div>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <giveaway-rules> </giveaway-rules>
+          </v-col>
         </v-col>
         <v-col cols="12" sm="9">
-          <giveaway-wrapper :project-name="project" />
+          <v-col cols="12" sm="8">
+            <p class="text-center mb-0">Prizes:</p>
+            <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
+          </v-col>
+
+          <v-col cols="12" sm="8" class="px-0">
+            <giveaway-countdown :giveaway-end-date="giveawayEndDate">
+            </giveaway-countdown>
+          </v-col>
+
+          <v-col cols="12" sm="12">
+            <giveaway-wrapper :project-name="project" />
+          </v-col>
         </v-col>
       </v-row>
     </v-container>

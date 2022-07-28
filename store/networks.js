@@ -80,7 +80,7 @@ export const state = () => ({
       chainId: '0x13881',
       name: 'mumbai',
       code: '80001',
-      chainName: 'Mumbai testnet',
+      chainName: 'Mumbai',
       rpcUrls: [
         'https://rpc-mumbai.matic.today',
         'https://matic-mumbai.chainstacklabs.com',

@@ -4,7 +4,7 @@
       <v-row>
         <v-col class="">
           <img class="d-flex mx-auto mb-2" :src="IconRules" :width="55" />
-          <h5>Giveaway rules:</h5>
+          <h5 class="text-center mb-3">Giveaway rules</h5>
 
           <p>
             <span class="rules-list-dot">⁙</span> Buy raffle tickets for a

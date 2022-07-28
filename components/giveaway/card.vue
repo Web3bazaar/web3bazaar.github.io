@@ -183,7 +183,9 @@ export default {
     const project = await this.$store.dispatch('giveaway/getProject', {
       project: this.projectName,
     })
-    Object.keys(project).forEach((cName) => (this[cName] = project[cName]))
+    Object.keys(project || {}).forEach(
+      (cName) => (this[cName] = project[cName])
+    )
     this.getMaxAmount()
   },
   methods: {
