@@ -3,7 +3,7 @@
 // batch version (v2)
 const BAZAAR_CONTRACT_ADDRESS_LIST = {
   '0x13881': '0xa1111D70cc4731256077113bB8Ae81003760f590', // MUMBAI
-  '0x89': '0x93cdc98317A07e83a9AA96F69AdA7Af4b37EBf44', // POLYGON
+  '0x89': '0xe1356B52078e11E6e3597Bfc5D5b538f2D6D68e6', // POLYGON
 }
 const BASE_URL = 'https://webazaar-meta-api.herokuapp.com/api/v1'
 
