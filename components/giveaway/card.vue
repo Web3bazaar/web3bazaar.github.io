@@ -149,8 +149,7 @@ export default {
       ticketAmount: [],
       totalTicketAmount: [],
       tokenMaxAmount: 0,
-      tokenImage:
-        'https://s2.coinmarketcap.com/static/img/coins/200x200/7046.png',
+      tokenImage: null,
       projectLink: null,
       assetName: null,
       externalUrl: null,

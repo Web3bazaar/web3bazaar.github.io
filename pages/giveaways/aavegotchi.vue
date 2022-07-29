@@ -27,13 +27,13 @@
             <giveaway-rules> </giveaway-rules>
           </v-col>
         </v-col>
-        <v-col cols="12" sm="9">
-          <v-col cols="12" sm="8">
+        <v-col cols="12" sm="9" class="pt-2">
+          <v-col cols="12" sm="8" class="pb-0">
             <p class="text-center mb-0">Prizes:</p>
             <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
           </v-col>
 
-          <v-col cols="12" sm="8" class="px-0">
+          <v-col cols="12" sm="8" class="pt-1">
             <giveaway-countdown :giveaway-end-date="giveawayEndDate">
             </giveaway-countdown>
           </v-col>
