@@ -209,6 +209,15 @@ export const actions = {
       executorWalletAddress
     )
 
+    const explorerUrl = rootGetters['networks/getActiveChainBlockExplorerURL']
+    const txHash = found.transactionHash
+    const txHashData = {
+      explorerUrl,
+      txHash,
+      hashUrl: `${explorerUrl}/tx/${txHash}`,
+      timeStamp: Number(found.timeStamp)
+    }
+
     bazaarConnectorLog.log(
       '******* creatorTradeInfo *******',
       creatorTokenAddress,
@@ -218,7 +227,8 @@ export const actions = {
       executorTokenAddress,
       executorTokenIds,
       executorTokenAmount,
-      executorTokenType
+      executorTokenType,
+      txHashData
     )
 
     return {
@@ -234,6 +244,7 @@ export const actions = {
       executorTokenType,
       tradeStatus,
       tradeId,
+      txHashData
     }
   },
   async executeTrade(
