@@ -129,6 +129,7 @@ export const actions = {
     { commit, dispatch, state, rootGetters },
     { wa, creator }
   ) {
+    traderLogger.log('listOwnedIds called')
     try {
       const activeChain = rootGetters['networks/getActiveChain']
       traderLogger.log('activeChain : ', activeChain)

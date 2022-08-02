@@ -66,12 +66,31 @@ export const actions = {
       } else {
         detailsLog(project.apiMetadata)
 
-        const response = await axios.post(BASE_URL + PROXY_ENDPOINT, {
-          url: project.apiMetadata?.replace?.('{id}', tokenId),
-          method: 'get',
-        })
+        const response = await axios
+          .post(BASE_URL + PROXY_ENDPOINT, {
+            url: project.apiMetadata?.replace?.('{id}', tokenId),
+            method: 'get',
+          })
+          .catch((err) => {
+            detailsError(err)
+            detailsLog('Show default data')
+
+            return {
+              data: {
+                ...asset,
+                contractAddress,
+                contractType,
+              },
+            }
+          })
         if (response.data) {
-          return { ...response.data, ...asset, contractAddress, contractType }
+          return {
+            ...response.data,
+            ...asset,
+            contractAddress,
+            contractType,
+            image: project.defaultImage,
+          }
         } else {
           return {}
         }

@@ -110,11 +110,6 @@ export default {
     },
   },
   async mounted() {
-    // just for testing
-    // this.$store.commit('trader/itemFrom', {
-    //   ...this.itemFrom,
-    //   address: this.account,
-    // })
     this.$store.commit('modals/setPopupState', {
       type: 'loading',
       isShow: true,
@@ -122,6 +117,7 @@ export default {
         reading: true,
       },
     })
+    await this.$store.dispatch('trader/GET_PROJECT_DATA')
 
     await this.$store.dispatch('trader/listOwnedIds', {
       selectedProjects: this.projects,

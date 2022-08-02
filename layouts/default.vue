@@ -54,10 +54,7 @@ export default {
       audio: null,
     }
   },
-  async fetch() {
-    await this.$store.dispatch('trader/GET_PROJECT_DATA')
-    await this.$store.dispatch('giveaway/GET_GIVEAWAYS_DATA')
-  },
+
   head() {
     return {
       htmlAttrs: {
@@ -69,7 +66,10 @@ export default {
   computed: {
     ...mapState('modals', ['showModal', 'modalType']),
   },
-
+  async created() {
+    await this.$store.dispatch('trader/GET_PROJECT_DATA')
+    await this.$store.dispatch('giveaway/GET_GIVEAWAYS_DATA')
+  },
   methods: {
     metamaskCheckSuccess() {
       this.$logger('CHECK COMPLETE')
