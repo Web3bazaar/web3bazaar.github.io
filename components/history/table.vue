@@ -4,7 +4,8 @@
       <template #default>
         <thead>
           <tr>
-            <th class="text-left">Trade ID</th>
+            <th class="text-left">Transcation hash</th>
+            <th class="text-left">State</th>
             <th class="text-left">Creator Wallet</th>
             <th class="text-left">Project/Asset</th>
             <th class="text-left">Amount</th>
@@ -17,9 +18,27 @@
           <tr v-for="trade in userTradesHistory" :key="trade.tradeId">
             <td>
               <div>
-                {{ trade.tradeId }}
+                <a
+                v-if="tradeStatuses[trade.tradeStatus] == 'Completed'" 
+                class="tx-hash" :href="`${trade.txHashData.hashUrl}`" 
+                target="_blank">
+                  <div class="tx__hash-content">
+                    <img
+                      class="tx__hash-img"
+                      :src="require('@/assets/img/icons/link.png')"
+                    />
+                    <div>
+                      {{ trade.txHashData.txHash | truncate(9)}}
+                    </div>
+                  </div>
+                </a>
               </div>
-            </td>
+            </td>  
+            <td>
+              <div>
+                {{ tradeStatuses[trade.tradeStatus] }}
+              </div>
+            </td>      
             <td>
               <div>
                 {{ trade.creator.address | truncate(9) }}
@@ -63,6 +82,15 @@ import { mapState } from 'vuex'
 import { ethers } from 'ethers'
 
 export default {
+  data() {
+    return {
+      tradeStatuses: {
+        1: 'Created',
+        2: 'Completed',
+        3: 'Canceled'
+      }
+    }
+  },
   computed: {
     ...mapState(['userTradesHistory']),
   },
@@ -127,6 +155,18 @@ export default {
   td {
     height: unset !important;
     padding-top: 16px;
+    .tx-hash {
+      .tx__hash-content {
+        display: flex;
+        align-items: flex-end;
+        img {
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          padding: 0px 2px 5px 0px;
+        }
+      }
+    }
   }
 
   th {

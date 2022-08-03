@@ -16,12 +16,12 @@ const polygonscanUrlGenerator = (
 &address=${BAZAAR_CONTRACT_ADDRESS}
 &apikey=${MUMBAI_API_KEY}`
 
-const getLatestBlockUrl = (timestamp) => `${BASE_URL}
-?module=block
-&action=getblocknobytime
-&timestamp=${timestamp}
-&closest=before
-&apikey=${MUMBAI_API_KEY}`
+// const getLatestBlockUrl = (timestamp) => `${BASE_URL}
+// ?module=block
+// &action=getblocknobytime
+// &timestamp=${timestamp}
+// &closest=before
+// &apikey=${MUMBAI_API_KEY}`
 
 const contractTypes = ['', 'ERC20', 'ERC1155', 'ERC721', 'NATIVE']
 
@@ -38,29 +38,29 @@ export const state = () => ({
   userTradesHistory: [],
 })
 
-function getLast3DaysDate() {
-  const now = new Date()
+// function getLast3DaysDate() {
+//   const now = new Date()
 
-  return Math.round(
-    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30).getTime() /
-      1000
-  )
-}
+//   return Math.round(
+//     new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30).getTime() /
+//       1000
+//   )
+// }
 
 export const actions = {
   async getLatestBlockInfo({ commit, dispatch, rootGetters }) {
-    const timestamp = getLast3DaysDate()
+    // const timestamp = getLast3DaysDate()
 
-    const { result: latestBlock } = (
-      await this.$axios.get(getLatestBlockUrl(timestamp))
-    ).data
-
+    // const { result: latestBlock } = (
+    //   await this.$axios.get(getLatestBlockUrl(timestamp))
+    // ).data
+    const startBlock = 0
     const { chainId } = rootGetters['networks/getActiveChain']
 
     const { result: eventLogs } = (
       await this.$axios.get(
         polygonscanUrlGenerator(
-          latestBlock,
+          startBlock,
           BAZAAR_CONTRACT_ADDRESS_LIST[chainId]
         )
       )
@@ -117,7 +117,10 @@ export const actions = {
         )
       }
 
-      const resolvedPromises = await Promise.all(promises)
+      let resolvedPromises = await Promise.all(promises)
+      resolvedPromises = resolvedPromises
+      .filter(el => el.tradeStatus > 0)
+
       logger.log('resolvedPromises', resolvedPromises)
 
       //  resolvedPromises.map
@@ -133,6 +136,7 @@ export const actions = {
           userTradesHistory.push({
             tradeStatus: e.tradeStatus,
             tradeId: e.tradeId,
+            txHashData: e.txHashData,
             creator: {
               address: e.creatorWalletAddress,
               assetsByProject: await dispatch('groupAssetsByProject', {
@@ -162,6 +166,7 @@ export const actions = {
           tradesCreator.push({
             tradeStatus: e.tradeStatus,
             tradeId: e.tradeId,
+            txHashData: e.txHashData,
             creator: {
               address: e.creatorWalletAddress,
               assetsByProject: await dispatch('groupAssetsByProject', {
@@ -189,6 +194,7 @@ export const actions = {
           tradesExecutor.push({
             tradeStatus: e.tradeStatus,
             tradeId: e.tradeId,
+            txHashData: e.txHashData,
             creator: {
               address: e.creatorWalletAddress,
               assetsByProject: await dispatch('groupAssetsByProject', {
@@ -213,9 +219,11 @@ export const actions = {
       }
       commit('tradesCreator', tradesCreator.slice())
       commit('tradesExecutor', tradesExecutor.slice())
-      commit('userTradesHistory', userTradesHistory.slice())
+      commit('userTradesHistory', userTradesHistory
+      .slice()
+      .sort((x,y) => y.txHashData.timeStamp - x.txHashData.timeStamp )
+      )
       commit('modals/closeModal')
-
       return true
     } catch (ex) {
       logger.error(ex)
