@@ -15,10 +15,7 @@
           class="item-name small-links d-flex align-center"
         >
           <div v-if="asset.contractTypeIndex !== 1" class="">
-            Token ID:
-            <span>
-              {{ asset.idAsset }}
-            </span>
+            {{ itemName | truncate(12, '...', 7) }}
           </div>
           <div v-else>
             {{ assetName }}
@@ -74,6 +71,7 @@ export default {
       assetName: null,
       externalUrl: null,
       imageData: null,
+      itemName: null,
     }
   },
   async fetch() {
@@ -87,6 +85,7 @@ export default {
     this.projectLink = projectInfo.projectLink
     this.assetName = projectInfo.assetName || projectInfo.projectName
     this.externalUrl = projectInfo.externalUrl
+    this.itemName = projectInfo.itemName
   },
   computed: {
     formattedQuantity() {

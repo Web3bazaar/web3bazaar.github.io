@@ -1,9 +1,7 @@
 import Vue from 'vue'
 
-Vue.filter('truncate', (text = '', length, clamp = '...') => {
+Vue.filter('truncate', (text = '', length, clamp = '...', lastChars = 4) => {
   const content = text ? text.toString() : ''
-
-  const lastChars = 7
 
   if (clamp === 'start') {
     return content.length > length

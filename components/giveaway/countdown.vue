@@ -1,6 +1,6 @@
 <template>
   <v-row class="countdown d-flex justify-center align-center">
-    <v-col v-if="timeToEndDate.days >= 0" cols="auto" class="gradient-text">
+    <v-col v-if="timeToEndDate.days >= 0" cols="auto" class="time-separators">
       <div>
         <div>
           {{ timeToEndDate.days }}
@@ -8,7 +8,7 @@
       </div>
       <span> Days </span>
     </v-col>
-    <v-col v-if="timeToEndDate.hours >= 0" cols="auto" class="gradient-text">
+    <v-col v-if="timeToEndDate.hours >= 0" cols="auto" class="time-separators">
       <div>
         <div>
           {{ timeToEndDate.hours }}
@@ -16,7 +16,11 @@
       </div>
       <span> Hours </span>
     </v-col>
-    <v-col v-if="timeToEndDate.minutes >= 0" cols="auto" class="gradient-text">
+    <v-col
+      v-if="timeToEndDate.minutes >= 0"
+      cols="auto"
+      class="time-separators"
+    >
       <div>
         <div>
           {{ timeToEndDate.minutes }}
@@ -93,7 +97,7 @@ export default {
 
 <style lang="scss">
 .countdown {
-  .gradient-text {
+  .time-separators {
     font-size: 30px;
   }
   .col {

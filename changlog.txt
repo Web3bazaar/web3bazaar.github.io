@@ -1,3 +1,13 @@
+############################
+##        CHANGELOG       ##
+############################
+
+[0.3.4]
+    - Trade history up for testing in mumbai network
+    - Assets in mainsquare now show their name
+    - Added giveaways pages and repos
+    - fix bugs with missing images
+
 [0.3.3]
     - Now empty erc20 assets don't show up on user asset list
 [0.3.2]

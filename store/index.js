@@ -324,7 +324,7 @@ export const actions = {
       baseImg: image || tokenImage,
       imageData,
       assetName,
-      itemName: name,
+      itemName: name || assetName,
       externalUrl,
       projectLink,
       backgroundBanner,

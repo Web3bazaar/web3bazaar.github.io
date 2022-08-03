@@ -17,7 +17,7 @@
               v-if="raffleTicketImage"
               class="mx-4"
               :src="raffleTicketImage"
-              style="max-height: 120px; max-width: 100%"
+              style="max-height: 80px; max-width: 100%"
             />
             <div>
               {{ projectMaxSupply - totalIssued }} / {{ projectMaxSupply }} left

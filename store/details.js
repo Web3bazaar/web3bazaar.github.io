@@ -50,7 +50,7 @@ export const actions = {
     { asset, contractAddress, contractType, tokenId }
   ) {
     detailsLog('******* getAssetDetails ***** ')
-    detailsLog(asset, contractAddress, contractType)
+    detailsLog(asset, contractAddress, contractType, tokenId)
     try {
       const project = rootState.trader.projects.find(
         (p) =>
@@ -83,13 +83,15 @@ export const actions = {
               },
             }
           })
+        detailsLog('PROXY_ENDPOINT response', response)
+
         if (response.data) {
           return {
             ...response.data,
             ...asset,
             contractAddress,
             contractType,
-            image: project.defaultImage,
+            image: response.data.image || project.defaultImage,
           }
         } else {
           return {}

@@ -159,6 +159,7 @@ export const actions = {
     { rootGetters },
     { walletAddress, tradeId, eventLogsList }
   ) {
+    let txHashData = {}
     const webazaarABI = require('../const/abis/webazaar.json')
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
@@ -210,12 +211,14 @@ export const actions = {
     )
 
     const explorerUrl = rootGetters['networks/getActiveChainBlockExplorerURL']
-    const txHash = found.transactionHash
-    const txHashData = {
-      explorerUrl,
-      txHash,
-      hashUrl: `${explorerUrl}/tx/${txHash}`,
-      timeStamp: Number(found.timeStamp)
+    if (found) {
+      const txHash = found.transactionHash
+      txHashData = {
+        explorerUrl,
+        txHash,
+        hashUrl: `${explorerUrl}/tx/${txHash}`,
+        timeStamp: Number(found.timeStamp),
+      }
     }
 
     bazaarConnectorLog.log(
@@ -244,7 +247,7 @@ export const actions = {
       executorTokenType,
       tradeStatus,
       tradeId,
-      txHashData
+      txHashData,
     }
   },
   async executeTrade(
