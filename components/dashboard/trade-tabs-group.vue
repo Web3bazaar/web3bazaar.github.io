@@ -76,6 +76,14 @@ export default {
 .trade-tabs-group-card {
   border-radius: 0;
   height: 100%;
+  .background_image {
+    max-height: 270px;
+    height: 100%;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 12px;
+  }
 }
 
 .trade-tabs {
