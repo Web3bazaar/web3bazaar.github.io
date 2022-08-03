@@ -116,7 +116,6 @@ export default {
               projects[p].assetName || projects[p].assets[a].contractAddress,
               10
             ) +
-              '/' +
               (projects[p].contractType !== 'ERC20'
                 ? '/' + projects[p].assets[a].idAsset + '\n'
                 : '')

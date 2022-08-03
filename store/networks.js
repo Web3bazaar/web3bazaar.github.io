@@ -74,7 +74,7 @@ export const state = () => ({
         symbol: 'MATIC',
         decimals: 18,
       },
-      apiURL: 'https://api.polygonscan.com',
+      apiURL: 'https://api.polygonscan.com/api',
     },
     {
       chainId: '0x13881',
@@ -92,7 +92,7 @@ export const state = () => ({
         symbol: 'MATIC',
         decimals: 18,
       },
-      apiURL: 'https://api.polygonscan.com',
+      apiURL: 'https://api-testnet.polygonscan.com/api',
     },
   ],
   activeNetwork: '0x13881', // mumbai

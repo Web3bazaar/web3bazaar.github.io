@@ -5,6 +5,10 @@ const BAZAAR_CONTRACT_ADDRESS_LIST = {
   '0x13881': '0xa1111D70cc4731256077113bB8Ae81003760f590', // MUMBAI
   '0x89': '0xe1356B52078e11E6e3597Bfc5D5b538f2D6D68e6', // POLYGON
 }
+const BLOCK_EXPLORER_API_KEY = {
+  '0x13881': '2XSDG5S2EBJ8SDMXU9YJ7B7N75I6V8HPGW', // MUMBAI
+  '0x89': '2XSDG5S2EBJ8SDMXU9YJ7B7N75I6V8HPGW', // POLYGON
+}
 const BASE_URL = 'https://webazaar-meta-api.herokuapp.com/api/v1'
 
 export default {
@@ -135,6 +139,7 @@ export default {
   env: {
     dev: process.env.NODE_ENV !== 'production',
     BAZAAR_CONTRACT_ADDRESS_LIST,
+    BLOCK_EXPLORER_API_KEY,
     BASE_URL,
   },
   // Global CSS: https://go.nuxtjs.dev/config-css

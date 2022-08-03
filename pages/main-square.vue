@@ -59,6 +59,7 @@ export default {
   methods: {
     async getTradesInfo() {
       mainSquare.log('CALLED getTradesInfo')
+      await this.$store.dispatch('trader/GET_PROJECT_DATA')
 
       try {
         const res = await this.$store.dispatch('getTradesInfo')

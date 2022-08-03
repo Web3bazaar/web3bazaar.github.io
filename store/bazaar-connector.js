@@ -155,10 +155,7 @@ export const actions = {
     }
   },
 
-  async getTradeInfo(
-    { rootGetters },
-    { walletAddress, tradeId, eventLogsList }
-  ) {
+  async getTradeInfo({ rootGetters }, { tradeId, eventLogsList = [] }) {
     let txHashData = {}
     const webazaarABI = require('../const/abis/webazaar.json')
 
