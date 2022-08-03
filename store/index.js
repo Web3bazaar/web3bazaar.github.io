@@ -118,8 +118,7 @@ export const actions = {
       }
 
       let resolvedPromises = await Promise.all(promises)
-      resolvedPromises = resolvedPromises
-      .filter(el => el.tradeStatus > 0)
+      resolvedPromises = resolvedPromises.filter((el) => el.tradeStatus > 0)
 
       logger.log('resolvedPromises', resolvedPromises)
 
@@ -219,9 +218,11 @@ export const actions = {
       }
       commit('tradesCreator', tradesCreator.slice())
       commit('tradesExecutor', tradesExecutor.slice())
-      commit('userTradesHistory', userTradesHistory
-      .slice()
-      .sort((x,y) => y.txHashData.timeStamp - x.txHashData.timeStamp )
+      commit(
+        'userTradesHistory',
+        userTradesHistory
+          .slice()
+          .sort((x, y) => y.txHashData.timeStamp - x.txHashData.timeStamp)
       )
       commit('modals/closeModal')
       return true

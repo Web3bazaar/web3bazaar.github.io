@@ -4,7 +4,7 @@
       <template #default>
         <thead>
           <tr>
-            <th class="text-left">Transcation hash</th>
+            <th class="text-left">Transaction hash</th>
             <th class="text-left">State</th>
             <th class="text-left">Creator Wallet</th>
             <th class="text-left">Project/Asset</th>
@@ -19,26 +19,28 @@
             <td>
               <div>
                 <a
-                v-if="tradeStatuses[trade.tradeStatus] == 'Completed'" 
-                class="tx-hash" :href="`${trade.txHashData.hashUrl}`" 
-                target="_blank">
+                  v-if="tradeStatuses[trade.tradeStatus] == 'Completed'"
+                  class="tx-hash"
+                  :href="`${trade.txHashData.hashUrl}`"
+                  target="_blank"
+                >
                   <div class="tx__hash-content">
                     <img
                       class="tx__hash-img"
                       :src="require('@/assets/img/icons/link.png')"
                     />
                     <div>
-                      {{ trade.txHashData.txHash | truncate(9)}}
+                      {{ trade.txHashData.txHash | truncate(9) }}
                     </div>
                   </div>
                 </a>
               </div>
-            </td>  
+            </td>
             <td>
               <div>
                 {{ tradeStatuses[trade.tradeStatus] }}
               </div>
-            </td>      
+            </td>
             <td>
               <div>
                 {{ trade.creator.address | truncate(9) }}
@@ -87,8 +89,8 @@ export default {
       tradeStatuses: {
         1: 'Created',
         2: 'Completed',
-        3: 'Canceled'
-      }
+        3: 'Canceled',
+      },
     }
   },
   computed: {
@@ -115,8 +117,9 @@ export default {
               10
             ) +
               '/' +
-              projects[p].assets[a].idAsset +
-              '\n'
+              (projects[p].contractType !== 'ERC20'
+                ? '/' + projects[p].assets[a].idAsset + '\n'
+                : '')
           )
         }
       }
