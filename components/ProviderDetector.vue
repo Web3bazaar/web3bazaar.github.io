@@ -27,7 +27,7 @@ export default {
       if (value && !this.checkInProgress) {
         this.compareNetworkSupport(this.chainId)
         this.setAccountListeners()
-        this.$emit('checkSuccess')
+        // this.$emit('checkSuccess')
       }
     },
   },
