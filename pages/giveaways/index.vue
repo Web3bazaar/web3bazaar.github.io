@@ -51,10 +51,11 @@ export default {
     },
   },
   watch: {},
-  created() {
+  created() {},
+  async mounted() {
+    await this.$store.dispatch('giveaway/GET_GIVEAWAYS_DATA')
     this.$store.commit('modals/closeModal')
   },
-  mounted() {},
   methods: {},
 }
 </script>

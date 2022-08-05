@@ -2,11 +2,10 @@
   <v-app id="web3_bazaar">
     <layout-header-app />
     <div id="main-b" class="overflow-y-auto">
-      <div v-if="isWalletConnected" class="jumbotron-fluid">
+      <div v-if="!loading" class="jumbotron-fluid">
         <Nuxt />
       </div>
     </div>
-
     <layout-donations-section />
     <layout-footer-app />
 
@@ -30,39 +29,13 @@ export default {
   components: {
     ModalWrapper,
   },
+
   data() {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
-      audio: null,
+      loading: true,
     }
   },
-  async fetch({ store }) {
-    store.commit('modals/setPopupState', {
-      type: 'loading',
-      isShow: true,
-    })
 
-    await store.dispatch('trader/GET_PROJECT_DATA')
-    await store.dispatch('giveaway/GET_GIVEAWAYS_DATA')
-  },
   head() {
     return {
       htmlAttrs: {
@@ -71,19 +44,29 @@ export default {
       meta: [],
     }
   },
+
   computed: {
     ...mapState('modals', ['showModal', 'modalType']),
     ...mapState('connector', ['isWalletConnected', 'chainId']),
   },
-
+  async mounted() {},
   methods: {
-    metamaskCheckSuccess() {
+    async metamaskCheckSuccess() {
       this.$logger('CHECK COMPLETE')
       // load data now
+      this.$store.commit('modals/setPopupState', {
+        type: 'loading',
+        isShow: true,
+      })
+
+      await this.$store.dispatch('trader/GET_PROJECT_DATA')
+      this.$store.commit('modals/closeModal')
+      this.loading = false
     },
     metamaskCheckError(message) {
       this.$logger('CHECK COMPLETE')
       if (message) alert(message)
+      this.loading = false
     },
   },
 }
