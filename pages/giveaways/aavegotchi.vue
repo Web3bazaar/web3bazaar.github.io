@@ -2,7 +2,7 @@
   <section class="giveaways section-padding-100 darker">
     <v-container>
       <v-row>
-        <v-col cols="12" lg="12" class="d-flex justify-center">
+        <v-col cols="12" lg="12" class="d-flex justify-center pb-0">
           <h1 class="gradient-text capitalize">{{ project }} Giveaway</h1>
         </v-col>
       </v-row>
@@ -11,7 +11,7 @@
           <v-col
             cols="12"
             sm="12"
-            class="d-flex justify-center align-center flex-column tickets-info px-0"
+            class="d-flex justify-center align-center flex-column tickets-info px-0 pt-5"
           >
             <img
               v-if="raffleTicketImage"
@@ -28,7 +28,7 @@
           </v-col>
         </v-col>
         <v-col cols="12" sm="9" class="pt-2">
-          <v-col cols="12" sm="8" class="pb-0">
+          <v-col cols="12" sm="8" class="py-0">
             <p class="text-center mb-0">Prizes:</p>
             <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
           </v-col>

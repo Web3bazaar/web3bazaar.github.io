@@ -3,6 +3,9 @@
 ############################
 
 [0.3.4]
+    - Added a scroll in tabs group in mainsquare
+
+[0.3.4]
     - Trade history up for testing in mumbai network
     - Assets in mainsquare now show their name
     - Added giveaways pages and repos

@@ -251,7 +251,7 @@ export const actions = {
     { rootGetters },
     { walletAddress, tradeId, contractType }
   ) {
-    bazaarConnectorLog.log('******* executeTrade *******')
+    bazaarConnectorLog.log('******* executeTrade *******', tradeId)
 
     const webazaarABI = require('../const/abis/webazaar.json')
 
