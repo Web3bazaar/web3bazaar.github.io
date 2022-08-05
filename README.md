@@ -1,9 +1,9 @@
 # web3bazaar
 
 
-Website deployments: 
-Prodution url : https://web3bazaar.org/
-Staging url   : https://web3bazaar-dev.herokuapp.com/
+Website deployments:   
+Prodution url : https://web3bazaar.org/. 
+Staging url   : https://web3bazaar-dev.herokuapp.com/. 
 
 
 ## Build Setup
