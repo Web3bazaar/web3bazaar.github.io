@@ -179,9 +179,10 @@ export default {
     },
   },
   async mounted() {
-    const project = await this.$store.dispatch('giveaway/getProject', {
-      project: this.projectName,
+    const project = await this.$store.dispatch('giveaway/getProjectData', {
+      projectName: this.projectName,
     })
+
     Object.keys(project || {}).forEach(
       (cName) => (this[cName] = project[cName])
     )

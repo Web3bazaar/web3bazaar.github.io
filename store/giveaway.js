@@ -38,8 +38,7 @@ export const actions = {
       )
       giveawayLogger.log(indexResult)
 
-      for (let i = 0; i < indexResult.length; i++) {
-        const projectEndpoint = indexResult[i]
+      for (const projectEndpoint of indexResult) {
         const { data: giveawayResult } = await this.$axios.post(
           BASE_URL + PROXY_ENDPOINT,
           {
@@ -61,7 +60,7 @@ export const actions = {
       return error
     }
   },
-  getProjectData({ state }, { projectName }) {
+  getProjectData({ state, rootGetters }, { projectName }) {
     giveawayLogger.log('getProjectData', projectName)
     // const { data: giveawayResult } = await this.$axios.post(
     //   BASE_URL + PROXY_ENDPOINT,
@@ -71,11 +70,20 @@ export const actions = {
     //   }
     // )
     // giveawayLogger.log('getProjectData', giveawayResult)
-    return state.currentGiveawaysProjects.find((e) => e.nameId === projectName)
+
+    const { chainId } = rootGetters['networks/getActiveChain']
+    giveawayLogger.log(
+      'activeChain : ',
+      chainId,
+      state.currentGiveawaysProjects
+    )
+    return state.currentGiveawaysProjects.find(
+      (e) => e.nameId === projectName && e.chainId === chainId
+    )
   },
 
   async getProjectMaxSupply({ state }, { nameId, raffleContractAddress }) {
-    giveawayLogger.log('getProjectMaxSupply', nameId)
+    giveawayLogger.log('getProjectMaxSupply', nameId, raffleContractAddress)
     const projectABI = require(`@/components/giveaway/abi/${nameId}.json`)
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum)
@@ -87,11 +95,8 @@ export const actions = {
 
     const maxSupply = (await contract.MAX_SUPPLY()).toString()
     const totalIssued = (await contract.getId()).toString()
-    giveawayLogger.log(maxSupply, totalIssued)
+    giveawayLogger.log('maxSupply', maxSupply, 'totalIssued', totalIssued)
     return { maxSupply, totalIssued }
-  },
-  getProject({ state }, { project }) {
-    return state.currentGiveawaysProjects.find((e) => e.nameId === project)
   },
   async enterGiveaway(
     { commit, dispatch, state, rootGetters },

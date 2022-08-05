@@ -8,7 +8,7 @@
       </v-row>
       <v-row justify="center">
         <v-col
-          v-for="project in currentGiveawaysProjects"
+          v-for="project in currentGiveawaysProjectsCurrentChain"
           :key="project.name"
           cols="12"
           lg="8"
@@ -42,8 +42,18 @@ export default {
   },
   computed: {
     ...mapState('giveaway', ['currentGiveawaysProjects']),
+    ...mapState('connector', ['chainId']),
+
+    currentGiveawaysProjectsCurrentChain() {
+      return this.currentGiveawaysProjects.filter(
+        (e) => e.chainId === this.chainId
+      )
+    },
   },
   watch: {},
+  created() {
+    this.$store.commit('modals/closeModal')
+  },
   mounted() {},
   methods: {},
 }
