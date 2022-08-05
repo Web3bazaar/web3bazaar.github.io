@@ -1,7 +1,9 @@
 # web3bazaar
 
 
-https://medium.com/@danieljimgarcia/publishing-static-sites-to-github-pages-using-github-actions-8040f57dfeaf
+Website deployments:   
+Prodution url : https://web3bazaar.org/.   
+Staging url   : https://web3bazaar-dev.herokuapp.com/.   
 
 
 ## Build Setup

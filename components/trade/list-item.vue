@@ -129,9 +129,9 @@ export default {
     },
     getAssets(project) {
       if (this.creator) {
-        return project.creatorAssets
+        return project?.creatorAssets?.filter((a) => a.amount > 0)
       } else {
-        return project.executorAssets
+        return project?.executorAssets?.filter((a) => a.amount > 0)
       }
     },
     async update(value) {

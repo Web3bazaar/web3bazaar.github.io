@@ -22,9 +22,6 @@ export const actions = {
    * @returns
    */
   async listERC20({ commit }, { wa, contractAddress, contractType }) {
-
-
-
     let balance
     const metadata = {}
     let assetData = {}
@@ -52,15 +49,20 @@ export const actions = {
 
       const amount = ethers.utils.formatUnits(balance, decimals)
 
+      console.log({ amount, metadata, ...assetData })
       if (parseInt(balance) === 0) {
-        return
+        return { amount, metadata, ...assetData }
       }
-
       return { amount, metadata, ...assetData }
     } catch (ex) {
-      console.error('Error listing ERC20 CONTRACT_ADDRES: ',contractAddress, ' WA:', wa )
+      console.error(
+        'Error listing ERC20 CONTRACT_ADDRES: ',
+        contractAddress,
+        ' WA:',
+        wa
+      )
       console.error('Error listing listERC20 balance: ', ex)
-      //throw ex
+      // throw ex
     }
   },
 }

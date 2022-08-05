@@ -2,7 +2,7 @@
   <v-app id="web3_bazaar">
     <layout-header-app />
     <div id="main-b" class="overflow-y-auto">
-      <div class="jumbotron-fluid">
+      <div v-if="isWalletConnected" class="jumbotron-fluid">
         <Nuxt />
       </div>
     </div>
@@ -54,7 +54,15 @@ export default {
       audio: null,
     }
   },
+  async fetch({ store }) {
+    store.commit('modals/setPopupState', {
+      type: 'loading',
+      isShow: true,
+    })
 
+    await store.dispatch('trader/GET_PROJECT_DATA')
+    await store.dispatch('giveaway/GET_GIVEAWAYS_DATA')
+  },
   head() {
     return {
       htmlAttrs: {
@@ -65,11 +73,9 @@ export default {
   },
   computed: {
     ...mapState('modals', ['showModal', 'modalType']),
+    ...mapState('connector', ['isWalletConnected', 'chainId']),
   },
-  async created() {
-    await this.$store.dispatch('trader/GET_PROJECT_DATA')
-    await this.$store.dispatch('giveaway/GET_GIVEAWAYS_DATA')
-  },
+
   methods: {
     metamaskCheckSuccess() {
       this.$logger('CHECK COMPLETE')

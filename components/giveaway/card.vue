@@ -55,7 +55,7 @@
             <img
               contain
               class="mx-auto"
-              style="max-height: 120px; max-width: 155px; cursor: pointer"
+              style="max-height: 120px; max-width: 100%; cursor: pointer"
               :src="ticketImg(index)"
               @click.prevent="
                 updateAmount((ticketAmount[index] || 0) + 1, index)
@@ -179,13 +179,16 @@ export default {
     },
   },
   async mounted() {
-    const project = await this.$store.dispatch('giveaway/getProject', {
-      project: this.projectName,
+    const project = await this.$store.dispatch('giveaway/getProjectData', {
+      projectName: this.projectName,
     })
+
     Object.keys(project || {}).forEach(
       (cName) => (this[cName] = project[cName])
     )
-    this.getMaxAmount()
+    if (this.account) {
+      this.getMaxAmount()
+    }
   },
   methods: {
     totalTicketCost(index, amount) {
@@ -196,6 +199,7 @@ export default {
     },
 
     async getMaxAmount() {
+      // console.log('getMaxAmount')
       const resultListERC20Balance = await this.$store.dispatch(
         'relayer-erc20/listERC20',
         {
