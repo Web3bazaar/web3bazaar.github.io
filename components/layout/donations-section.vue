@@ -25,8 +25,8 @@
           </v-col>
           <v-col cols="12" md="5" class="">
             <h6>
-              or send us any gift to:
-              <span style="color: rgba(116, 80, 254, 0.7) !important"
+              or send us a gift to:
+              <span style="color: lightpink !important"
                 >{{ w3bDonationAddress }}
               </span>
             </h6>

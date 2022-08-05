@@ -30,7 +30,7 @@ export default {
   border: solid 5px purple;
   border-radius: 12px;
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: transparent;
   -webkit-box-shadow: 0px 0px 15px 1px rgba(255, 255, 255, 1);
   -moz-box-shadow: 0px 0px 15px 1px rgba(255, 255, 255, 1);
   box-shadow: 0px 0px 15px 1px rgba(255, 255, 255, 1);

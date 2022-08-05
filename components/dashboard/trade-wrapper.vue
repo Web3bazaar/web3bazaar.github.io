@@ -72,8 +72,10 @@
         >
           <h6>
             Trade ID:
-            {{ parseInt(trade.tradeId) }}
-            <img :width="16" :src="linkIcon" />
+            <span style="color: lightpink !important">
+              {{ parseInt(trade.tradeId) }}
+            </span>
+            <!-- <img :width="16" :src="linkIcon" /> -->
           </h6>
         </a>
       </v-col>

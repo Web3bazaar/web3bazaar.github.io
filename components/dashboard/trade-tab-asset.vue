@@ -7,23 +7,23 @@
       <v-col
         cols="12"
         md="auto"
-        class="d-flex flex-column justify-center item-info pb-0"
+        class="d-flex flex-column justify-center item-info pb-0 pl-0"
       >
         <a
           :href="externalUrl"
           target="_blank"
           class="item-name small-links d-flex align-center"
         >
+          <!-- <img class="mr-2" style="width: 16px; height: 16px" :src="linkIcon" /> -->
           <div v-if="asset.contractTypeIndex !== 1" class="">
             {{ itemName | truncate(12, '...', 7) }}
           </div>
           <div v-else>
             {{ assetName }}
           </div>
-          <img class="ml-1" style="width: 16px; height: 16px" :src="linkIcon" />
         </a>
       </v-col>
-      <v-col cols="auto" class="d-flex justify-center">
+      <v-col cols="auto" class="d-flex justify-center py-0">
         <a :href="externalUrl" target="_blank">
           <div
             v-if="imageData"
@@ -120,6 +120,7 @@ export default {
     }
     .item-name.small-links {
       font-size: 0.75rem;
+      // color: rgba(116, 80, 254, 0.7) !important;
     }
     .item-name,
     .item-quantity {
