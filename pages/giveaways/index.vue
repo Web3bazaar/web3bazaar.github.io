@@ -42,11 +42,11 @@ export default {
   },
   computed: {
     ...mapState('giveaway', ['currentGiveawaysProjects']),
-    ...mapState('connector', ['chainId']),
+    ...mapState('networks', ['activeNetwork']),
 
     currentGiveawaysProjectsCurrentChain() {
       return this.currentGiveawaysProjects.filter(
-        (e) => e.chainId === this.chainId
+        (e) => e.chainId === this.activeNetwork
       )
     },
   },

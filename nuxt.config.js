@@ -34,7 +34,7 @@ export default {
         hid: 'og:image',
         property: 'og:image',
         content:
-          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+          'https://raw.githubusercontent.com/Web3bazaar/web3bazaar.github.io/19b5ab99df50fb2bf49b33a2e81062a1aa667918/assets/img/core-img/Web3Bazaar_1of1_ArtPiece_HD_FINAL.png',
       },
       {
         hid: 'og:title',
@@ -61,13 +61,13 @@ export default {
         hid: 'og:image',
         property: 'og:image',
         content:
-          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+          'https://raw.githubusercontent.com/Web3bazaar/web3bazaar.github.io/19b5ab99df50fb2bf49b33a2e81062a1aa667918/assets/img/core-img/Web3Bazaar_1of1_ArtPiece_HD_FINAL.png',
       },
       {
         hid: 'og:image:secure_url',
         property: 'og:image:secure_url',
         content:
-          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+          'https://raw.githubusercontent.com/Web3bazaar/web3bazaar.github.io/19b5ab99df50fb2bf49b33a2e81062a1aa667918/assets/img/core-img/Web3Bazaar_1of1_ArtPiece_HD_FINAL.png',
       },
       {
         hid: 'og:image:alt',
@@ -95,13 +95,13 @@ export default {
         hid: 'twitter:image',
         name: 'twitter:image',
         content:
-          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+          'https://raw.githubusercontent.com/Web3bazaar/web3bazaar.github.io/19b5ab99df50fb2bf49b33a2e81062a1aa667918/assets/img/core-img/Web3Bazaar_1of1_ArtPiece_HD_FINAL.png',
       },
       {
         hid: 'twitter:image:src',
         name: 'twitter:image:src',
         content:
-          'https://drive.google.com/file/d/18jv0HC_G_QtiJaOLdCRFPvdkp2vla1vr/preview',
+          'https://raw.githubusercontent.com/Web3bazaar/web3bazaar.github.io/19b5ab99df50fb2bf49b33a2e81062a1aa667918/assets/img/core-img/Web3Bazaar_1of1_ArtPiece_HD_FINAL.png',
       },
       {
         hid: 'twitter:image:alt',
