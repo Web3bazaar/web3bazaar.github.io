@@ -26,7 +26,8 @@
         </v-col>
         <v-col cols="12" sm="6" class="pt-0 pb-4">
           <p class="text-center mb-0">Prizes:</p>
-          <giveaway-prizes :prizes-list="prizesList"> </giveaway-prizes>
+          <giveaway-prizes :prizes-list="prizesList" :prizes-u-r-i="prizesURI">
+          </giveaway-prizes>
         </v-col>
 
         <v-col cols="12" sm="12" class="pt-1">

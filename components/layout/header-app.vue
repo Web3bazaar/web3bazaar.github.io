@@ -27,11 +27,7 @@
         >Main Square</router-link
       >
     </v-col>
-    <v-col
-      v-if="activeNetwork === '0x13881'"
-      cols="auto"
-      class="lh-55px d-none d-sm-flex"
-    >
+    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
       <nuxt-link
         to="/giveaways"
         class="btn login-btn ml-50 pixel2"
