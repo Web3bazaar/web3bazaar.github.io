@@ -1,14 +1,19 @@
 <template>
   <v-container class="prizes-box">
     <v-row>
-      <v-col class="d-flex">
-        <img
-          v-for="prize in prizesList"
-          :key="prize"
-          class="mx-auto"
-          :src="prize"
-          style="max-height: 120px; max-width: 55px; cursor: pointer"
-        />
+      <v-col v-for="(prize, i) in prizesList" :key="i" class="d-flex">
+        <a
+          :href="prizesURI[i]"
+          target="_blank"
+          class="d-flex"
+          style="width: inherit"
+        >
+          <img
+            class="mx-auto"
+            :src="prize"
+            style="max-height: 120px; max-width: 55px; cursor: pointer"
+          />
+        </a>
       </v-col>
     </v-row>
   </v-container>
@@ -18,6 +23,10 @@
 export default {
   props: {
     prizesList: {
+      type: Array,
+      default: () => [],
+    },
+    prizesURI: {
       type: Array,
       default: () => [],
     },

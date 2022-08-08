@@ -19,7 +19,11 @@
       </v-col>
 
       <v-col cols="12" md="7" class="d-flex justify-center pb-6">
-        <giveaway-prizes :prizes-list="project.prizesList"> </giveaway-prizes>
+        <giveaway-prizes
+          :prizes-list="project.prizesList"
+          :prizes-u-r-i="project.prizesURI"
+        >
+        </giveaway-prizes>
       </v-col>
 
       <v-col cols="12" md="12" class="d-flex justify-center item-info">
