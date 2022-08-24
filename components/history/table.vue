@@ -7,10 +7,12 @@
             <th class="text-left">Transaction hash</th>
             <th class="text-left">State</th>
             <th class="text-left">Creator Wallet</th>
-            <th class="text-left">Project/Asset</th>
+            <th class="text-left">Project</th>
+            <th class="text-left">Asset</th>
             <th class="text-left">Amount</th>
             <th class="text-left">Executor Wallet</th>
-            <th class="text-left">Project/Asset</th>
+            <th class="text-left">Project</th>
+            <th class="text-left">Asset</th>
             <th class="text-left">Amount</th>
           </tr>
         </thead>
@@ -49,6 +51,11 @@
 
             <td style="white-space: pre-line">
               <div>
+                {{ getProjects(trade.creator.assetsByProject) }}
+              </div>
+            </td>
+            <td style="white-space: pre-line">
+              <div>
                 {{ getAssetsIds(trade.creator.assetsByProject) }}
               </div>
             </td>
@@ -60,6 +67,11 @@
             <td>
               <div>
                 {{ trade.executor.address | truncate(9) }}
+              </div>
+            </td>
+            <td>
+              <div>
+                {{ getProjects(trade.executor.assetsByProject) }}
               </div>
             </td>
             <td>
@@ -107,7 +119,7 @@ export default {
       }
       return list.join('')
     },
-    getAssetsIds(projects) {
+    getProjects(projects) {
       const list = []
       for (const p in projects) {
         for (const a in projects[p].assets) {
@@ -115,10 +127,20 @@ export default {
             this.$options.filters.truncate(
               projects[p].assetName || projects[p].assets[a].contractAddress,
               10
-            ) +
-              (projects[p].contractType !== 'ERC20'
-                ? '/' + projects[p].assets[a].idAsset + '\n'
-                : '')
+            )
+          )
+        }
+      }
+      return list.join('')
+    },
+    getAssetsIds(projects) {
+      const list = []
+      for (const p in projects) {
+        for (const a in projects[p].assets) {
+          list.push(
+            projects[p].contractType !== 'ERC20'
+              ? projects[p].assets[a].idAsset + '\n'
+              : ''
           )
         }
       }
