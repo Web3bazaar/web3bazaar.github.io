@@ -177,6 +177,13 @@ export default {
         // const res =
         if (this.creator && trade.tradeStatus === 1) {
           try {
+            this.$store.commit('modals/setPopupState', {
+              type: 'loading',
+              isShow: true,
+              data: {
+                state: 'cancelTrade',
+              },
+            })
             tx = await this.$store.dispatch('bazaar-connector/claimBack', {
               walletAddress: this.account,
               tradeId: trade.tradeId,

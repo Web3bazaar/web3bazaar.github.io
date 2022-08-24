@@ -39,6 +39,10 @@ export default {
             'Confirm this action in your wallet to approve the Bazaar to move your assets',
           message: '',
         },
+        cancelTrade: {
+          title: 'Confirm this action in your wallet to cancel the trade',
+          message: '',
+        },
       },
     }
   },
