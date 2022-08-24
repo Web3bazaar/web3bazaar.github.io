@@ -89,6 +89,14 @@
           class="mb-7 mt-0"
           :loading="loadingBtn"
           :btn-text="tradeBtn(trade)"
+          :style="{
+            ...(!creator && trade.tradeStatus === 1 && isReadyToExecute
+              ? {
+                  zIndex: 100000,
+                  top: '25px',
+                }
+              : {}),
+          }"
           @click="handleTrade(trade)"
         >
         </ui-action-btn>
@@ -127,12 +135,13 @@ export default {
         // 'TRADE_COMPLETED': ,
       },
       tradeStatusMessagesMap: {
-        1: 'This trade was created by your counterparty for you',
+        1: 'waiting for your approval',
         2: 'This trade was already completed',
         3: 'This trade was cancelled',
       },
       linkIcon: require('@/assets/img/icons/link.png'),
       bazaarContractAddress: process.env.BAZAAR_CONTRACT_ADDRESS_LIST,
+      isReadyToExecute: false,
     }
   },
   computed: {
@@ -189,14 +198,44 @@ export default {
             )
           if (contractAddressArray.length > 0 && contractTypeArray.length > 0) {
             // not aproved do request and wait
-            tx = await this.$store.dispatch(
-              'bazaar-connector/setApprovalArray',
-              {
-                contractAddressArray,
-                contractTypeArray,
-                walletAddress: this.account,
-              }
-            )
+            this.$store.commit('modals/setPopupState', {
+              type: 'loading',
+              isShow: true,
+              data: {
+                state: 'approveContract',
+              },
+            })
+            try {
+              tx = await this.$store.dispatch(
+                'bazaar-connector/setApprovalArray',
+                {
+                  contractAddressArray,
+                  contractTypeArray,
+                  walletAddress: this.account,
+                }
+              )
+              this.isReadyToExecute = true
+              this.$store.commit('modals/setPopupState', {
+                type: 'success',
+                isShow: true,
+                data: {
+                  message: `You have successfully approved Bazaar contracts to move your assets.
+            You can now Execute the Trade and write it on the blockchain.`,
+                  txHash: tx.hash,
+                },
+              })
+
+              return
+            } catch (error) {
+              this.$store.commit('modals/setPopupState', {
+                type: 'error',
+                isShow: true,
+                data: {
+                  message: `Seems like the transaction didn't go through. Please try approving the contracts again`,
+                },
+              })
+              return
+            }
             // await tx.wait()
             // await this.checkIfContractIsApprovedForWallet()
           }
@@ -226,6 +265,7 @@ export default {
             txHash: tx.hash,
           },
         })
+        this.isReadyToExecute = false
         this.playSFXAudio({ audioToPlay: 'successState' })
         // update the dashboard silently
         setTimeout(() => {
