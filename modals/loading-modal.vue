@@ -34,6 +34,11 @@ export default {
           message:
             'Miners are working hard to write your transaction on the blockchain.',
         },
+        approveContract: {
+          title:
+            'Confirm this action in your wallet to approve the Bazaar to move your assets',
+          message: '',
+        },
       },
     }
   },

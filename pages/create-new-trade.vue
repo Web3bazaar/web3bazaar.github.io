@@ -150,6 +150,9 @@ export default {
         this.$store.commit('modals/setPopupState', {
           type: 'loading',
           isShow: true,
+          data: {
+            state: 'approveContract',
+          },
         })
 
         result = await this.$store.dispatch('bazaar-connector/setApproval', {
