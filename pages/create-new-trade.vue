@@ -254,8 +254,8 @@ export default {
             type: 'error',
             isShow: true,
             data: {
-              message:
-                "Seems like the transaction didn't go through. Please try approving the contracts again",
+              message: `It seems like the transaction didn't go through.
+                Please try canceling the trade again`,
             },
           })
         }

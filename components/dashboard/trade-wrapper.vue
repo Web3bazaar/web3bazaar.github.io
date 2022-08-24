@@ -167,12 +167,17 @@ export default {
       try {
         // const res =
         if (this.creator && trade.tradeStatus === 1) {
-          tx = await this.$store.dispatch('bazaar-connector/claimBack', {
-            walletAddress: this.account,
-            tradeId: trade.tradeId,
-          })
+          try {
+            tx = await this.$store.dispatch('bazaar-connector/claimBack', {
+              walletAddress: this.account,
+              tradeId: trade.tradeId,
+            })
 
-          message = 'You have successfully claimed your assets back.'
+            message =
+              "You have successfully canceled this trade and it can't be executed anymore"
+          } catch (error) {
+            throw new Error('CLAIM_BACK_FAILED')
+          }
         } else {
           const { contractAddressArray, contractTypeArray } =
             await this.$store.dispatch(
@@ -229,6 +234,16 @@ export default {
       } catch (error) {
         // console.error(error)
         this.$store.commit('modals/closeModal')
+        if (error?.message === 'CLAIM_BACK_FAILED') {
+          this.$store.commit('modals/setPopupState', {
+            type: 'error',
+            isShow: true,
+            data: {
+              message: `It seems like the transaction didn't go through.
+              Please try canceling the trade again`,
+            },
+          })
+        }
       } finally {
         this.loadingBtn = false
         // this.$store.commit('modals/closeModal')
