@@ -97,8 +97,8 @@
                 </div>
                 <div class="author-info">
                   <h5 class="author-name">
-                    Keep full control over your assets until counterparties make
-                    theirs available
+                    Keep full control over your assets until counter-parties
+                    make theirs available
                   </h5>
                 </div>
               </div>

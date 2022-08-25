@@ -120,14 +120,14 @@ export default {
       loadingBtn: false,
 
       TradeStatusMessages: {
-        waitingExecutor: 'Waiting for counterparty',
+        waitingExecutor: 'Waiting for counter-party',
         // depositExecutor: 'Counterparty assets deposited',
         alreadyClaimed:
-          'You have already claimed these assets (waiting for counterparty to close the trade)',
+          'You have already claimed these assets (waiting for counter-party to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
       tradeStatusMessagesMap: {
-        1: 'This trade was created by your counterparty for you',
+        1: 'This trade was created by your counter-party for you',
         2: 'This trade was already completed',
         3: 'This trade was cancelled',
       },
