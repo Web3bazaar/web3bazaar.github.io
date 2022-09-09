@@ -107,7 +107,7 @@ export default {
       }
       return list.join('')
     },
-    getAssetsIds(projects) {
+    getProjects(projects) {
       const list = []
       for (const p in projects) {
         for (const a in projects[p].assets) {
@@ -115,10 +115,20 @@ export default {
             this.$options.filters.truncate(
               projects[p].assetName || projects[p].assets[a].contractAddress,
               10
-            ) +
-              (projects[p].contractType !== 'ERC20'
-                ? '/' + projects[p].assets[a].idAsset + '\n'
-                : '')
+            ) + '\n'
+          )
+        }
+      }
+      return list.join('')
+    },
+    getAssetsIds(projects) {
+      const list = []
+      for (const p in projects) {
+        for (const a in projects[p].assets) {
+          list.push(
+            projects[p].contractType !== 'ERC20'
+              ? projects[p].assets[a].idAsset + '\n'
+              : ''
           )
         }
       }
