@@ -49,6 +49,11 @@ export const actions = {
         giveawayLogger.log(giveawayResult)
 
         if (giveawayResult.giveawayEndDate) {
+          const now = new Date()
+          const distance = new Date(giveawayResult.giveawayEndDate) - now
+          if (distance < 0) {
+            giveawayResult.giveawayEnded = true
+          }
           commit('addProject', giveawayResult)
         }
       }

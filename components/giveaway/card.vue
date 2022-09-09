@@ -93,7 +93,11 @@
             <ui-action-btn
               class=""
               small
-              :disabled="!ticketAmount[index] || ticketAmount[index] === 0"
+              :disabled="
+                !ticketAmount[index] ||
+                ticketAmount[index] === 0 ||
+                giveawayEnded
+              "
               :loading="loadingBtn"
               :btn-text="'Mint'"
               @click="enterGiveaway(index)"
@@ -154,6 +158,7 @@ export default {
       assetName: null,
       externalUrl: null,
       imageData: null,
+      giveawayEnded: false,
     }
   },
   computed: {

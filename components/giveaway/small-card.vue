@@ -12,7 +12,10 @@
         md="12"
         class="d-flex flex-column justify-center item-info pt-0"
       >
-        <giveaway-countdown :giveaway-end-date="project.giveawayEndDate">
+        <giveaway-countdown
+          :giveaway-end-date="project.giveawayEndDate"
+          @giveaway-ended="hasEnded = true"
+        >
         </giveaway-countdown>
 
         <p class="text-center mb-0">To win:</p>
@@ -29,6 +32,7 @@
       <v-col cols="12" md="12" class="d-flex justify-center item-info">
         <ui-action-btn
           class=""
+          :disabled="hasEnded"
           style="max-width: 200px"
           :btn-text="'Enter Raffle'"
         >
@@ -47,7 +51,9 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      hasEnded: false,
+    }
   },
 }
 </script>
