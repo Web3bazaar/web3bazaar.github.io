@@ -13,7 +13,8 @@
     "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix",
     "test": "jest",
     "windowsDebug": "@powershell -Command $env:DEBUG='w3b:*' && npm run dev",
-    "gitconfig": "git config user.name \"Emmet Jones\" && git config user.email dr.emmet.jones@gmail.com"
+    "gitconfig": "git config user.name \"Emmet Jones\" && git config user.email dr.emmet.jones@gmail.com",
+    "heroku-postbuild": "npm run generate"
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",

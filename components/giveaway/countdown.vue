@@ -1,34 +1,42 @@
 <template>
-  <v-row class="countdown d-flex justify-center align-center">
-    <v-col v-if="timeToEndDate.days >= 0" cols="auto" class="time-separators">
-      <div>
-        <div>
-          {{ timeToEndDate.days }}
-        </div>
-      </div>
-      <span> Days </span>
-    </v-col>
-    <v-col v-if="timeToEndDate.hours >= 0" cols="auto" class="time-separators">
-      <div>
-        <div>
-          {{ timeToEndDate.hours }}
-        </div>
-      </div>
-      <span> Hours </span>
-    </v-col>
-    <v-col
-      v-if="timeToEndDate.minutes >= 0"
-      cols="auto"
-      class="time-separators"
+  <v-container>
+    <v-row
+      v-if="!hasEnded"
+      class="countdown d-flex justify-center align-center"
     >
-      <div>
+      <v-col v-if="timeToEndDate.days >= 0" cols="auto" class="time-separators">
         <div>
-          {{ timeToEndDate.minutes }}
+          <div>
+            {{ timeToEndDate.days }}
+          </div>
         </div>
-      </div>
-      <span> Minutes </span>
-    </v-col>
-    <!-- <v-col
+        <span> Days </span>
+      </v-col>
+      <v-col
+        v-if="timeToEndDate.hours >= 0"
+        cols="auto"
+        class="time-separators"
+      >
+        <div>
+          <div>
+            {{ timeToEndDate.hours }}
+          </div>
+        </div>
+        <span> Hours </span>
+      </v-col>
+      <v-col
+        v-if="timeToEndDate.minutes >= 0"
+        cols="auto"
+        class="time-separators"
+      >
+        <div>
+          <div>
+            {{ timeToEndDate.minutes }}
+          </div>
+        </div>
+        <span> Minutes </span>
+      </v-col>
+      <!-- <v-col
       v-if="timeToEndDate.seconds >= 0"
       cols="auto"
       class="gradient-text px-2"
@@ -40,7 +48,13 @@
       </div>
       <span> Seconds </span>
     </v-col> -->
-  </v-row>
+    </v-row>
+    <v-row>
+      <v-col>
+        <h4 class="text-center">This raffle is closed</h4>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -66,6 +80,11 @@ export default {
         ended: false,
       },
     }
+  },
+  computed: {
+    hasEnded() {
+      return this.timeToEndDate.ended
+    },
   },
   mounted() {
     this.showRemaining()

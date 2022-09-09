@@ -31,7 +31,9 @@
     <!-- Trades offered by others -->
     <v-row v-if="hasTradesPendingExecutor" class="mt-8">
       <v-container class="trades executor">
-        <div class="trades--title">Trades submitted by your counterparties</div>
+        <div class="trades--title">
+          Trades submitted by your counter-parties
+        </div>
         <v-row
           v-for="trade in tradesExecutor"
           :key="trade.id"
@@ -62,10 +64,10 @@ export default {
   data() {
     return {
       TradeStatusMessages: {
-        waitingExecutor: 'Waiting for counterparty deposit',
-        depositExecutor: 'Counterparty assets deposited',
+        waitingExecutor: 'Waiting for counter-party deposit',
+        depositExecutor: 'Counter-party assets deposited',
         alreadyClaimed:
-          'You have already claimed these assets (waiting for counterparty to close the trade)',
+          'You have already claimed these assets (waiting for counter-party to close the trade)',
         // 'TRADE_COMPLETED': ,
       },
     }
