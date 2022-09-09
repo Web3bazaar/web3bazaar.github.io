@@ -18,7 +18,8 @@
         >
         </giveaway-countdown>
 
-        <p class="text-center mb-0">To win:</p>
+        <p v-if="!hasEnded" class="text-center mb-0">To win:</p>
+        <p v-else class="text-center mb-0">Prizes:</p>
       </v-col>
 
       <v-col cols="12" md="7" class="d-flex justify-center pb-6">
