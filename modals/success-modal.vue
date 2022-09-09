@@ -76,7 +76,9 @@ export default {
   },
   methods: {
     closePopup() {
-      this.$router.push({ name: 'main-square' })
+      if (!this.modalData?.skipRedirectToMainSquare) {
+        this.$router.push({ name: 'main-square' })
+      }
       this.$emit('close')
     },
   },

@@ -150,6 +150,9 @@ export default {
         this.$store.commit('modals/setPopupState', {
           type: 'loading',
           isShow: true,
+          data: {
+            state: 'approveContract',
+          },
         })
 
         result = await this.$store.dispatch('bazaar-connector/setApproval', {
@@ -162,7 +165,7 @@ export default {
           return result
         }
       } catch (error) {
-        if (error === 'REJECTED') {
+        if (error?.message === 'REJECTED') {
           return error
         }
         createNewTrade.error('error', error)
@@ -225,13 +228,37 @@ export default {
           }
         }
 
-        await Promise.all(promises)
-        this.contractsToApprove = []
+        const promiseResults = await Promise.all(promises)
+        promiseResults.forEach((result) => {
+          if (result === 'REJECTED' || result?.message === 'REJECTED') {
+            throw new Error('REJECTED')
+          }
+        })
         this.$store.commit('modals/closeModal')
+        this.$store.commit('modals/setPopupState', {
+          type: 'success',
+          isShow: true,
+          data: {
+            message: `You have successfully approved Bazaar contracts to move your assets.
+                You can now Create the Trade and write it on the blockchain.`,
+            skipRedirectToMainSquare: true,
+          },
+        })
+        this.contractsToApprove = []
         this.loadingBtn = false
       } catch (error) {
         createNewTrade.error('approveSelectedContract error', error)
         this.$store.commit('modals/closeModal')
+        if (error?.message === 'REJECTED') {
+          this.$store.commit('modals/setPopupState', {
+            type: 'error',
+            isShow: true,
+            data: {
+              message: `It seems like the transaction didn't go through.
+                Please try canceling the trade again`,
+            },
+          })
+        }
         this.loadingBtn = false
       }
     },

@@ -35,7 +35,12 @@
             v-else
             contain
             class="ml-0"
-            style="max-height: 100px; max-width: 120px"
+            style="
+              max-height: 100px;
+              max-width: 120px;
+              min-height: 100px;
+              min-width: 120px;
+            "
             :src="baseImg"
           />
         </a>
