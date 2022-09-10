@@ -1,13 +1,13 @@
 <template>
   <v-app id="web3_bazaar">
-    <layout-header-app />
+  
     <div id="main-b" class="overflow-y-auto">
       <div v-if="!loading" class="jumbotron-fluid">
         <Nuxt />
       </div>
     </div>
-    <layout-donations-section />
-    <layout-footer-app />
+    
+    
 
     <!-- ##### Footer Area End ##### -->
 
