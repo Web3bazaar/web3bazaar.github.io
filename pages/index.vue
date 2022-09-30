@@ -237,10 +237,12 @@ export default {
         completedTrades: '',
         numerical:1,
         target:109,
-        calcSpeed:50,
+        calcSpeed:100,
+        
 
         tradedAssets: '',
         targetOne: 174,
+      
 
         slides:[
             { url: require('../assets/fromfigma/for_Carousel/step_1.svg')},

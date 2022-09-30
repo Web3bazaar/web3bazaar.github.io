@@ -91,6 +91,26 @@ h1 {
     animation: easeInOut 3.5s infinite ease-in-out;
 }
 
+@keyframes slideUpFromFade{
+    0% {
+        visibility: hidden;
+        transform: translateY(100%);
+        opacity: 0
+    }
+
+    30% {
+        visibility: visible;
+        transform: translateY(100%);
+        opacity: 0
+    }
+
+    100% {
+        visibility: visible;
+        transform: translateY(0%);
+        opacity: 1
+    }
+}
+
 @keyframes lightenOnHover {
     0% {
         opacity: 0.0;
@@ -639,7 +659,6 @@ ul {
     padding-top: 7%;
     margin-left: 15%;
     margin-right: 15%;
-
 }
 
 .header {
@@ -819,7 +838,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-around;
-
+    animation: slideUpFromFade 3s forwards ease-in-out;
 }
 
 .Asset_Count {
@@ -842,7 +861,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-around;
-
+    animation: slideUpFromFade 3.5s forwards ease-in-out;
 }
 
 .Ct_Count {
@@ -879,8 +898,8 @@ ul {
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    z-index:2
- 
+    z-index:2;
+    animation: slideUpFromFade 3s forwards ease-in-out;
 } 
 
 .hackenauditcontainer::before{
@@ -1076,7 +1095,7 @@ ul {
     justify-content: space-between;
     height: 10vw;
     margin-bottom: 0%;   
-
+    animation: slideUpFromFade 3s forwards ease-in-out;
 }
 
 .blue_line {
@@ -1184,8 +1203,8 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow:hidden
-
+    overflow:hidden;
+    animation: slideUpFromFade 2s forwards ease-in-out;
 } 
 
 
@@ -1196,7 +1215,6 @@ ul {
     width: 100%;
     line-height: 1.5vw;
     border-radius: 1.5vw;
-    
 }
 
 
@@ -1243,8 +1261,8 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow:hidden
-    
+    overflow:hidden;
+    animation: slideUpFromFade 2.5s forwards ease-in-out;
 }
 
 .wrapper_2 {
@@ -1298,7 +1316,8 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow:hidden
+    overflow:hidden;
+    animation: slideUpFromFade 3s forwards ease-in-out;
 }
 
 
@@ -1355,8 +1374,8 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow:hidden
-
+    overflow:hidden;
+    animation: slideUpFromFade 3.5s forwards ease-in-out;
 }
 
 
@@ -1415,6 +1434,7 @@ ul {
     justify-content: space-between;
     height: 10vw;
     margin-bottom: 0%;
+     animation: slideUpFromFade 3s forwards ease-in-out;
 }
 
 .bazaar_title_place {
@@ -1482,6 +1502,7 @@ ul {
     margin-bottom: 2%;
     padding-bottom: 0%;
     min-height: 50vh; 
+    animation: slideUpFromFade 3s forwards ease-in-out;
 }
 
 
