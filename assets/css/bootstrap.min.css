@@ -6528,7 +6528,9 @@ button.bg-dark:hover {
 
 .d-flex {
     display: -ms-flexbox!important;
-    display: flex!important
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
 }
 
 .d-inline-flex {
