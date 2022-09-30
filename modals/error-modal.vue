@@ -3,7 +3,7 @@
     <div class="close-btn" @click="closePopup">
       <CloseButton />
     </div>
-    <h3 class="title text-center">Ups!</h3>
+    <h3 class="title text-center">Ooops...</h3>
 
     <div class="error-wrap">
       <v-img :src="errorImg" max-height="300" />

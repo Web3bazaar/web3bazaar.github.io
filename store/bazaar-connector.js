@@ -463,6 +463,8 @@ export const actions = {
             isShow: true,
             data: {
               state: 'mining',
+              title:
+                'Miners are working hard to write your transaction on the blockchain.',
             },
           },
           { root: true }
