@@ -79,21 +79,20 @@ $headerHeight: 80px;
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: 300;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
   padding-bottom: 60px;
   // padding-top: $headerHeight;
-  background: rgba($color: #03091f, $alpha: 0.94);
-
+  background: rgba($color: #000000, $alpha: 0.84);
   padding-top: 0;
   z-index: 9999;
 }
 @media screen and(max-width: 640px) {
   .modal-wrap {
     display: block;
+    padding-top: 40px;
     padding-bottom: 30px;
   }
 }

@@ -1,16 +1,15 @@
 <template>
-  <section class="create-new-trade section-padding-100 darker">
+  <section class="create-new-trade darker">
     <v-container>
-      <v-row justify="center">
-        <v-col cols="12" lg="6" class="d-flex justify-center">
+      
+        <div class="trade_header">
           <h1 class="gradient-text">Create a trade</h1>
+        </div>
+      <v-row  v-if="isWalletConnected">
+        <v-col >
+          <trade-list-wrapper class="trade_header" :new-trade="true" :disabled="loadingBtn" />
         </v-col>
-      </v-row>
-      <v-row v-if="isWalletConnected">
-        <v-col>
-          <trade-list-wrapper :new-trade="true" :disabled="loadingBtn" />
-        </v-col>
-        <v-col cols="12" class="text-center mt-8">
+        <v-col cols="12" class="trade_button_area">
           <ui-action-btn
             v-if="isSelectedContractApproved"
             class="mb-8"
@@ -385,4 +384,69 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+  .create-new-trade {
+    padding-top:8%;
+    padding-bottom:8%;
+    padding-left:5%;
+    padding-right:5%;
+  }
+
+  .trade_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:3%;
+  }
+
+  .trade_button_area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:1%;
+  }
+
+  @media screen and (max-width:960px) and (min-height:1070px) {
+      .create-new-trade {
+      height:60vh;
+      padding-top:15%;
+      padding-bottom:8%;
+      padding-left:5%;
+      padding-right:5%;
+      }
+
+  }
+
+   @media screen and (max-width:799px) and (min-width:500.5px) {
+      .create-new-trade {
+        padding-top:15%;
+        padding-bottom:8%;
+        padding-left:5%;
+        padding-right:5%;
+      }
+      .trade_button_area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:-10%;
+      }
+    }
+
+  @media screen and (max-width:500px) {
+      .trade_header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:20%;
+        margin-bottom:-20%;
+      }
+
+      .trade_button_area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30%;
+      }
+  }
+
+  </style>

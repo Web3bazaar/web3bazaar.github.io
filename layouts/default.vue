@@ -1,13 +1,14 @@
 <template>
-  <v-app id="web3_bazaar">
-  
+  <div id="web3_bazaar">
+    <layout-header-app/>
     <div id="main-b" class="overflow-y-auto">
       <div v-if="!loading" class="jumbotron-fluid">
         <Nuxt />
       </div>
     </div>
-    
-    
+       
+    <layout-donations-section/>
+    <layout-footer-app/>
 
     <!-- ##### Footer Area End ##### -->
 
@@ -16,7 +17,8 @@
       @checkSuccess="metamaskCheckSuccess"
       @checkError="metamaskCheckError"
     />
-  </v-app>
+   
+  </div>
 </template>
 
 <script>
@@ -94,4 +96,8 @@ export default {
 // #main-b {
 //   max-height: 100vh;
 // }
+
+#web3_bazaar{
+  width: 100%;
+}
 </style>

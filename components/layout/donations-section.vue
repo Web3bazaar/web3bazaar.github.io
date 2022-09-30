@@ -1,40 +1,53 @@
 <template>
-  <v-container fluid class="donations-section">
-    <v-row align="start" class="pt-4">
-      <v-col cols="12" md="12"> <h3>Want to support the Bazaar?</h3> </v-col>
-      <v-col cols="12" md="4" class="">
-        Send a donation to help us keep the Bazaar open to all and free to use
-        forever.
-      </v-col>
-      <v-spacer />
+    <div class="footer_area">
+      <div class="vector_2">
+        <img :src="require('@/assets/fromfigma/Svgelements/large_screen_fter.png')" alt="" class="vector_2">
+      </div>
+      <div class="vector_2_5">
+        <img :src="require('@/assets/fromfigma/Svgelements/mobile_footer.png')" alt="" class="vector_2_5">
+      </div>
 
-      <v-col cols="12" md="6" class="">
-        <v-row>
-          <v-col cols="12" sm="auto" class="d-flex align-center">
-            <h3 class="mb-0">Donate:</h3>
-          </v-col>
-          <v-col
-            v-for="percentage in percentages"
-            :key="percentage"
-            cols="auto"
-            class="d-flex align-center"
-          >
-            <button class="pixel2 ma-1" @click="callDonateAmount(percentage)">
-              {{ getCurrentChainValue(percentage) }}
-            </button>
-          </v-col>
-          <v-col cols="12" md="5" class="">
-            <h6>
-              or send us a gift to:
-              <span style="color: lightpink !important"
-                >{{ w3bDonationAddress }}
-              </span>
-            </h6>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+      <div class="donation_container">
+          <div class="support_the_bazaar">
+              <h2 id="stroked-header">Support the Bazaar</h2>
+          </div>
+          
+
+          <div class="reason_for_donation">
+              <h4>
+                  Send a donation to help us keep the Bazaar open to all and free to use forever.
+              </h4>
+          </div> 
+
+
+          <h3 class="donate">Donate Below:</h3>
+
+          <div class="for_row">
+            <div v-for="percentage in percentages" :key="percentage" rows="auto" class="donate_buttons">
+                <div class="button_5">
+                  <div class="learn_more">
+                      <div class="overlay_4">
+                        <div class="overtop_4">
+                          <div class="over_in_4">
+                            <div class="overspread_4" @click="callDonateAmount(percentage)">
+                              <h3>{{ getCurrentChainValue(percentage) }}</h3>
+                            </div>
+                          </div>
+                        </div>
+                          
+                      </div>
+                  </div>
+                </div>
+            </div>
+    
+          </div>
+
+      </div>
+
+      <div class="vector_3">
+        <img :src="require('@/assets/fromfigma/Svgelements/line_.png')" alt="" width="97%" height="100%">
+      </div>
+    </div> 
 </template>
 
 <script>
@@ -78,31 +91,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.donations-section {
-  position: relative;
-  background: linear-gradient(0deg, #020a27 20%, #1e075e 50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .row {
-    max-width: 1260px;
-
-    .donate-btn {
-      position: relative;
-      z-index: 1;
-      color: #fff;
-      font-size: 18px;
-      text-transform: uppercase;
-      line-height: 34px;
-      padding: 0 20px;
-      min-width: 100px;
-      color: #fff !important;
-      background: rgba(255, 255, 255, 0.1);
-      height: 35px;
-      border-radius: 50%;
-      letter-spacing: 1px;
-    }
-  }
-}
+<style scoped src="assets/css/for_index.css" >
 </style>
+

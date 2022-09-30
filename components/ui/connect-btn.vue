@@ -1,19 +1,32 @@
 <template>
-  <button
-    class="btn login-btn pixel2 w3b-c-purple"
-    :class="{ load: connectLoader }"
-    @click="walletBtnHandler"
-    @mouseenter="itsHover = true"
-    @mouseleave="itsHover = false"
-  >
-    <ui-btn-loader v-if="connectLoader" />
-    <template v-else-if="itsHover && isWalletConnected && false">
-      Main Square
-    </template>
-    <template v-else>
-      {{ getAccount }}
-    </template>
-  </button>
+<div class="button_3">
+    <div class="connect_wallet">
+    <div class="overlay_3">
+      <div class="overtop_3">
+        <div class="over_in_3">
+            <div 
+              class="overspread_3"
+              :class="{ load: connectLoader }"
+              @click="walletBtnHandler"
+              @mouseenter="itsHover = true"
+              @mouseleave="itsHover = false"
+            >
+              <ui-btn-loader v-if="connectLoader" />
+              <template v-else-if="itsHover && isWalletConnected && false">
+                Main Square
+              </template>
+              <template v-else>
+                <h3>{{ getAccount }}</h3>
+              </template>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+</div>
+</div>
+
+ 
 </template>
 
 <script>
@@ -24,7 +37,7 @@ export default {
   props: {
     btnText: {
       type: String,
-      default: 'Connect wallet',
+      default: 'CONNECT WALLET',
     },
   },
   data() {
@@ -74,6 +87,9 @@ export default {
 }
 </script>
 
+<style scoped src="assets/css/for_index.css">
+
+</style>
 <style lang="scss" scoped>
 .login-btn {
   width: 176px !important;

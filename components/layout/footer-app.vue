@@ -1,20 +1,20 @@
 <template>
-  <footer class="main-footer text-center">
+  <footer class="copyright">
     <!--Footer Bottom-->
-    <div class="footer-bottom">
-      <v-container>
-        <v-row justify="space-between">
-          <v-col cols="auto" class="copyright-text">
-            Copyright ©{{ getYear }} Web3 Bazaar
-          </v-col>
-          <v-col v-if="isSoundEnabled" cols="auto">
+    <div>
+      <div>
+        <div>
+          <div v-if="isSoundEnabled">
             <button @click="toggleSound"><StopButton /></button>
-          </v-col>
-          <v-col v-else cols="auto">
+          </div>
+          <div v-else>
             <button @click="toggleSound"><PlayButton /></button>
-          </v-col>
-        </v-row>
-      </v-container>
+          </div>
+          <div>
+            <h5>Copyright ©{{ getYear }} Web3 Bazaar</h5>
+          </div>
+        </div>
+      </div>
     </div>
   </footer>
 </template>
@@ -83,4 +83,5 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped src="assets/css/for_index.css">
+</style>

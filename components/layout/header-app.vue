@@ -1,67 +1,64 @@
 <template>
-  <v-app-bar id="banner" app elevate-on-scroll>
+  <div class="navbar"> 
     <!-- Brand -->
-    <v-toolbar-title>
-      <router-link class="navbar-brand" to="/">
-        <span>
-          <img
-            width="45"
-            src="@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png"
-            alt="logo"
-          />
-        </span>
-        <span> Web3Bazaar </span>
-      </router-link>
-    </v-toolbar-title>
-    <v-spacer></v-spacer>
+      <div class="navcontainer">
+                <router-link class="logo_area" to="/"> 
+                    <div class="logo_main">
+                        <img src="@/assets/fromfigma/Web3Bazaar_Logo_2048px.6343b52.png" alt="Web3Bazaar_Logo"  width="60%">
+                    </div>
+                   <div class="text_beside_logo">
+                        <h4>Web3Bazaar</h4>
+                    </div> 
+                </router-link>
 
-    <v-col
-      v-if="isWalletConnected && $route.path !== '/'"
-      cols="auto"
-      class="lh-55px d-none d-sm-flex"
-    >
-      <router-link
-        to="/main-square"
-        class="btn login-btn ml-50 pixel2"
-        @click.native="playSound"
-        >Main Square</router-link
-      >
-    </v-col>
-    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
-      <nuxt-link
-        to="/giveaways"
-        class="btn login-btn ml-50 pixel2"
-        @click.native="playSound"
-        >Giveaways</nuxt-link
-      >
-    </v-col>
-    <v-col cols="auto" class="lh-55px d-none d-sm-flex">
-      <a
-        href="http://docs.web3bazaar.org/"
-        target="_blank"
-        class="btn login-btn ml-50 pixel2"
-        @click="playSound"
-        >Wiki</a
-      >
-    </v-col>
-    <v-col cols="auto" class="">
-      <ui-network-btn
-        :network-type="activeNetwork"
-        @click="networkClickHandler"
-      />
-    </v-col>
-    <v-col cols="auto" class="lh-55px m">
-      <div>
-        <ui-connect-btn />
+                <div class="wallet_and_network"> 
+
+                    <ui-network-btn
+                        :network-type="activeNetwork"
+                        @click="networkClickHandler"
+                      />
+
+                    <ui-connect-btn/>
+                </div>
+            
       </div>
-    </v-col>
-  </v-app-bar>
+
+      <div class="socialmediatab">
+                <div class="socialmediacontainer">
+                    <ul>
+                        <div class="web3wiki">
+                             <li class="web3wiki_1"><a href="https://docs.web3bazaar.org/"><img :src="require('@/assets/fromfigma/logos/Web3Bazaar_Logo_2048px.6343b52.png')" alt="web3wiki" width="100%"></a>
+                             <li class="web3wiki_2"><a href="https://docs.web3bazaar.org/"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%"></a>
+                            </li>
+                        </div>
+                       
+                       <div class="discord">
+                            <li class="discord_1"><a href="https://discord.gg/Z5GqrdHWJP"><img :src="require('@/assets/fromfigma/logos/discord-logo.png')" alt="discord" width="95%"></a></li>
+                            <li class="discord_2"><a href="https://discord.gg/Z5GqrdHWJP"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%"></a></li>
+                       </div>
+                        
+                       <div class="github">
+                            <li class="github_1"><a href="https://github.com/Web3bazaar"><img :src="require('@/assets/fromfigma/logos/git-hub_logo.png')" alt="github" width="95%" height="35.74vw"></a></li>
+                            <li class="github_2"><a href="https://github.com/Web3bazaar"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%"></a></li>
+                        </div> 
+                        
+                        <div class="twitter">
+                            <li class="twitter_1"><a href="https://twitter.com/Web3Bazaar"><img :src="require('@/assets/fromfigma/logos/twitter_logo.png')" alt="github" width="100%"></a></li>
+                            <li class="twitter_2"><a href="https://twitter.com/Web3Bazaar"><img :src="require('@/assets/img/pixel-logos/twitter-pixel.png')" alt="github" width="100%"></a></li>
+                        </div>
+                        
+                    </ul>
+                </div>
+      </div>
+
+  </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 
 export default {
+ 
   computed: {
     ...mapState('networks', ['activeNetwork', 'networksData']),
     ...mapState('connector', ['isWalletConnected']),
@@ -96,29 +93,18 @@ export default {
         isShow: true,
       })
     },
+
+
   },
 }
+
+
+
 </script>
 
-<style lang="scss">
-#banner {
-  background-color: transparent;
-  z-index: 999;
 
-  .pixel2:not(.w3b-c-purple) {
-    background: none;
-    margin: 0 auto;
-    &::before,
-    &::after {
-      content: none;
-    }
-  }
-  &.v-app-bar--is-scrolled {
-    background-color: #03091f;
-  }
-  .v-toolbar__content {
-    max-width: 1260px;
-    margin: 0 auto;
-  }
-}
+<style scoped src="assets/css/for_index.css">
+
 </style>
+
+

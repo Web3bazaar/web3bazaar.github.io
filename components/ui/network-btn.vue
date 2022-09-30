@@ -1,9 +1,21 @@
 <template>
-  <button class="btn mini login-btn network-btn px-4" @click="clickHandler">
-    <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
-
-    {{ getNetworkName }}
-  </button>
+  <div class="button_2">
+      <div class="choose_network">
+         <div class="overlay_2">
+          <div class="overtop_2">
+            <div class="over_in_2">
+              <div class="overspread_2"  @click="clickHandler">
+                <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
+                <h4>{{ getNetworkName }}</h4> 
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+     
+  </div>
+    
+ 
 </template>
 
 <script>
@@ -54,17 +66,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.network-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  img {
-    width: 12px;
+<style scoped src="assets/css/for_index.css" >
+
+</style>
+
+<style scoped>
+   img {
+    width: 2vw;
     height: auto;
+    margin-top: -0.5vw;
     margin-right: 10px;
+    display: none;
+    
   }
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-}
 </style>
