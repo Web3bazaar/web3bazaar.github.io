@@ -22,7 +22,7 @@
     </p>
     <ui-action-btn
       class="d-flex mx-auto mt-6 mb-5"
-      :btn-text="'Enter Bazaar'"
+      :btn-text="'Enter The Bazaar'"
       :loading="connectLoader"
       @click="enterBazaar"
     >

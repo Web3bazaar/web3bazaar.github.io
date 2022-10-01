@@ -16,30 +16,39 @@
                     <ui-network-btn
                         :network-type="activeNetwork"
                         @click="networkClickHandler"
-                      />
+                    />
 
                     <ui-connect-btn/>
                 </div>
+
+                <div @click ="showBar= !showBar" class="ham-menu">
+                   <img src="@/assets/fromfigma/Svgelements/ham-menu.svg" alt="ham-menu" width="100%" />
+                </div>
             
       </div>
-
-      <div class="socialmediatab">
+             
+      <div v-if="showBar" class="socialmediatab">
                 <div class="socialmediacontainer">
                     <ul>
                         <div class="web3wiki">
                              <li class="web3wiki_1"><a href="https://docs.web3bazaar.org/"><img :src="require('@/assets/fromfigma/logos/Web3Bazaar_Logo_2048px.6343b52.png')" alt="web3wiki" width="100%"></a>
-                             <li class="web3wiki_2"><a href="https://docs.web3bazaar.org/"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%"></a>
+                            </li>
+                            <li class="web3wiki_2"><a href="https://docs.web3bazaar.org/"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%"></a>
                             </li>
                         </div>
                        
                        <div class="discord">
-                            <li class="discord_1"><a href="https://discord.gg/Z5GqrdHWJP"><img :src="require('@/assets/fromfigma/logos/discord-logo.png')" alt="discord" width="95%"></a></li>
-                            <li class="discord_2"><a href="https://discord.gg/Z5GqrdHWJP"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%"></a></li>
+                            <li class="discord_1"><a href="https://discord.gg/Z5GqrdHWJP"><img :src="require('@/assets/fromfigma/logos/discord-logo.png')" alt="discord" width="95%"></a>
+                            </li>
+                            <li class="discord_2"><a href="https://discord.gg/Z5GqrdHWJP"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%"></a>
+                            </li>
                        </div>
                         
                        <div class="github">
-                            <li class="github_1"><a href="https://github.com/Web3bazaar"><img :src="require('@/assets/fromfigma/logos/git-hub_logo.png')" alt="github" width="95%" height="35.74vw"></a></li>
-                            <li class="github_2"><a href="https://github.com/Web3bazaar"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%"></a></li>
+                            <li class="github_1"><a href="https://github.com/Web3bazaar"><img :src="require('@/assets/fromfigma/logos/git-hub_logo.png')" alt="github" width="95%" height="35.74vw"></a>
+                            </li>
+                            <li class="github_2"><a href="https://github.com/Web3bazaar"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%"></a>
+                            </li>
                         </div> 
                         
                         <div class="twitter">
@@ -65,6 +74,14 @@ export default {
 
     ...mapState('modals', ['showModal', 'modalType']),
   },
+
+  data: () => {
+    return {
+      showBar: true
+    }
+    
+  },
+
   methods: {
     ...mapActions('sound', ['playSFXAudio']),
 

@@ -6,7 +6,7 @@
             <div class="over_in_2">
               <div class="overspread_2"  @click="clickHandler">
                 <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
-                <h4>{{ getNetworkName }}</h4> 
+                <h4 class="network_name">{{ getNetworkName }}</h4> 
               </div>
             </div>
           </div>
@@ -72,11 +72,56 @@ export default {
 
 <style scoped>
    img {
+    width: 7vw;
+    height: auto;
+    margin-top: 0.5vw;
+      
+  }
+  .network_name {
+      display: none
+    }
+
+    @media screen and (min-width:500.5px) {
+    img {
+      width: 6vw;
+      height: auto;
+      margin-top: 0vw;
+      margin-right: 10px;
+
+    } 
+    .network_name {
+      display: flex;
+    }
+  }
+
+  @media screen and (min-width:800px) {
+    img {
+    width: 4vw;
+    height: auto;
+    margin-top: 0vw;
+    margin-right: 10px;
+
+  }
+
+  .network_name {
+      display: flex;
+    }
+  }
+
+  @media screen and (min-width:960px) {
+    img {
     width: 2vw;
     height: auto;
-    margin-top: -0.5vw;
+    margin-top: 0vw;
     margin-right: 10px;
-    display: none;
-    
+
   }
+
+  .network_name {
+      display: flex;
+    }
+  }
+  
+  
+
 </style>

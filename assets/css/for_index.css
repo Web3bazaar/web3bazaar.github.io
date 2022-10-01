@@ -222,6 +222,11 @@ z-index: 1000;
 
 }
 
+.ham-menu{
+    width: 8%;
+    display: none
+}
+
 .logo_area {
     width: 30%;
     min-width: 300px;
@@ -260,7 +265,6 @@ z-index: 1000;
     justify-content: right;
     align-items: center;
     width: 45%;
-  
 }    
 
 
@@ -268,7 +272,7 @@ z-index: 1000;
 .button_2 {
     cursor: pointer;
     margin-right: 5%;
-    width:15vw;
+    width:12vw;
     text-align:center;
     height: 1.6vw; 
     background:linear-gradient( to right, #007BFF, #7C5AC1, #E83E8C);
@@ -671,13 +675,18 @@ ul {
     height: 16vh;
     min-height: 16vh;
     text-align: center;
-    line-height: 2.5vw;
-    margin-top: 5%;
+    margin-top: 4%;
     margin-bottom: 5%;
-    margin-left: 6%;
-    margin-right: 6%;
+    margin-left: 5%;
+    margin-right: 5%;
     padding-top: 0%;
     padding-bottom: 0%; 
+}
+
+.description * {
+    margin-top: 0%;
+    font-size: 2vw;
+    color: rgba(255, 255, 255, 0.849)
 }
 
 
@@ -1548,7 +1557,6 @@ ul {
     margin-left: 8%;
     margin-top: 1%;
     width: 83%;
-   
 }
 
 .reason_for_donation * {
@@ -2218,6 +2226,12 @@ ul {
         margin-right: 6%;
         padding-top: 0%;
         padding-bottom: 0%; 
+    }
+
+    .description * {
+        margin-top: 0%;
+        font-size: 3vw;
+        color: white
     }
     
     
@@ -3197,12 +3211,17 @@ ul {
             margin-right: 2%;
         }    
         
+        .ham-menu{
+            width: 8%;
+            display: none;
+            margin-right: 0.5%;
         
+        }
         
         .button_2 {
             cursor: pointer;
             margin-right: 5%;
-            width:27vw;
+            width:25vw;
             text-align:center;
             height: 4.2vw; 
             background:linear-gradient( to right, #007BFF, #7C5AC1, #E83E8C);
@@ -3486,6 +3505,12 @@ ul {
             margin-right: 0%;
             padding-top: 0%;
             padding-bottom: 0%; 
+        }
+
+        .description * {
+            margin-top: 2%;
+            font-size: 3.7vw;
+            color: white
         }
         
         .button_1 {
@@ -4381,7 +4406,7 @@ ul {
     
 
 
-    
+
 
 
 /*-for mobiles and phablets*/
@@ -4483,7 +4508,7 @@ h5 {
     .logo_main {
         width: 100%;
         height: 100%;
-        padding-top:10%;
+        padding-top:0%;
         display: flex;
         justify-content:left;
         align-items: center;
@@ -4494,18 +4519,26 @@ h5 {
         display: none;
     }
     
+    .ham-menu{
+        width: 8%;
+        display:flex;
+        margin-right: 0.5%;
+    
+    }
+    
+
     .wallet_and_network {
         display:flex;
-        justify-content: right;
+        justify-content: left;
         align-items: center;
-        width: 70%;
+        width: 75%;
     }    
     
     
     .button_2 {
         cursor: pointer;
-        margin-right: 5%;
-        width:20vw;
+        margin-left: 2%;
+        width:12vw;
         text-align:center;
         height: 6.4vw; 
         background:linear-gradient( to right, #007BFF, #7C5AC1, #E83E8C);
@@ -4597,7 +4630,7 @@ h5 {
     .button_3 {
         cursor: pointer;
         margin-right: 0%;
-        width:60%;
+        width:65%;
         text-align:center;
         height: 6.4vw; 
         background:linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
@@ -4689,7 +4722,7 @@ h5 {
         line-height: 8.8vw;
     }
 
-
+  
     .socialmediatab {
         background-color: #A151B080;
         border-radius: 50px 0px 0px 50px;
@@ -4698,16 +4731,13 @@ h5 {
         height: 19vw;
         min-width: 40px;
         min-height: 270px;
-        right: -8%;
+        right: 0%;
         top: 30%;
         align-items: center;
         position: fixed;
         z-index: 900;
     }
 
-    .socialmediatab.active {
-        right: 0%;
-    }
     
     .socialmediacontainer {
         align-items: center;
@@ -4801,7 +4831,10 @@ h5 {
     }
 
     .description * {
+        margin-top: 1%;
         line-height: 6vw;
+        font-size: 4.5vw;
+        color: white
     }
     
     .button_1 {
