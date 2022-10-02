@@ -723,7 +723,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    height:3.8vw;
+    height:3.6vw;
     width: 98%;
     text-align: center;
     margin-left: auto;
@@ -762,7 +762,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    height:2.9vw;
+    height:2.8vw;
     width: 98%;
     text-align: center;
     margin-left: auto;
@@ -786,7 +786,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    height:3.3vw;
+    height:3.2vw;
     width: 98%;
     margin-left: auto;
     margin-right: auto;
@@ -796,7 +796,6 @@ ul {
     background-repeat: no-repeat;
     background-size: 250%;
     background-position-x:100%;
-    
     transform-origin: left;
     transition: 800ms ease;
     
@@ -806,7 +805,7 @@ ul {
     position: absolute;
     top: 0%;
     font-size: 3vw;
-    line-height: 3.3vw;
+    line-height: 3.2vw;
     color: #90FFDE;
     background:#ffffff;
     -webkit-background-clip: text;
@@ -4745,6 +4744,9 @@ h5 {
         z-index: 900;
     }
 
+    .socialmediatab.active {
+        display:none
+    }
     
     .socialmediacontainer {
         align-items: center;
