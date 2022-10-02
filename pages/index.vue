@@ -231,13 +231,13 @@ export default {
     return {
         typeValue: '',
         typeString: ' supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.',
-        typingSpeed: 70,
+        typingSpeed: 60,
         typeIndex:0,
         
         completedTrades: '',
         numerical:1,
         target:109,
-        calcSpeed:100,
+        calcSpeed:30,
         
 
         tradedAssets: '',
@@ -273,7 +273,7 @@ export default {
   created() {
     setTimeout(this.typeText,this.typingSpeed);
     setTimeout(this.countTrade,this.calcSpeed);
-    setTimeout(this.countAsset,this.calcSpeed)
+    setTimeout(this.countAsset,1)
   },
 
   methods: {
@@ -350,7 +350,7 @@ export default {
             this.numerical++;
            
 
-            setTimeout(this.countAsset,this.calcSpeed)
+            setTimeout(this.countAsset,10)
         }else {
             this.target = false
         }

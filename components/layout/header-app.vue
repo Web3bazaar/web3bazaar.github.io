@@ -21,7 +21,7 @@
                     <ui-connect-btn/>
                 </div>
 
-                <div @click ="showBar= !showBar" class="ham-menu">
+                <div class="ham-menu" @click ="showBar= !showBar" >
                    <img src="@/assets/fromfigma/Svgelements/ham-menu.svg" alt="ham-menu" width="100%" />
                 </div>
             
@@ -105,19 +105,19 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
- 
-  computed: {
-    ...mapState('networks', ['activeNetwork', 'networksData']),
-    ...mapState('connector', ['isWalletConnected']),
-
-    ...mapState('modals', ['showModal', 'modalType']),
-  },
 
   data: () => {
     return {
       showBar: true
     }
     
+  },
+ 
+  computed: {
+    ...mapState('networks', ['activeNetwork', 'networksData']),
+    ...mapState('connector', ['isWalletConnected']),
+
+    ...mapState('modals', ['showModal', 'modalType']),
   },
 
   methods: {

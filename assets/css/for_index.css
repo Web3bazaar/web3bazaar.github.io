@@ -88,7 +88,7 @@ h1 {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-stroke: 0.4vw transparent;
-    animation: easeInOut 3.5s infinite ease-in-out;
+    animation: easeInOut 8s infinite ease-in-out;
 }
 
 @keyframes slideUpFromFade{
@@ -124,31 +124,40 @@ h1 {
 }
 
 @keyframes easeInOut {
-    0%{background:#E83E8C;
+    
+   
+
+    0%{background:#90FFDE;
         -webkit-background-clip: text;
         background-clip: text;
+        opacity: 1;
         -webkit-text-stroke: 0.4vw transparent;}
 
-    20%{background:#E83E8C;
+    25%{background:#90FFDE;
         -webkit-background-clip: text;
         background-clip: text;
+        opacity: 0.3;
         -webkit-text-stroke: 0.4vw transparent;}
 
-    40%{background:#90FFDE;
+    50%{background:#E83E8C;
         -webkit-background-clip: text;
         background-clip: text;
+        opacity: 1;
         -webkit-text-stroke: 0.4vw transparent;}
-
-    60%{background:#90FFDE;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-stroke: 0.4vw transparent;}
-
         
-    100%{background:#E83E8C;
+    75%{background:#E83E8C;
         -webkit-background-clip: text;
         background-clip: text;
+        opacity: 0.4;
         -webkit-text-stroke: 0.4vw transparent;}
+        
+    100%{background:#90FFDE;
+        -webkit-background-clip: text;
+        background-clip: text;
+        opacity: 1;
+        -webkit-text-stroke: 0.4vw transparent;}
+        
+    
 }
 
 
@@ -4850,7 +4859,7 @@ h5 {
         height: 9.6vw; 
         width: 65vw;
         background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
-        margin-top: 13%;
+        margin-top: 10%;
         display: flex;
         align-items: center;
         justify-content: center;
