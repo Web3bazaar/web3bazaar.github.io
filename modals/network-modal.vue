@@ -16,7 +16,7 @@
             <ui-network-btn
               :network-type="network.chainId"
           
-              @click="switchNetwork(network.chainId) && showColor"
+              @click="switchNetwork(network.chainId)"
             />
             <h5
       
