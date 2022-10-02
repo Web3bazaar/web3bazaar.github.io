@@ -15,11 +15,12 @@
           >
             <ui-network-btn
               :network-type="network.chainId"
-              @click="switchNetwork(network.chainId)"
+          
+              @click="switchNetwork(network.chainId) && showColor"
             />
             <h5
       
-          
+            v-if="showColor"
             @click="switchNetwork(network.chainId)" class="network_label">{{network.name}}</h5>
           </div>
           <div>
@@ -50,7 +51,9 @@ export default {
     CloseButton,
   },
   data() {
-    return {}
+    return {
+      showColor: 'yellow'
+    }
   },
   computed: {
     ...mapState('networks', ['networksData']),

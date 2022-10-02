@@ -109,7 +109,9 @@ h1 {
         transform: translateY(0%);
         opacity: 1
     }
+
 }
+
 
 @keyframes lightenOnHover {
     0% {
@@ -493,6 +495,7 @@ z-index: 1000;
     position: fixed;
     z-index: 900;
 }
+
 
 .socialmediacontainer {
     align-items: center;
@@ -3424,6 +3427,8 @@ ul {
             z-index: 900;
         }
         
+      
+
         .socialmediacontainer {
             align-items: center;
             justify-content:center;

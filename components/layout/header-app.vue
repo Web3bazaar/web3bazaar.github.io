@@ -27,7 +27,8 @@
             
       </div>
              
-      <div v-if="showBar" class="socialmediatab">
+      <div v-if="showBar"
+      class="socialmediatab">
                 <div class="socialmediacontainer">
                     <ul>
                         <div class="web3wiki">
