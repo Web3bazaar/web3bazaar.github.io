@@ -113,6 +113,7 @@ h1 {
 }
 
 
+
 @keyframes lightenOnHover {
     0% {
         opacity: 0.0;
@@ -495,6 +496,7 @@ z-index: 1000;
     position: fixed;
     z-index: 900;
 }
+         
 
 
 .socialmediacontainer {
@@ -4732,7 +4734,7 @@ h5 {
         background-color: #A151B080;
         border-radius: 50px 0px 0px 50px;
         position: absolute;
-        width: 12%;
+        width: 15%;
         height: 19vw;
         min-width: 40px;
         min-height: 270px;
