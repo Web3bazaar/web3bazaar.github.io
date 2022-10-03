@@ -56,7 +56,7 @@
                     <div class="text">
                         <h4 class="audit">Our smart contracts are safe <br/>and  have been audited by Hacken.</h4>
                        
-                        <div class="button_4" onclick="window.location.href='https://drive.google.com/file/d/1CjjpCHmor9CecunyKgau96Z7-YBzcC2-/view'">
+                        <div class="button_4" onclick="window.open('https://drive.google.com/file/d/1CjjpCHmor9CecunyKgau96Z7-YBzcC2-/view','_blank')">
                             <div class="learn_more">
                                 <div class="overlay_4">
                                     <div class="overtop_4">

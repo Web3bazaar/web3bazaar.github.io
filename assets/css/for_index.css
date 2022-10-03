@@ -88,7 +88,7 @@ h1 {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-stroke: 0.4vw transparent;
-    animation: easeInOut 8s infinite ease-in-out;
+    animation: easeInOut 7s infinite ease-in-out;
 }
 
 @keyframes slideUpFromFade{
@@ -173,7 +173,7 @@ h2 {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-stroke: 0.4vw transparent;
-    animation: easeInOut 3.5s infinite ease-in-out;
+    animation: easeInOut 5s infinite ease-in-out;
 }
 
 h3 {
@@ -334,7 +334,7 @@ z-index: 1000;
     transition: 800ms ease;
 }
 
-.overtop_2:hover, .overtop_2:focus {
+.overtop_2:hover {
     background-position: 0%;
     
 } 
@@ -355,7 +355,7 @@ z-index: 1000;
     transition: 800ms ease;
 }
 
-.over_in_2:hover, .over_in_2:focus {
+.over_in_2:hover {
     background-position: 0%;
     
 } 
@@ -377,7 +377,7 @@ z-index: 1000;
     transition: 800ms ease;
 }
 
-.overspread_2:hover, .overspread_2:focus {
+.overspread_2:hover {
     background-position: 0%;
 
 } 
@@ -435,7 +435,7 @@ z-index: 1000;
     transition: 800ms ease;
 }
 
-.overtop_3:hover, .overtop_3:focus {
+.overtop_3:hover{
     background-position: 0%;
     
 } 
@@ -456,7 +456,7 @@ z-index: 1000;
     transition: 800ms ease;
 }
 
-.over_in_3:hover, .over_in_3:focus {
+.over_in_3:hover {
     background-position: 0%;
     
 } 
@@ -484,7 +484,7 @@ z-index: 1000;
     font-size: 1.75vw;
 }
 
-.overspread_3:hover, .overspread_3:focus {
+.overspread_3:hover {
     background-position: 0%;
 
 } 
@@ -761,7 +761,7 @@ ul {
     border-radius: 3px;
 }
 
-.overtop:hover, .overtop:focus {
+.overtop:hover {
     background-position: 0%;
 
 } 
@@ -784,7 +784,7 @@ ul {
     border-radius: 3px;
 }
 
-.over_in:hover, .over_in:focus {
+.over_in:hover{
     background-position: 0%;
     
 } 
@@ -828,7 +828,7 @@ ul {
     animation-delay: 8s;
 }
 
-.overspread:hover, .overspread:focus {
+.overspread:hover {
     background-position: 0%;
 
 } 
@@ -1045,7 +1045,7 @@ ul {
     transition: 800ms ease;
 }
 
-.overtop_4:hover, .overtop_4:focus {
+.overtop_4:hover {
     background-position: 0%;
     
 } 
@@ -1066,7 +1066,7 @@ ul {
     transition: 800ms ease;  
 }
 
-.over_in_4:hover, .over_in_4:focus {
+.over_in_4:hover {
     background-position: 0%;
     
 } 
@@ -1096,7 +1096,7 @@ ul {
     font-size: 2.5vw;
 }
 
-.overspread_4:hover, .overspread_4:focus {
+.overspread_4:hover {
     background-position: 0%;
 
 } 
@@ -2244,7 +2244,7 @@ ul {
     .description * {
         margin-top: 0%;
         font-size: 3vw;
-        color: white
+        color: rgba(255, 255, 255, 0.849)
     }
     
     
@@ -3525,7 +3525,7 @@ ul {
         .description * {
             margin-top: 2%;
             font-size: 3.7vw;
-            color: white
+            color: rgba(255, 255, 255, 0.849)
         }
         
         .button_1 {
@@ -4471,8 +4471,8 @@ h4 {
 
 h5 {
     color: #ffffff;
-    font-size: 4.2vw;
-    line-height: 4.5vw;
+    font-size: 4.5vw;
+    line-height:  5vw;
 }
 
     .header_area{
@@ -4842,17 +4842,17 @@ h5 {
     .description {
         text-align: center;
         margin-top: 5%;
-        margin-left: 2%;
-        margin-right: 2%;
+        margin-left: 1%;
+        margin-right: 1%;
         padding-top: 0%;
         padding-bottom: 0%; 
     }
 
     .description * {
         margin-top: 1%;
-        line-height: 6vw;
-        font-size: 4.5vw;
-        color: white
+        line-height: 6.3vw;
+        font-size: 4.7vw;
+        color: rgba(255, 255, 255, 0.849)
     }
     
     .button_1 {
@@ -5301,7 +5301,7 @@ h5 {
         text-align: center;
         margin-top: 0%;
         margin-bottom: 0%;
-        font-size: 5.25vw;
+        font-size: 5.4vw;
         line-height: 6vw;
         width:100%;
         background:#ffffff;
@@ -5335,15 +5335,15 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 80vw;
+        height: 85vw;
         line-height: 2vw;
         border-radius: 6vw
     } 
 
     .wrapper_1 {
         background: #020a27ee;
-        padding: 0% 10% 0% 10%;
-        height: 80vw;
+        padding: 0% 6% 0% 6%;
+        height: 85vw;
         width: 100%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -5372,7 +5372,7 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 80vw;
+        height: 85vw;
         line-height: 2vw;
         border-radius: 6vw
         
@@ -5380,8 +5380,8 @@ h5 {
     
     .wrapper_2 {
         background: #020a27ee;
-        padding: 0% 10% 0% 10%;
-        height: 80vw;
+        padding: 0% 6% 0% 6%;
+        height: 85vw;
         width: 100%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -5408,15 +5408,15 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 80vw;
+        height: 85vw;
         line-height: 2vw;
         border-radius: 6vw
     }
 
     .wrapper_3 {
         background: #020a27ee;
-        padding: 10% 10% 0% 10%;
-        height: 80vw;
+        padding: 9% 8% 10% 8%;
+        height: 85vw;
         width: 100%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -5444,15 +5444,15 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 80vw;
+        height: 85vw;
         line-height: 2vw;
         border-radius: 6vw
     }
     
     .wrapper_4 {
         background: #020a27ee;
-        padding: 5% 10% 0% 10%;
-        height: 80vw;
+        padding: 5% 7% 0% 7%;
+        height: 85vw;
         width: 100%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -5511,7 +5511,7 @@ h5 {
 
     .bazaar_title_place {
         width: 100%;
-        min-width: 250px;
+        min-width: 270px;
         height: 8vw;
         background: linear-gradient( to left, #9b2a5d, #533d81, #004ea1);
         display: flex;
@@ -5558,7 +5558,7 @@ h5 {
         padding-top: 0%;
         margin-top: 0%;
         margin-bottom: 0%;
-        font-size: 5.5vw;
+        font-size: 5.8vw;
 
     }
 
