@@ -22,7 +22,8 @@
                 </div>
 
                 <div class="ham-menu" @click ="showBar= !showBar" >
-                   <img src="@/assets/fromfigma/Svgelements/ham-menu.svg" alt="ham-menu" width="100%" />
+                   <img v-if="showBar" src="@/assets/fromfigma/Svgelements/ham-menu.svg" alt="ham-menu" width="100%" />
+                   <img v-if="!showBar" src="@/assets/fromfigma/Svgelements/cancel_sign.svg" alt="cancel-sign" width="100%">
                 </div>
             
       </div>

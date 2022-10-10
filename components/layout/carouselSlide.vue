@@ -77,22 +77,24 @@ export default {
          .carousel-slide {
             position: absolute;
             top:-5%;
-            left:-18%;
+            left:-5%;
             right:0%;
+            margin: 0 auto;
             bottom:0%;
             display:flex;
             flex-direction:column;
             align-items: center;
             justify-content:center;
-            width: 140%;
+            width: 110%;
         }
     }
     @media screen and (max-width:799px) and (min-width:500.5px){
         .carousel-slide {
             position: absolute;
-            top:-5%;
-            left:-18%;
+            top:0%;
+            left:-20%;
             right:0%;
+            margin: 0 auto;
             bottom:0%;
             display:flex;
             flex-direction:column;
@@ -105,9 +107,10 @@ export default {
     @media screen and (max-width:500px){
         .carousel-slide {
         position: absolute;
-        top:-5%;
-        left:-1%;
+        top:0%;
+        left:0%;
         right:0%;
+        margin: 0 auto;
         bottom:0%;
         display:flex;
         flex-direction:column;

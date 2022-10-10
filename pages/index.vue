@@ -8,7 +8,7 @@
                 </div>
 
                 <div class="vector_1">
-                    <img src="../assets/fromfigma/Svgelements/Vector1.png" alt="" class="vector_1">
+                    <img src="../assets/fromfigma/Svgelements/Vector_1.svg" alt="" class="vector_1">
                 </div> 
                 <div class="vector_1_5">
                     <img src="../assets/fromfigma/Svgelements/head_vector.png" alt="" class="vector_1_5">
@@ -16,31 +16,34 @@
 
                 <div class="Main_info">
 
-                    <div class="header">
+                    <div class="info_wrapper">
+                        <div class="header">
                         <h1 id="stroked-header">The P2P Exchange for all EVM Chains</h1>
-                    </div>
+                        </div>
 
-                    <div class="description">
-                        <h4>The Web3 Bazaar is the peer-to-peer exchange for web3 assets{{ typeValue }}</h4>
-                    </div>
+                        <div class="description">
+                            <h4 class="description">{{ typeValue }}</h4>
+                        </div>
                     
-                    <ui-action-btn class="brighten" :btnText="'ENTER THE BAZAAR'" @click="openBetaModal" >
-                    </ui-action-btn>
+                        <ui-action-btn class="brighten" :btnText="'ENTER THE BAZAAR'" @click="openBetaModal" >
+                        </ui-action-btn>
+                    </div>
                     
                     <div class="Bazaar_stats">
 
                         <div class="tradedassets">
                             
-                            <h4 class="Asset_Count">{{ tradedAssets }}</h4>
+                        <h4 class="Asset_Count">{{ tradedAssets }}</h4>
                             
                         </div>
 
                         <div class="completedtrade">
-                        
+
                             <h4 class="Ct_Count">{{ completedTrades }}</h4>
                             
                         </div>
                     </div>
+                 
                 </div>
             </div>
         </div>
@@ -56,7 +59,7 @@
                     <div class="text">
                         <h4 class="audit">Our smart contracts are safe <br/>and  have been audited by Hacken.</h4>
                        
-                        <div class="button_4" onclick="window.open('https://drive.google.com/file/d/1CjjpCHmor9CecunyKgau96Z7-YBzcC2-/view','_blank')">
+                        <button class="button_4" onclick="window.open('https://drive.google.com/file/d/1CjjpCHmor9CecunyKgau96Z7-YBzcC2-/view','_blank')">
                             <div class="learn_more">
                                 <div class="overlay_4">
                                     <div class="overtop_4">
@@ -68,7 +71,7 @@
                                     </div>
                                 </div> 
                             </div>
-                        </div>
+                        </button>
                     
                     </div>
                     
@@ -230,8 +233,8 @@ export default {
   data: () => {
     return {
         typeValue: '',
-        typeString: ' supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.',
-        typingSpeed: 60,
+        typeString: 'The Web3 Bazaar is the peer-to-peer exchange for web3 assets supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.',
+        typingSpeed: 100,
         typeIndex:0,
         
         completedTrades: '',

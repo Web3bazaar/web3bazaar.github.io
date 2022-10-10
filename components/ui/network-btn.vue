@@ -1,5 +1,5 @@
 <template>
-  <div class="button_2">
+  <button class="button_2">
       <div class="choose_network">
          <div class="overlay_2">
           <div class="overtop_2">
@@ -13,7 +13,7 @@
       </div>
     </div>
      
-  </div>
+  </button>
     
  
 </template>
@@ -86,7 +86,7 @@ export default {
       width: 6vw;
       height: auto;
       margin-top: 0vw;
-      margin-right: 10px;
+      margin-right: 7px;
 
     } 
     .network_name {
@@ -99,7 +99,7 @@ export default {
     width: 4vw;
     height: auto;
     margin-top: 0vw;
-    margin-right: 10px;
+    margin-right: 5px;
 
   }
 
@@ -113,7 +113,7 @@ export default {
     width: 2vw;
     height: auto;
     margin-top: 0vw;
-    margin-right: 10px;
+    margin-right: 6px;
 
   }
 

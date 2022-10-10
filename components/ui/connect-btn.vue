@@ -1,5 +1,5 @@
 <template>
-<div class="button_3">
+<button class="button_3">
     <div class="connect_wallet">
     <div class="overlay_3">
       <div class="overtop_3">
@@ -24,7 +24,7 @@
       
     </div>
 </div>
-</div>
+</button>
 
  
 </template>
@@ -79,7 +79,7 @@ export default {
           // this.$router.push({ name: 'main-square' })
         }
       } catch (e) {
-        console.log('e:', e)
+        
       }
       this.connectLoader = false
     },

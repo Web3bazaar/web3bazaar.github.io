@@ -1,14 +1,14 @@
 <template>
     <div class="carousel">
 
-        <div @click="prev" class="arrow_1">
+        <div class="arrow_1" @click="prev">
             <img :src="require('@/assets/fromfigma/Svgelements/carousel_arrow.svg')" alt="">
         </div>
         
         <slot></slot>
  
           
-        <div @click="next" class="arrow_2">
+        <div class="arrow_2" @click="next">
             <img :src="require('@/assets/fromfigma/Svgelements/carousel_arrow.svg')" alt="">
         </div>
     </div>
@@ -40,14 +40,14 @@ export default {
         justify-content: center;
         align-items: center;
         width: 70%;
-        min-height: 50vh;
+        height:30vw;
         overflow: hidden;
     }
 
     .arrow_1 {
         position: absolute;
         transform: scaleX(-1);
-        top:35%;;
+        top:35%;
         left:5%;
         cursor: pointer;
         width: 10%;
@@ -94,9 +94,9 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 90%;
-            margin-top: -20%;
-            min-height: 50vh;
+            width: 100%;
+            margin-top: 0%;
+            min-height: 30vh;
             overflow: hidden;
         }
 
@@ -125,10 +125,10 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 90%;
-            margin-top: -30%;
-            min-height: 50vh;
-            overflow: hidden;
+            width: 100%;
+            height: 50vw;
+            margin-top: -27%;
+            overflow: visible;
         }
 
          .arrow_1 {
@@ -156,8 +156,8 @@ export default {
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-top: -30%;
-            min-height: 40vh;
+            min-height:270px;
+            margin-top: 0%;
             overflow: hidden;
         }
 

@@ -1,10 +1,11 @@
 <template>
     <div 
     class="carousel-indicators">
-        <button class="carousel-indicator"
-        v-for="(item, index) in total" 
+        <button 
+        v-for="(item, index) in total"
+        :key="index" 
+        class="carousel-indicator"
         :class="{ active: currentIndex === index }"
-        :key="index"
         @click="$emit('slideSelect', index)"
         >
         </button>
@@ -14,8 +15,9 @@
 <script>
 
 export default {
-    emits: ['slideSelect'],
     props: ["total","currentIndex"],
+    emits: ['slideSelect'],
+   
     
 };
 
@@ -30,8 +32,10 @@ export default {
         align-items: center;
         width:19%;
         height: 3%;
-        left: 25%;
-        bottom: -10%;
+        left:0%;
+        right:0%;
+        bottom:2%;
+        margin: 0 auto;
     }
 
     .carousel-indicator {
@@ -52,22 +56,26 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width:40%;
+            width:35%;
             height: 3%;
-            left: 13%;
-            bottom: 28%;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            bottom: 3%;
         }
     }
     @media screen and (max-width:799px) and (min-width:500.5px){
         .carousel-indicators {
-            position:absolute;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width:50%;
-            height: 3%;
-            left: 10%;
-            bottom: 32%;
+        position:absolute;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width:50%;
+        height: 3%;
+        left:0%;
+        right:0%;
+        bottom:30%;
+        margin: 0 auto;
         }
     }    
 
@@ -79,8 +87,10 @@ export default {
         align-items: center;
         width:50%;
         height: 3%;
-        left: 10%;
-        bottom: 25%;
+        left:0%;
+        right:0%;
+        bottom:4%;
+        margin: 0 auto;
     }
 
     .carousel-indicator {

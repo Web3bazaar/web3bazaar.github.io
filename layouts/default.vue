@@ -1,14 +1,17 @@
 <template>
-  <div id="web3_bazaar">
-    <layout-header-app/>
-    <div id="main-b" class="overflow-y-auto">
+  <div id="web3_bazaar" class="body">
+
+    <layout-header-app />
+
+    <div>
       <div v-if="!loading" class="jumbotron-fluid">
         <Nuxt />
       </div>
     </div>
-       
-    <layout-donations-section/>
-    <layout-footer-app/>
+           
+    <layout-donations-section />
+    <layout-footer-app />
+   
 
     <!-- ##### Footer Area End ##### -->
 
@@ -73,7 +76,23 @@ export default {
   },
 }
 </script>
+
+
+
 <style lang="scss">
+
+.body {
+
+    font-weight:100;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: visible;
+    display:flex;
+    flex-direction: column;
+} 
+
 /* width */
 ::-webkit-scrollbar {
   width: 6px;

@@ -485,15 +485,17 @@ export default {
     border-radius: 8px;
     width: 80%;
     height: 40%;
+    min-height: 280px;
     max-width: 590px;
     position: relative;
     margin-top: 10%;
+    margin-bottom: 10%;
     margin-left: auto;
     margin-right: auto;
     z-index: 2;
 
     .network-popup_board {
-      padding: 20px;
+      padding: 5%;
         position: relative;
         width: 98%;
         height: 105%;
@@ -555,6 +557,7 @@ export default {
             flex-direction: column;
             align-items: center;
             margin-top: 10%;
+            margin-bottom: 10%;
             margin-left: auto;
             margin-right: auto;
             position: relative;

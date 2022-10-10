@@ -82,7 +82,7 @@ $headerHeight: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding-bottom: 60px;
   // padding-top: $headerHeight;
   background: rgba($color: #000000, $alpha: 0.84);

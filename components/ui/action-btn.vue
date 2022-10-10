@@ -1,5 +1,5 @@
  <template>
- <div class="button_1">
+ <button class="button_1">
     <div class="bazaarbutton">
         <div class="overlay">
             <div class="overtop">
@@ -20,7 +20,7 @@
             </div>                           
         </div>
     </div> 
-  </div>
+ </button>
   
  
 </template>

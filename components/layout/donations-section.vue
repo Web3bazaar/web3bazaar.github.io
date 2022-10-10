@@ -24,7 +24,7 @@
 
           <div class="for_row">
             <div v-for="percentage in percentages" :key="percentage" rows="auto" class="donate_buttons">
-                <div class="button_5">
+                <button class="button_5">
                   <div class="learn_more">
                       <div class="overlay_4">
                         <div class="overtop_4">
@@ -37,7 +37,7 @@
                           
                       </div>
                   </div>
-                </div>
+                </button>
             </div>
     
           </div>
