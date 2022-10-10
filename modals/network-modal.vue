@@ -100,7 +100,8 @@ export default {
   border-radius: 8px;
   width: 80%;
   height: 48%;
-  min-height: 270px;
+  min-height:270px;
+  max-height: 280px;
   max-width: 590px;
   position: relative;
   margin-left: auto;

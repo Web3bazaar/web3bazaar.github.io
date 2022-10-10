@@ -234,6 +234,7 @@ z-index: 1000;
 
 .ham-menu{
     width: 8%;
+    cursor: pointer;
     display: none
 }
 
