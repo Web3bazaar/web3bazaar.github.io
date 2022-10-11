@@ -1456,7 +1456,7 @@ ul {
     height: 100%;
     background: linear-gradient( #090D36 20%, #03091f);
     padding-top: 2%;
-    padding-bottom: 5%;
+    padding-bottom: 2%;
     margin-top:0%;
     margin-bottom: 0%;
 }
@@ -1532,11 +1532,24 @@ ul {
     display:flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5%;
+    margin-top: 3%;
     margin-bottom: 2%;
     padding-bottom: 0%;
     height: 100%; 
     animation: slideUpFromFade 3s forwards ease-in-out;
+}
+
+.carousel_container::before {
+    content: none;
+    position: absolute;
+    top:0%;
+    left:0%;
+    width:100%;
+    height: 100%; 
+    background: url(../fromfigma/cluster_background_img.png);
+    background-size: contain;
+    background-repeat:no-repeat;
+    opacity: 0.05;
 }
 
 
@@ -1660,25 +1673,20 @@ ul {
 
 .copyright {
     position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     text-align: center;
     margin-top: 0%;
     margin-bottom: 0%;
-    padding-top: 1%;
+    padding-top: 4%;
     padding-bottom: 0%;
     background:#000000;
     font-size: 1.5vw;
     bottom: 0%
 } 
 
-.playmusic_button {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-}
 
 /*button active area*/
 
@@ -3252,7 +3260,9 @@ ul {
     
     .copyright {
         position: relative;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         text-align: center;
         margin-top: 0%;
@@ -3263,6 +3273,9 @@ ul {
         font-size: 1vw;
     }
     
+    .copyright h5{
+        font-size: 2vw;        
+    }
 }
 
 
@@ -3276,6 +3289,36 @@ ul {
     .vector_2_5 {
         display: none;
     }
+
+    .carousel_container::before{
+        content:'';
+        position: absolute;
+        top:0%;
+        left:0%;
+        width:100%;
+        height: 100%; 
+        background: url(../fromfigma/cluster_background_img.png);
+        background-size: contain;
+        background-repeat:no-repeat;
+        opacity: 0.08;
+    }
+
+    .playmusic_button {
+        margin: 0 2%;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        width: fit-content;
+    }
+    
+    .copyright h5{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    
+    }
+    
 }
 
 

@@ -34,7 +34,7 @@ export default {
         height: 3%;
         left:0%;
         right:0%;
-        bottom:2%;
+        bottom:5%;
         margin: 0 auto;
     }
 

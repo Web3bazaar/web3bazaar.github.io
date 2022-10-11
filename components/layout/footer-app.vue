@@ -1,21 +1,20 @@
 <template>
-  <footer class="copyright">
+  <footer>
     <!--Footer Bottom-->
     <div>
-      <div>
+    
+      <div  class="copyright">
+        <div class="playmusic_button">
+          <div v-if="isSoundEnabled">
+            <button @click="toggleSound" class="playmusic"><StopButton /></button>
+          </div>
+          <div v-else>
+            <button @click="toggleSound" class="playmusic"><PlayButton /></button>
+          </div>
+        </div>
+      
         <div>
-          <div class="playmusic_button">
-            <div v-if="isSoundEnabled">
-              <button @click="toggleSound" class="playmusic"><StopButton /></button>
-            </div>
-            <div v-else>
-              <button @click="toggleSound" class="playmusic"><PlayButton /></button>
-            </div>
-          </div>
-       
-          <div>
-            <h5>Copyright ©{{ getYear }} Web3 Bazaar</h5>
-          </div>
+          <h5>Copyright ©{{ getYear }} Web3 Bazaar</h5>
         </div>
       </div>
     </div>
