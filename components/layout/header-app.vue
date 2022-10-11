@@ -9,7 +9,7 @@
                    <div class="text_beside_logo">
                         <h4>Web3Bazaar</h4>
                     </div> 
-                </router-link>
+                </router-link> 
 
                 <div class="wallet_and_network"> 
 
@@ -37,27 +37,27 @@
                       <li class="web3wiki" onclick="window.open('https://docs.web3bazaar.org/','_blank')">
                         <div class="web3wiki_1"><img :src="require('@/assets/fromfigma/logos/Web3Bazaar_Logo_2048px.6343b52.png')" alt="web3wiki" width="100%">
                         </div>
-                        <div class="web3wiki_2"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%">
-                        </div>  
+                        <button class="web3wiki_2"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%">
+                        </button>  
                       </li>
                     
                       <li class="discord"  onclick="window.open('https://discord.gg/Z5GqrdHWJP','_blank')">
                         <div class="discord_1"><img :src="require('@/assets/fromfigma/logos/discord-logo.png')" alt="discord" width="95%">
                         </div>
-                        <div class="discord_2"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%">
-                        </div>
+                        <button class="discord_2"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%">
+                        </button>
                       </li>
                     
                       <li class="github" onclick="window.open('https://github.com/Web3bazaar','_blank')">
                         <div class="github_1"><img :src="require('@/assets/fromfigma/logos/git-hub_logo.png')" alt="github" width="95%" height="35.74vw">
                         </div>
-                        <div class="github_2"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%">
-                        </div>
+                        <button class="github_2"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%">
+                        </button>
                       </li> 
 
                       <li class="twitter" onclick="window.open('https://twitter.com/Web3Bazaar','_blank')">
                         <div class="twitter_1"><img :src="require('@/assets/fromfigma/logos/twitter_logo.png')" alt="github" width="100%"></div>
-                        <div class="twitter_2"><img :src="require('@/assets/img/pixel-logos/twitter-pixel.png')" alt="github" width="100%"></div>
+                        <button class="twitter_2"><img :src="require('@/assets/img/pixel-logos/twitter-pixel.png')" alt="github" width="100%"></button>
                       </li>
                       
                         
@@ -74,30 +74,29 @@
                       <li class="web3wiki" onclick="window.open('https://docs.web3bazaar.org/','_blank')">
                         <div class="web3wiki_1"><img :src="require('@/assets/fromfigma/logos/Web3Bazaar_Logo_2048px.6343b52.png')" alt="web3wiki" width="100%">
                         </div>
-                        <div class="web3wiki_2"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%">
-                        </div>  
+                        <button class="web3wiki_2"><img :src="require('@/assets/img/site-logos/Web3Bazaar_Logo_2048px.png')" alt="web3wiki" width="100%">
+                        </button>  
                       </li>
                     
                       <li class="discord"  onclick="window.open('https://discord.gg/Z5GqrdHWJP','_blank')">
                         <div class="discord_1"><img :src="require('@/assets/fromfigma/logos/discord-logo.png')" alt="discord" width="95%">
                         </div>
-                        <div class="discord_2"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%">
-                        </div>
+                        <button class="discord_2"><img :src="require('@/assets/img/pixel-logos/discord-pixel.png')" alt="discord" width="95%">
+                        </button>
                       </li>
                     
                       <li class="github" onclick="window.open('https://github.com/Web3bazaar','_blank')">
                         <div class="github_1"><img :src="require('@/assets/fromfigma/logos/git-hub_logo.png')" alt="github" width="95%" height="35.74vw">
                         </div>
-                        <div class="github_2"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%">
-                        </div>
+                        <button class="github_2"><img :src="require('@/assets/img/pixel-logos/github-pixel.png')" alt="github" width="95%">
+                        </button>
                       </li> 
 
                       <li class="twitter" onclick="window.open('https://twitter.com/Web3Bazaar','_blank')">
                         <div class="twitter_1"><img :src="require('@/assets/fromfigma/logos/twitter_logo.png')" alt="github" width="100%"></div>
-                        <div class="twitter_2"><img :src="require('@/assets/img/pixel-logos/twitter-pixel.png')" alt="github" width="100%"></div>
+                        <button class="twitter_2"><img :src="require('@/assets/img/pixel-logos/twitter-pixel.png')" alt="github" width="100%"></button>
                       </li>
-                      
-                        
+                    
                         
                   </ul>
                 </div>

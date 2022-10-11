@@ -1,20 +1,19 @@
  <template>
- <button class="button_1">
+ <button class="button_1"
+    type="submit"
+    :small="small"
+    :loading="loading"
+    :disabled="disabled"
+    :ripple="false"
+    @click="playSound">
     <div class="bazaarbutton">
         <div class="overlay">
             <div class="overtop">
                 <div class="over_in">
 
-                    <div  class="overspread"
-                          type="submit"
-                          :small="small"
-                          :loading="loading"
-                          :disabled="disabled"
-                          :ripple="false"
-                          @click="playSound"
-                        >
+                    <div  class="overspread">
                         <h3>{{ btnText }}</h3>
-                        </div>
+                    </div>
 
                 </div>
             </div>                           

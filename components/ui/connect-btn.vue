@@ -1,5 +1,6 @@
 <template>
-<button class="button_3">
+<button class="button_3"
+@click="walletBtnHandler">
     <div class="connect_wallet">
     <div class="overlay_3">
       <div class="overtop_3">
@@ -7,7 +8,6 @@
             <div 
               class="overspread_3"
               :class="{ load: connectLoader }"
-              @click="walletBtnHandler"
               @mouseenter="itsHover = true"
               @mouseleave="itsHover = false"
             >

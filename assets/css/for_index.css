@@ -246,9 +246,8 @@ z-index: 1000;
     justify-content:left;
     position: relative;
     align-items: center;
-    
-
 }
+
 
 .logo_main {
     width: 30%;
@@ -257,6 +256,7 @@ z-index: 1000;
     display: flex;
     justify-content:left;
     align-items: center;
+    z-index:5
 }
    
 
@@ -1665,39 +1665,47 @@ ul {
     text-align: center;
     margin-top: 0%;
     margin-bottom: 0%;
-    padding-top: 0%;
+    padding-top: 1%;
     padding-bottom: 0%;
     background:#000000;
     font-size: 1.5vw;
     bottom: 0%
-    
 } 
 
+.playmusic_button {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+/*button active area*/
 
 .button_1:active .overspread {
-    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
 }
 
 
 .overtop:active {
-    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
 }
 
 .over_in:active {
-    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
 }
 
 .button_2:active .overspread_2 {
-    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
 }
 
 
 .overtop_2:active {
-    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
 }
 
 .over_in_2:active {
-    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
 }
 
 .button_3:active .overspread_3 {
@@ -1730,6 +1738,85 @@ ul {
 .button_5:active .overspread_4 {
     background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
 }
+
+
+/*focus function area*/
+
+.button_1:focus {
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
+}
+
+.button_1:focus .overtop {
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
+}
+.button_1:focus .over_in {
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
+}
+.button_1:focus .overspread {
+    background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
+}
+
+
+.button_2:focus {
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
+}
+
+.button_2:focus .overtop_2 {
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_2:focus .over_in_2 {
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_2:focus .overspread_2 {
+    background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
+}
+
+
+.button_3:focus {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+
+.button_3:focus .overtop_3 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_3:focus .over_in_3 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_3:focus .overspread_3 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+
+
+.button_4:focus {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+
+.button_4:focus .overtop_4 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_4:focus .over_in_4 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_4:focus .overspread_4 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+
+
+.button_5:focus {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+
+.button_5:focus .overtop_4 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_5:focus .over_in_4 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+.button_5:focus .overspread_4 {
+    background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
+}
+
+
 
 
 @media (hover) {
@@ -1780,10 +1867,53 @@ ul {
     .over_in_4:active {
         background: #03091f;
     }
-    
+
+
+
+    .logo_area:focus:before {
+        content : "";
+        position: absolute;
+        left    : -2%;
+        bottom  : -20%;
+        height  : 146%;
+        width   : 56%;
+        border:1px solid magenta;
+        border-radius: 5px;
+    }
+
+    .web3wiki_2:focus{
+        opacity:1;
+        border-radius: 10%;
+        border:1px solid magenta;
+    }
+
+    .discord_2:focus {
+        opacity: 1;
+        border-radius: 10%;
+        border:1px solid magenta;
+    }
+
+    .github_2:focus {
+        opacity: 1;
+        background: white;
+        border-radius: 10%;
+        border:1px solid magenta;
+    }
+
+    .twitter_2:focus {
+        opacity: 1;
+        border-radius: 10%;
+        border:1px solid magenta;
+    }
+
+
+    .playmusic:focus {
+        border:2px solid magenta;
+    }
 
     
 }
+
 
 @media (prefers-reduced-motion) {
     .brighten{
@@ -1791,7 +1921,7 @@ ul {
     }
 
     h1 {
-        font-size: 5.56vw;
+         font-size: 5.56vw;
         color: #00000c;
         font-style: normal;
         font-weight:lighter;

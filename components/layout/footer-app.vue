@@ -4,12 +4,15 @@
     <div>
       <div>
         <div>
-          <div v-if="isSoundEnabled">
-            <button @click="toggleSound"><StopButton /></button>
+          <div class="playmusic_button">
+            <div v-if="isSoundEnabled">
+              <button @click="toggleSound" class="playmusic"><StopButton /></button>
+            </div>
+            <div v-else>
+              <button @click="toggleSound" class="playmusic"><PlayButton /></button>
+            </div>
           </div>
-          <div v-else>
-            <button @click="toggleSound"><PlayButton /></button>
-          </div>
+       
           <div>
             <h5>Copyright ©{{ getYear }} Web3 Bazaar</h5>
           </div>
@@ -38,7 +41,7 @@ export default {
   },
   mounted() {
     this.$store.commit('sound/initializeSound')
-    this.playSound()
+    this.playSound() 
   },
   methods: {
     toggleSound() {

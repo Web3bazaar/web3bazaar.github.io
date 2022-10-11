@@ -45,6 +45,10 @@ export default {
         border-radius:4px
     }
 
+    .carousel-indicator:focus {
+        border:1px solid magenta;
+    }
+
     .carousel-indicator.active {
         background: #E83E8C
     }

@@ -24,12 +24,12 @@
 
           <div class="for_row">
             <div v-for="percentage in percentages" :key="percentage" rows="auto" class="donate_buttons">
-                <button class="button_5">
-                  <div class="learn_more">
+                <button class="button_5" @click="callDonateAmount(percentage)">
+                  <div class="learn_more donations-btn">
                       <div class="overlay_4">
                         <div class="overtop_4">
                           <div class="over_in_4">
-                            <div class="overspread_4" @click="callDonateAmount(percentage)">
+                            <div class="overspread_4">
                               <h3>{{ getCurrentChainValue(percentage) }}</h3>
                             </div>
                           </div>

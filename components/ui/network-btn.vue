@@ -1,10 +1,10 @@
 <template>
-  <button class="button_2">
+  <button class="button_2"  @click="clickHandler">
       <div class="choose_network">
          <div class="overlay_2">
           <div class="overtop_2">
             <div class="over_in_2">
-              <div class="overspread_2"  @click="clickHandler">
+              <div class="overspread_2">
                 <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
                 <h4 class="network_name">{{ getNetworkName }}</h4> 
               </div>
