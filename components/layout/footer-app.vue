@@ -6,10 +6,10 @@
       <div  class="copyright">
         <div class="playmusic_button">
           <div v-if="isSoundEnabled">
-            <button @click="toggleSound" class="playmusic"><StopButton /></button>
+            <button  class="playmusic" @click="toggleSound"><StopButton /></button>
           </div>
           <div v-else>
-            <button @click="toggleSound" class="playmusic"><PlayButton /></button>
+            <button class="playmusic" @click="toggleSound"><PlayButton /></button>
           </div>
         </div>
       
