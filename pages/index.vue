@@ -193,19 +193,24 @@
                  @next="next"
                  @prev="prev"
                 >  
-                <carousel-slide v-for="(slide,index) in slides" 
-                    :key="slide" 
-                    :index="index"
-                    :visibleSlide="visibleSlide"
-                    :direction="direction"
-                >
-                    <img :src="slide.url">
-                </carousel-slide>
+                    <carousel-slide v-for="(slide,index) in slides" 
+                        :key="slide" 
+                        :index="index"
+                        :visibleSlide="visibleSlide"
+                        :direction="direction"
+                    >
+                    <transition name="trans">
+                            <img :src="slide.url">
+                    </transition>
+                    </carousel-slide>
+
                             
             </carousel> 
+            
                 <carousel-indicator 
                 :total="slides.length" :currentIndex="visibleSlide" @slideSelect="slideSelect">
                 </carousel-indicator>
+        
             </div>
 
         </div>
@@ -310,12 +315,8 @@ export default {
     },
 
     slideSelect(index) {
-       this.visibleSlide = index 
-        if (index <= 1) {
-            this.direction = this.next
-        }else {
-            this.direction= this.prev
-        }
+       this.visibleSlide = index  
+       this.direction="trans"     
     },
 
     typeText() {
@@ -367,5 +368,5 @@ export default {
 
 
 .<style scoped src="assets/css/for_index.css">
-
+    
 </style>

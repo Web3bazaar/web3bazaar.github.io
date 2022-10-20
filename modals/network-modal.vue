@@ -18,10 +18,7 @@
           
               @click="switchNetwork(network.chainId)"
             />
-            <h5
-      
-            v-if="showColor"
-            @click="switchNetwork(network.chainId)" class="network_label">{{network.name}}</h5>
+            <h5 class="network_label">{{network.name}}</h5>
           </div>
           <div>
             
@@ -52,7 +49,7 @@ export default {
   },
   data() {
     return {
-      showColor: 'yellow'
+    
     }
   },
   computed: {

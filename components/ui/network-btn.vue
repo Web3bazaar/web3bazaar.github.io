@@ -6,7 +6,7 @@
             <div class="over_in_2">
               <div class="overspread_2">
                 <img :src="getNetworkIcon(activeNetwork.name)" alt="" />
-                <h4 class="network_name">{{ getNetworkName }}</h4> 
+                <h4 ref="nameHighlight"  class="network_name">{{ getNetworkName }}</h4> 
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@ export default {
     },
     clickHandler() {
       this.playSound()
-
+      this.$refs.nameHighlight.classList.add('active')
       // disable network change for now
       this.$emit('click')
     },
@@ -62,6 +62,7 @@ export default {
         return require(`@/assets/img/pixel-logos/${network.toLowerCase()}-pixel.png`)
       }
     },
+
   },
 }
 </script>
@@ -81,6 +82,9 @@ export default {
       display: none
     }
 
+    .network_name.active {
+    color: #90ffde ;
+  }
     @media screen and (min-width:500.5px) {
     img {
       width: 6vw;
@@ -91,6 +95,9 @@ export default {
     } 
     .network_name {
       display: flex;
+      font-weight: 100;
+      font-size: 3vw;
+      text-transform: uppercase;
     }
   }
 
@@ -105,6 +112,9 @@ export default {
 
   .network_name {
       display: flex;
+      font-size: 1.5vw;
+      text-transform: uppercase;
+
     }
   }
 
@@ -114,11 +124,13 @@ export default {
     height: auto;
     margin-top: 0vw;
     margin-right: 6px;
-
+  
   }
 
   .network_name {
       display: flex;
+      font-size: 1.5vw;
+      text-transform: uppercase;
     }
   }
   

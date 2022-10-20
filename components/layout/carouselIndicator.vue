@@ -1,21 +1,20 @@
 <template>
-    <div 
-    class="carousel-indicators">
-        <button 
-        v-for="(item, index) in total"
-        :key="index" 
-        class="carousel-indicator"
-        :class="{ active: currentIndex === index }"
-        @click="$emit('slideSelect', index)"
-        >
-        </button>
+    <div class="carousel-indicators">
+            <button 
+            v-for="(item, index) in total"
+            :key="index" 
+            class="carousel-indicator"
+            :class="{ active: currentIndex === index }"
+            @click="$emit('slideSelect', index)"
+            >
+            </button>
     </div>
 </template>
 
 <script>
 
 export default {
-    props: ["total","currentIndex"],
+    props: ['total','currentIndex'],
     emits: ['slideSelect'],
    
     
@@ -25,6 +24,7 @@ export default {
 
 
 <style>
+   
     .carousel-indicators {
         position:absolute;
         display: flex;

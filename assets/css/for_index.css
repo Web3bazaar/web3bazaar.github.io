@@ -224,7 +224,6 @@ button  {
 
 /*-navbar*/
 .navbar {
-background-color: black;
 position: absolute;
 position: fixed;
 width: 100%;
@@ -237,6 +236,24 @@ display: flex;
 place-content: center;
 z-index: 1000;
 
+}
+
+.trans-enter-active {
+    animation: appear 0.75s ease-in-out;
+}
+
+.trans-leave-active {
+    animation: disappear 0.75s ease-in-out;
+}
+
+@keyframes appear {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes disappear {
+    from {opacity: 1;}
+    to {opacity: 0;}
 }
 
 
@@ -1773,7 +1790,7 @@ ul {
 }
 
 
-/*focus function area*/
+/*:focus function area*/
 
 .button_1:focus {
     background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
