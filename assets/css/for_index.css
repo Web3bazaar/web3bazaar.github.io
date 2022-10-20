@@ -211,6 +211,23 @@ button  {
         
 }
 
+.trans-enter-active {
+    animation: appear 0.75s ease-in-out;
+}
+
+.trans-leave-active {
+    animation: disappear 0.75s ease-in-out;
+}
+
+@keyframes appear {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes disappear {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
 
 
 /*header*/
@@ -237,25 +254,6 @@ place-content: center;
 z-index: 1000;
 
 }
-
-.trans-enter-active {
-    animation: appear 0.75s ease-in-out;
-}
-
-.trans-leave-active {
-    animation: disappear 0.75s ease-in-out;
-}
-
-@keyframes appear {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-
-@keyframes disappear {
-    from {opacity: 1;}
-    to {opacity: 0;}
-}
-
 
 .navcontainer {
     display: flex;
@@ -456,7 +454,7 @@ z-index: 1000;
 
 .overtop_3 {
     position: absolute;
-    width:103%;
+    width:102%;
     text-align:center;
     height: 1.5vw; 
     display: flex;
