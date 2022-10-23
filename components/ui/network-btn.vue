@@ -29,7 +29,8 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+    }
   },
   computed: {
     ...mapState('networks', ['networksData', 'activeNetwork']),
@@ -82,7 +83,7 @@ export default {
       display: none
     }
 
-    .network_name.active {
+    .active {
     color: #90ffde ;
   }
     @media screen and (min-width:500.5px) {

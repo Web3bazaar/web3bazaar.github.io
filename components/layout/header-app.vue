@@ -1,5 +1,7 @@
 <template>
-  <div class="navbar"> 
+  <div>
+
+    <div :class="{'Scrolled': Scrolled }" class="navbar"> 
     <!-- Brand -->
       <div class="navcontainer">
                 <router-link class="logo_area" to="/"> 
@@ -31,11 +33,16 @@
             
       </div>
              
-      <div
-      v-if="showBar"
+     
+  </div> 
+
+
+    <div
+      ref="bar"
+      v-if="showBar" 
       :class="{ active:showBar }" 
       class="socialmediatab">
-                <div class="socialmediacontainer">
+                <div :class="{'Scrolled': Scrolled }" class="socialmediacontainer">
                   <ul>
                       <li class="web3wiki" onclick="window.open('https://docs.web3bazaar.org/','_blank')">
                         <div class="web3wiki_1"><img :src="require('@/assets/fromfigma/logos/Web3Bazaar_Logo_2048px.6343b52.png')" alt="web3wiki" width="100%">
@@ -68,11 +75,12 @@
                   </ul>
                 </div>
       </div>
-      <div
+      <div 
+      ref="bar"
       v-if="!showBar"
       :class="{ socialmediatab:!showBar }" 
       class="socialmediatab">
-                <div class="socialmediacontainer">
+                <div :class="{'Scrolled': Scrolled }" class="socialmediacontainer">
                   <ul>
                       <li class="web3wiki" onclick="window.open('https://docs.web3bazaar.org/','_blank')">
                         <div class="web3wiki_1"><img :src="require('@/assets/fromfigma/logos/Web3Bazaar_Logo_2048px.6343b52.png')" alt="web3wiki" width="100%">
@@ -106,6 +114,7 @@
       </div>
 
   </div>
+ 
 </template>
 
 <script>
@@ -115,7 +124,8 @@ export default {
 
   data: () => {
     return {
-      showBar: true
+      showBar: true,
+      Scrolled: false
     }
     
   },
@@ -125,6 +135,10 @@ export default {
     ...mapState('connector', ['isWalletConnected']),
 
     ...mapState('modals', ['showModal', 'modalType']),
+  },
+
+  mounted() {
+    window.addEventListener('scroll', this.updateOnScroll)
   },
 
   methods: {
@@ -156,6 +170,16 @@ export default {
       })
     },
 
+    updateOnScroll(){
+      const scrollPosition = window.scrollY
+      if (scrollPosition > 30) {
+      this.$refs.bar.classList.add('Scrolled') 
+      this.Scrolled = true 
+      }else {
+        this.$refs.bar.classList.remove('Scrolled')
+        this.Scrolled = false 
+      }
+    }
 
   },
 }
