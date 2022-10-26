@@ -1,7 +1,7 @@
 <template>
     <div class="carousel">
 
-        <div class="arrow_1" @click="prev">
+        <div v-if="showArrow" class="arrow_1" @click="prev">
             <img :src="require('@/assets/fromfigma/Svgelements/carousel_arrow.svg')" alt="">
         </div>
         
@@ -17,6 +17,10 @@
 <script>
 
 export default {
+    props: ['showArrow'],
+
+   
+
     setup() {
         
     },

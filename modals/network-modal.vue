@@ -47,11 +47,7 @@ export default {
   components: {
     CloseButton,
   },
-  data() {
-    return {
-    
-    }
-  },
+
   computed: {
     ...mapState('networks', ['networksData']),
     currentNetwork() {
@@ -73,6 +69,7 @@ export default {
     async switchNetwork(chainId) {
       await this.$store.dispatch('networks/switchNetwork', { chainId })
       this.closePopup()
+     
     },
   },
 }
@@ -83,8 +80,8 @@ export default {
 .network_label {
     display:none
   }
-.network_label.active {
-    color:#E83E8C
+.item-wrap.active {
+    background:#E83E8C
   }
 
 .network-popup {

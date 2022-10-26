@@ -31,15 +31,15 @@
                     
                     <div class="Bazaar_stats">
 
-                        <div class="tradedassets">
+                        <div ref="one" class="tradedassets">
                             
-                        <h4 class="Asset_Count">{{ tradedAssets }}</h4>
+                        <h4 class="Asset_Count">{{ tradedAssets }}+</h4>
                             
                         </div>
 
-                        <div class="completedtrade">
+                        <div  ref="two" class="completedtrade">
 
-                            <h4 class="Ct_Count">{{ completedTrades }}</h4>
+                            <h4 class="Ct_Count">{{ completedTrades }}+</h4>
                             
                         </div>
                     </div>
@@ -50,9 +50,9 @@
 
         <div class="body_area">
 
-            <div class="hacken_audit_area">
+            <div ref="three" class="hacken_audit_area" >
                 <div class="hackenauditcontainer">
-                    <div class="lock">
+                    <div ref="fifteen" class="lock">
                         <img src="../assets/fromfigma/icons/lock.png" alt="" width="100%">
                     </div>
 
@@ -75,7 +75,7 @@
                     
                     </div>
                     
-                    <div class="hacken">
+                    <div ref="sixteen" class="hacken">
                         <img src="../assets/fromfigma/logos/Hacken.png" alt="" width="100%">
                     </div>
                 </div>
@@ -85,19 +85,19 @@
 
                 <div class="value_proposition_header_area">
 
-                    <div class="blue_line">
+                    <div ref="four"  class="blue_line">
                         <img src="../assets/fromfigma/Svgelements/Blue_line.svg" alt="">
                     </div>
-                    <div class="value_prop">
+                    <div ref="five" class="value_prop">
                         <div class="wrap_a">
                             <div class="wrap_b">
                                 <div class="wrap_c">
-                                    <h3 class="value_proposition_header">A UNIQUE SMART CONTRACT ARCHITECTURE</h3>
+                                    <h3 ref="seventeen" class="value_proposition_header">A UNIQUE SMART CONTRACT ARCHITECTURE</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="pink_line">
+                    <div ref="six" class="pink_line">
                         <img src="../assets/fromfigma/Svgelements/pink_line.svg" alt="">
                     </div>
                     
@@ -105,8 +105,8 @@
 
                 <div class="proposition_container">
 
-                    <div class="non_custodial_container">
-                        <div class="wrapper_1">
+                    <div ref="seven" class="non_custodial_container" @click="isClicked = !isClicked">
+                        <div :class="{'clicked': isClicked}" class="wrapper_1">
                             <div class="unlocked_icon">
                                 <img src="../assets/fromfigma/icons/unlocked_icon.png" alt="" width="70%">
                             </div> 
@@ -120,8 +120,8 @@
                         
                     </div>
 
-                    <div class="permisionless_container">
-                        <div class="wrapper_2">
+                    <div ref="eight" class="permisionless_container" @click="isClicked = !isClicked">
+                        <div :class="{'clicked': isClicked}" class="wrapper_2">
                             <div class="universe_icon">
                                 <img src="../assets/fromfigma/icons/universe.png" alt="" width="80%">
                             </div> 
@@ -134,8 +134,8 @@
                         
                     </div>
 
-                    <div class="free_to_use_container">
-                        <div class="wrapper_3">
+                    <div ref="nine" class="free_to_use_container" @click="isClicked = !isClicked">
+                        <div :class="{'clicked': isClicked}" class="wrapper_3">
                             <div class="hand_with_gift">
                                 <img src="../assets/fromfigma/icons/Mask_group.png" alt="" width="60%">
                             </div>
@@ -146,8 +146,8 @@
                         </div>
                     </div>
 
-                    <div class="supports_batch_transfer_container">
-                        <div class="wrapper_4">
+                    <div ref="ten" class="supports_batch_transfer_container" @click="isClicked = !isClicked">
+                        <div :class="{'clicked': isClicked}" class="wrapper_4">
                             <div class="connected_logo">
                                 <img src="../assets/fromfigma/icons/connected.png" alt="" width="50%">
                             </div>
@@ -169,47 +169,50 @@
         <div class="how_to_area">
             <div class="bazaar_header_area">
 
-                <div class="blue_line">
+                <div ref="eleven" class="blue_line">
                     <img src="../assets/fromfigma/Svgelements/Blue_line.svg" alt="">
                 </div>
-                <div class="bazaar_title_place">
+                <div  ref="twelve" class="bazaar_title_place">
                     <div class="wrap_d">
                         <div class="wrap_e">
                             <div class="wrap_f">
-                                <h3 class="bazaar_title_container">HOW TO USE THE BAZAAR</h3>
+                                <h3 ref="eighteen" class="bazaar_title_container">HOW TO USE THE BAZAAR</h3>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="pink_line">
+                <div ref="thirteen" class="pink_line">
                     <img src="../assets/fromfigma/Svgelements/pink_line.svg" alt="">
                 </div>
                     
             </div>
             
-            <div class="carousel_container">
-
-            <carousel
-                 @next="next"
-                 @prev="prev"
-                >  
-                    <carousel-slide v-for="(slide,index) in slides" 
-                        :key="slide" 
-                        :index="index"
-                        :visibleSlide="visibleSlide"
-                        :direction="direction"
-                    >
-                    <transition name="trans">
-                            <img :src="slide.url">
-                    </transition>
-                    </carousel-slide>
+            <div ref="fourteen" class="carousel_container">
+                <div class="inner_container">
+                    <carousel
+                        :showArrow="showArrow"
+                        @next="next"
+                        @prev="prev"
+                    >  
+                        <carousel-slide v-for="(slide,index) in slides" 
+                            :key="slide" 
+                            :index="index"
+                            :visibleSlide="visibleSlide"
+                            :direction="direction"
+                        >
+                        <transition name="trans">
+                                <img :src="slide.url">
+                        </transition>
+                        </carousel-slide>
 
                             
-            </carousel> 
+                    </carousel> 
             
                 <carousel-indicator 
                 :total="slides.length" :currentIndex="visibleSlide" @slideSelect="slideSelect">
                 </carousel-indicator>
+                </div>
+            
         
             </div>
 
@@ -244,13 +247,14 @@ export default {
         
         completedTrades: '',
         numerical:1,
-        target:109,
-        calcSpeed:30,
+        target:110,
+        calcSpeed:140,
         
 
         tradedAssets: '',
-        targetOne: 174,
+        targetOne: 175,
       
+        isClicked: false,
 
         slides:[
             { url: require('../assets/fromfigma/for_Carousel/step_1.svg')},
@@ -262,6 +266,13 @@ export default {
         ],
         visibleSlide:0,
         direction: 'left',
+        showArrow: false,
+
+        options: {
+        rootMargin: "0px 0px -20px 0px",
+        threshold: 0.5
+        },
+        visible: false
     }
   },
 
@@ -284,6 +295,10 @@ export default {
     setTimeout(this.countAsset,1)
   },
 
+  mounted(){
+    this.callBackFunction()
+  },
+
   methods: {
     openBetaModal() {
       if (this.activeNetwork.chainId === '0x13881') {
@@ -296,27 +311,37 @@ export default {
       }
     },
 
-     next() {
+    next() {
         if (this.visibleSlide >= this.slidesLen - 1) {
             this.visibleSlide=0;
+            this.showArrow =false
         }else {
             this.visibleSlide++;
+            this.showArrow =true
         }
         this.direction="left"
     },
 
     prev() {
-         if (this.visibleSlide <= 0) {
+         if (this.visibleSlide <= 1) {
             this.visibleSlide = 0;
+            this.showArrow =false
         }else {
             this.visibleSlide--;
+            this.showArrow =true
         }
         this.direction="right"
     },
 
     slideSelect(index) {
        this.visibleSlide = index  
-       this.direction="trans"     
+       this.direction="trans"
+       if (this.visibleSlide <= 0) {
+            this.showArrow =false
+        }
+        else{
+            this.showArrow= true 
+        }      
     },
 
     typeText() {
@@ -326,40 +351,78 @@ export default {
             this.typeValue += this.typeString.charAt(this.typeIndex)
             this.typeIndex++;
 
-            setTimeout(this.typeText,this.typingSpeed)
         }
         else {
-            this.typeStatus = false;
-        }
+            this.typeValue =this.typeString;
+        } setTimeout(this.typeText,this.typingSpeed)
     },
     
 
     countTrade() {
-        if(this.numerical <= this.target) {
-
-             this.completedTrades= this.numerical
+        if(this.numerical < this.target) {
             this.numerical++;
-           
-
-            setTimeout(this.countTrade,this.calcSpeed)
-        }else {
-            this.target = false
+            this.completedTrades = this.numerical
         }
+        else if(this.numerical >= this.target) {
+            this.completedTrades = this.target   
+        } 
+        else {
+            this.target = false
+        }  setTimeout(this.countTrade,this.calcSpeed)
     },
 
     countAsset() {
-        if(this.numerical <= this.targetOne) {
-
-             this.tradedAssets= this.numerical
+        if(this.numerical < this.targetOne) {
             this.numerical++;
-           
-
-            setTimeout(this.countAsset,10)
-        }else {
-            this.target = false
+            this.tradedAssets = this.numerical
+        }    
+        else if(this.numerical >= this.targetOne) {
+            this.tradedAssets =  this.targetOne
         }
-    }
+        else {
+            this.targetOne = false
+        }setTimeout(this.countAsset,1)
+    },
+
+
+    callBackFunction(){
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry=>{
+            if(entry.isIntersecting) {
+          entry.target.classList.add('visible')
+            }
+        })
+            
+        }, this.options
+    );
+        observer.observe(this.$refs.one)
+        observer.observe(this.$refs.two)
+        observer.observe(this.$refs.three)
+        observer.observe(this.$refs.four)
+        observer.observe(this.$refs.five)
+        observer.observe(this.$refs.six)
+        observer.observe(this.$refs.seven)
+        observer.observe(this.$refs.eight)
+        observer.observe(this.$refs.nine)
+        observer.observe(this.$refs.ten)
+        observer.observe(this.$refs.eleven)
+        observer.observe(this.$refs.twelve)
+        observer.observe(this.$refs.thirteen)
+        observer.observe(this.$refs.fourteen)
+        observer.observe(this.$refs.fifteen)
+        observer.observe(this.$refs.sixteen)
+        observer.observe(this.$refs.seventeen)
+        observer.observe(this.$refs.eighteen)
   },
+
+
+  },
+
+
+
+
+
 }
 
     

@@ -146,13 +146,13 @@ button  {
 @keyframes slideUpFromFade{
     0% {
         visibility: hidden;
-        transform: translateY(100%);
+        transform: translateY(70%);
         opacity: 0
     }
 
     30% {
         visibility: visible;
-        transform: translateY(100%);
+        transform: translateY(50%);
         opacity: 0
     }
 
@@ -168,7 +168,7 @@ button  {
 
 @keyframes lightenOnHover {
     0% {
-        opacity: 0.0;
+        opacity: 0;
     }
     100% {
         opacity: 1;
@@ -177,8 +177,6 @@ button  {
 
 @keyframes easeInOut {
     
-   
-
     0%{background:#90FFDE;
         -webkit-background-clip: text;
         background-clip: text;
@@ -219,6 +217,15 @@ button  {
     animation: disappear 0.75s ease-in-out;
 }
 
+.slidy-enter-active {
+    animation: slideFromRight  0.5s ease;
+}
+
+.slidy-leave-active {
+    animation: slideToRight 0.5s ease;
+}
+
+
 @keyframes appear {
     from {opacity: 0;}
     to {opacity: 1;}
@@ -227,6 +234,60 @@ button  {
 @keyframes disappear {
     from {opacity: 1;}
     to {opacity: 0;}
+}
+
+@keyframes bounce {
+	0%{
+        transform: translateY(100%);
+        opacity: 0}
+    20%{
+        transform: translateY(-40px);
+        opacity: 1}
+     40%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 1}
+	50% {
+        transform: translateY(-30px);
+        opacity: 1}
+	80% {
+        transform: translateY(-15px);
+        opacity: 1}
+}
+
+@keyframes slideFromLeft {
+    from{
+        transform: translateX(-100%);
+        opacity: 0}
+    to{
+        transform: translateX(0%);
+        opacity: 1}
+}
+
+@keyframes slideFromRight {
+    from{
+        transform: translateX(100%);
+        opacity: 0;}
+    to{
+        transform: translateX(0%);
+        opacity: 1}
+}
+
+@keyframes slideToRight {
+    to{
+        transform: translateX(100%);
+        opacity: 0;}
+    from{
+        transform: translateX(0%);
+        opacity: 1}
+}
+
+@keyframes zoomOut {
+    from {
+        transform: scale(0.1);
+        opacity: 1}
+    to {
+        transform: scale(1);
+        opacity: 1}
 }
 
 
@@ -874,6 +935,7 @@ ul {
     top: 0%;
     font-size: 2.5vw;
     line-height: 3.75vw;
+    text-transform: uppercase;
     color: #90FFDE;
     background:#ffffff;
     -webkit-background-clip: text;
@@ -919,7 +981,11 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    animation: slideUpFromFade 3s forwards ease-in-out;
+    opacity: 0
+}
+
+.tradedassets.visible {
+    animation: bounce 3s forwards ease-in-out;
 }
 
 .Asset_Count {
@@ -942,7 +1008,11 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    animation: slideUpFromFade 3.5s forwards ease-in-out;
+    opacity: 0
+}
+
+.completedtrade.visible{
+    animation: bounce 3.5s forwards ease-in-out;
 }
 
 .Ct_Count {
@@ -981,15 +1051,20 @@ ul {
     justify-content: center;
     border-radius: 8px;
     z-index:2;
-    animation: slideUpFromFade 3s forwards ease-in-out;
-} 
+    opacity: 0
+}
+
+.visible {
+    opacity:1;
+    animation: appear 1s forwards ease;
+}
 
 .hackenauditcontainer::before{
     content: '';
     position: absolute;
     width: 98%;
     height:108%;
-    top:-3.2%;
+    top:-3.4%;
     left:0.75%;
     background: linear-gradient( to left, #E83E8C, #7C5AC1, #007BFF);
     border-radius: 8px;
@@ -1013,15 +1088,18 @@ ul {
 
 
 .lock {
-  
     width: 20%;
     padding:0%;
     display: flex;
     align-items: center;
     justify-content: center;
-  
+    opacity: 0;
 }
 
+.lock.visible {
+    animation: appear 1s forwards ease;
+    animation-delay: 0.5s;
+}
 
 .text {
     font-weight: 100;
@@ -1167,8 +1245,13 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
 }
 
+.hacken.visible {
+    animation: appear 1s forwards ease;
+    animation-delay: 0.5s;
+}
 
 .value_proposition_header_area {
     width: 100%;
@@ -1184,12 +1267,24 @@ ul {
     height: 60%;
     display: flex;
     align-items: center;
+    opacity: 0
+}
+
+.blue_line.visible {
+    animation: slideFromLeft 1s forwards ease;
+    animation-delay: 0.5s;
 }
 
 .pink_line {
     height: 60%;
     display: flex;
     align-items: center;
+    opacity: 0
+}
+
+.pink_line.visible {
+    animation: slideFromRight 1s forwards ease;
+    animation-delay: 0.5s;
 }
 
 .value_prop{
@@ -1203,6 +1298,7 @@ ul {
     border-radius: 4px;
     margin-left: 0.5%;
     margin-right: 0.5%;
+    opacity: 0
 }
 
 .wrap_a {
@@ -1245,10 +1341,13 @@ ul {
     margin-top: 0%;
     margin-bottom: 0%;
     font-size: 2.55vw;
-
+    opacity: 0;
 }
 
-
+.value_proposition_header.visible {
+    animation: appear 1s forwards ease;
+    animation-delay: 1.5s;
+}
 
 .proposition_container {
     position: relative;
@@ -1286,9 +1385,12 @@ ul {
     align-items: center;
     justify-content: center;
     overflow:hidden;
-    animation: slideUpFromFade 2s forwards ease-in-out;
+    opacity: 0
 } 
 
+.non_custodial_container.visible{
+    animation: bounce 3s forwards ease-in-out;
+}
 
 .wrapper_1 {
     background: #020a27ee;
@@ -1301,6 +1403,10 @@ ul {
 
 
 .non_custodial_container:hover .wrapper_1 {
+    transform: translateX(0%);
+}
+
+.wrapper_1.clicked {
     transform: translateX(0%);
 }
 
@@ -1344,7 +1450,12 @@ ul {
     align-items: center;
     justify-content: center;
     overflow:hidden;
-    animation: slideUpFromFade 2.5s forwards ease-in-out;
+    opacity:0
+}
+
+.permisionless_container.visible{
+    animation: bounce 3s forwards ease-in-out;
+    animation-delay: 0.5s;
 }
 
 .wrapper_2 {
@@ -1359,6 +1470,10 @@ ul {
 
 
 .permisionless_container:hover .wrapper_2 {
+    transform: translateY(0%);
+}
+
+.wrapper_2.clicked {
     transform: translateY(0%);
 }
 
@@ -1399,9 +1514,13 @@ ul {
     align-items: center;
     justify-content: center;
     overflow:hidden;
-    animation: slideUpFromFade 3s forwards ease-in-out;
+    opacity:0
 }
 
+.free_to_use_container.visible{
+    animation: bounce 3s forwards ease-in-out;
+    animation-delay: 1s;
+}
 
 .wrapper_3 {
     background: #020a27ee;
@@ -1415,6 +1534,10 @@ ul {
 
 
 .free_to_use_container:hover .wrapper_3 {
+    transform: translateX(0%);
+}
+
+.wrapper_3.clicked {
     transform: translateX(0%);
 }
 
@@ -1457,9 +1580,13 @@ ul {
     align-items: center;
     justify-content: center;
     overflow:hidden;
-    animation: slideUpFromFade 3.5s forwards ease-in-out;
+    opacity:0
 }
 
+.supports_batch_transfer_container.visible{
+    animation: bounce 3s forwards ease-in-out;
+    animation-delay: 1.5s;
+}
 
 .wrapper_4 {
     background: #020a27ee;
@@ -1473,6 +1600,10 @@ ul {
 
 
 .supports_batch_transfer_container:hover .wrapper_4 {
+    transform: translateY(0%);
+}
+
+.wrapper_4.clicked {
     transform: translateY(0%);
 }
 
@@ -1518,7 +1649,6 @@ ul {
     justify-content: space-between;
     height: 10vw;
     margin-bottom: 0%;
-     animation: slideUpFromFade 3s forwards ease-in-out;
 }
 
 .bazaar_title_place {
@@ -1532,6 +1662,7 @@ ul {
     border-radius: 4px;
     margin-left: 0.5%;
     margin-right: 0.5%;
+    opacity: 0;
 }
 
 .wrap_d{
@@ -1575,6 +1706,12 @@ ul {
     margin-top: 0%;
     margin-bottom: 0%;
     font-size: 3vw;
+    opacity: 0
+}
+
+.bazaar_title_container.visible {
+    animation: appear 1s forwards ease;
+    animation-delay: 1.5s;
 }
 
 .carousel_container {
@@ -1586,7 +1723,19 @@ ul {
     margin-bottom: 2%;
     padding-bottom: 0%;
     height: 100%; 
-    animation: slideUpFromFade 3s forwards ease-in-out;
+    opacity: 0;
+}
+
+.carousel_container.visible .inner_container{
+    opacity: 0;
+    animation: zoomOut 2s forwards ease;
+    animation-delay: 1s;
+    position: relative;
+    height: 100%; 
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .carousel_container::before {
@@ -1646,7 +1795,7 @@ ul {
 }
 
 .reason_for_donation * {
-    font-size: 2.25vw;
+    font-size:  1.9vw;
     font-weight: 100;
     line-height: 2.5vw;
     margin-top: 0vw;
@@ -1658,7 +1807,7 @@ ul {
     padding-right: 0%;
     margin-left: 11.5%;
     width: 50%;
-    font-size: 3.25vw;
+    font-size: 3vw;
     margin-top:0%;
     color:#90FFDE;
     font-weight: 100;
@@ -2084,14 +2233,13 @@ ul {
     
      /*-navbar*/
     .navbar {
-    background-color: black;
+    background-color:#00000025;
     position: absolute;
     position: fixed;
     width: 100%;
     height: 7.5vw;
     left: 0px;
     top: 0px;
-    background: #000000;
     border-radius: 0px 0px 20px 20px;
     display: flex;
     place-content: center;
@@ -2099,7 +2247,10 @@ ul {
     
     }
     
-    
+    .navbar.Scrolled {
+        background-color:#000000;
+    }
+
     .navcontainer {
         display: flex;
         justify-content: space-between;
@@ -2252,12 +2403,7 @@ ul {
         background-position-x:100%;
         transform-origin: left;
         transition: 800ms ease;
-    }
-        
-    .overspread_2 * {
-        font-size: 3vw;
-    }
-    
+    }  
    
     
     .button_3 {
@@ -3452,14 +3598,13 @@ ul {
         
       /*-navbar*/   
     .navbar {
-        background-color: black;
+        background-color:#00000025;
         position: absolute;
         position: fixed;
         width: 100%;
         height: 8.5vw;
         left: 0px;
         top: 0px;
-        background: #000000;
         border-radius: 0px 0px 30px 30px;
         display: flex;
         place-content: center;
@@ -3467,6 +3612,10 @@ ul {
         
         }
     
+        .navbar.Scrolled {
+            background-color:#000000;
+        }
+
         .navcontainer {
             display: flex;
             justify-content: space-between;
@@ -4813,14 +4962,13 @@ h5 {
     
 /*-navbar*/   
 .navbar {
-    background-color: black;
+    background-color: #00000025;
     position: absolute;
     position: fixed;
     width: 100%;
     height: 15vw;
     left: 0px;
     top: 0px;
-    background: #000000;
     border-radius: 0px 0px 20px 20px;
     display: flex;
     place-content: center;
@@ -4828,6 +4976,9 @@ h5 {
     padding:2%
 }
 
+.navbar.Scrolled {
+    background-color: #000000;
+}
     .navcontainer {
         display: flex;
         justify-content: space-between;
@@ -5143,6 +5294,7 @@ h5 {
     .Main_info {
         display: flex;
         flex-direction: column;
+        align-items: center;
         justify-content: space-between;
         position: absolute;
         width: 95%;
@@ -5341,7 +5493,7 @@ h5 {
     }
     
     .completedtrade {
-        width: 35%;
+        width: 34%;
         max-width: 700px;
         height: 100%;
         position:relative;
@@ -5393,10 +5545,10 @@ h5 {
         align-items: center;
         justify-content: center;
         border-radius: 8px;
-        z-index:2
-     
+        z-index:2;
     } 
-    
+     
+
     .hackenauditcontainer::before{
         content: '';
         position: absolute;

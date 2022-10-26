@@ -113,7 +113,7 @@ export default {
 
   .network_name {
       display: flex;
-      font-size: 1.5vw;
+      font-size: 2.5vw;
       text-transform: uppercase;
 
     }
@@ -126,9 +126,8 @@ export default {
     margin-top: 0vw;
     margin-right: 6px;
   
-  }
-
-  .network_name {
+    }
+    .network_name {
       display: flex;
       font-size: 1.5vw;
       text-transform: uppercase;
