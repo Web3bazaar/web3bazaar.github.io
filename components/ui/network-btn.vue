@@ -102,7 +102,24 @@ export default {
     }
   }
 
-  @media screen and (min-width:800px) {
+  @media screen and (min-width:800px)  {
+    img {
+    width: 2vw;
+    height: auto;
+    margin-top: 0vw;
+    margin-right: 5px;
+
+  }
+
+  .network_name {
+      display: flex;
+      font-size: 1.5vw;
+      text-transform: uppercase;
+
+    }
+  }
+
+  @media screen and (min-width:800px) and (min-height:1070px) {
     img {
     width: 4vw;
     height: auto;
