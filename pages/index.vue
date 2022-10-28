@@ -2,9 +2,37 @@
     <div class="body">
 
         <div class="header_area">
-            <div class="herosection">
-                <div class="background_image">
-                    <img src="../assets/fromfigma/Bg-image.png" alt="" class="image1">
+            <div class="herosection" @mousemove="parallax">
+                <div class="background_image" >
+                    <div class="img_1">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_2" :style="{translate: xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_3" :style="{translate: xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_4" :style="{translate: xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_5" :style="{translate: xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_6" :style="{translate: -xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_7" :style="{translate: -xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_8" :style="{translate: -xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                    <div class="img_9" :style="{translate: -xDirection+'px'}">
+                        <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
+                    </div>
+                   
+                
                 </div>
 
                 <div class="vector_1">
@@ -22,10 +50,10 @@
                         </div>
 
                         <div class="description">
-                            <h4 class="description">{{ typeValue }}</h4>
+                            <h4 class="description">The Web3 Bazaar is the peer-to-peer exchange for web3 assets supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.</h4>
                         </div>
                     
-                        <ui-action-btn class="brighten" :btnText="'ENTER THE BAZAAR'" @click="openBetaModal" >
+                        <ui-action-btn class="brighten" :btnText=typeValue @click="openBetaModal" >
                         </ui-action-btn>
                     </div>
                     
@@ -65,7 +93,7 @@
                                     <div class="overtop_4">
                                         <div class="over_in_4">
                                             <div class="overspread_4">
-                                                <h3>Learn More</h3>
+                                                <h3>LEARN MORE</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -240,11 +268,14 @@ export default {
 
   data: () => {
     return {
+        positionWithMousemove:true,
         typeValue: '',
-        typeString: 'The Web3 Bazaar is the peer-to-peer exchange for web3 assets supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.',
+        typeString: 'ENTER THE BAZAAR',
         typingSpeed: 100,
         typeIndex:0,
-        
+
+        xDirection: 0,
+
         completedTrades: '',
         numerical:1,
         target:110,
@@ -290,13 +321,15 @@ export default {
   },
 
   created() {
-    setTimeout(this.typeText,this.typingSpeed);
-    setTimeout(this.countTrade,this.calcSpeed);
-    setTimeout(this.countAsset,1)
+    
   },
 
   mounted(){
     this.callBackFunction()
+    this.observeStats()
+    setTimeout(() =>{
+        this.typeText()
+      }, 2000)
   },
 
   methods: {
@@ -309,6 +342,10 @@ export default {
       } else {
         this.$router.push({ name: 'main-square' })
       }
+    },
+
+    parallax(e) {
+        this.xDirection=(e.clientX/10)
     },
 
     next() {
@@ -416,9 +453,26 @@ export default {
         observer.observe(this.$refs.eighteen)
   },
 
+    observeStats(){
+        const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry=>{
+            if(entry.isIntersecting) {
+             this.countTrade()
+             this.countAsset()
+            }
+        })
+            
+        }, this.options
+    );
+        observer.observe(this.$refs.one)
+        observer.observe(this.$refs.two)
+    },
 
+    
+    
   },
 
+   
 
 
 

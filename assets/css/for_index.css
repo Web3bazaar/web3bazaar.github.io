@@ -254,6 +254,18 @@ button  {
         opacity: 1}
 }
 
+@keyframes bounceTwo {
+    0%, 100% {transform: translateY(0);}
+
+    50% {transform: translateY(15px);}
+}
+
+@keyframes bounceThree {
+    0%, 100% {transform: translateY(0);}
+
+    50% {transform: translateY(5px);}
+}
+
 @keyframes slideFromLeft {
     from{
         transform: translateX(-100%);
@@ -756,15 +768,78 @@ ul {
 
 .background_image {
     position: absolute;
+    display:flex;
     width:100%;
     height:65%;
     left: 0%;
     top: 8%;
 }
 
-.image1 {
-    width: 100%;
-    height: 100%;
+.img_1 {
+    position: absolute;
+    width:20%;
+    top: 25%;
+    left:0%;
+    right:0%;
+    margin: 0 auto;
+    animation: bounceTwo 3s infinite ease;
+}
+
+.img_2{
+    position: absolute;
+    width:12%;
+    top: 0%;
+    left:-5%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_3{
+    position: absolute;
+    width:12%;
+    top: 18%;
+    left: 15%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_4{
+    position: absolute;
+    width:12%;
+    top: 48%;
+    left: 2%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_5{
+    position: absolute;
+    width:12%;
+    top: 70%;
+    left: 20%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_6{
+    position: absolute;
+    width:12%;
+    top: 0%;
+    right: -2%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_7{
+    position: absolute;
+    width:12%;
+    top: 25%;
+    right: 17%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_8{
+    position: absolute;
+    width:12%;
+    top: 50%;
+    right: 0%;
+    animation: bounceTwo 3s infinite ease;
+}
+.img_9{
+    position: absolute;
+    width:12%;
+    top: 80%;
+    right: 22%;
+    animation: bounceTwo 3s infinite ease;
 }
 
 .vector_1 {
@@ -927,7 +1002,6 @@ ul {
     background-position-x:100%;
     transform-origin: left;
     transition: 800ms ease;
-    
 }
 
 .overspread * {
@@ -946,7 +1020,7 @@ ul {
 .brighten{
     opacity: 0;
     animation: lightenOnHover 3.5s forwards ease;
-    animation-delay: 17s;
+    animation-delay: 1s;
 }
 
 .overspread:hover {
@@ -1231,7 +1305,8 @@ ul {
     top: 0%;
     line-height: 3.4vw;
     font-weight: 100;
-    font-size: 2.5vw;
+    font-size: 2.2vw;
+    color: rgba(255, 255, 255, 0.849)
 }
 
 .overspread_4:hover {
@@ -1799,6 +1874,7 @@ ul {
     font-weight: 100;
     line-height: 2.5vw;
     margin-top: 0vw;
+    color: rgba(255, 255, 255, 0.849)
 }
      
 
@@ -1859,7 +1935,7 @@ ul {
     margin-top: 0%;
     margin-left: -0.06%;
     padding: 0%;
-    
+    animation: bounceThree 3s infinite ease;
 }
 
 .vector_3 {
@@ -2558,15 +2634,69 @@ ul {
     
     .background_image {
         position: absolute;
-        width:100%;
-        height:40%;
-        top: 20%;
+        width:105%;
+        height:80%;
+        top: 10%;
     }
     
-    .image1 {
-        width: 100%;
-        height: 100%;
+    .img_1 {
+        position: absolute;
+        width:30%;
+        top: 40%;
+        left:0%;
+        right:0%;
+        margin: 0 auto;
     }
+    
+    .img_2{
+        position: absolute;
+        width:17%;
+        top: 0%;
+        left:-5%;
+    }
+    .img_3{
+        position: absolute;
+        width:17%;
+        top: 15%;
+        left: 15%;
+    }
+    .img_4{
+        position: absolute;
+        width:17%;
+        top: 33%;
+        left: 2%;
+    }
+    .img_5{
+        position: absolute;
+        width:17%;
+        top: 70%;
+        left: 10%;
+    }
+    .img_6{
+        position: absolute;
+        width:17%;
+        top: 5%;
+        right: -2%;
+    }
+    .img_7{
+        position: absolute;
+        width:17%;
+        top: 24%;
+        right: 12%;
+    }
+    .img_8{
+        position: absolute;
+        width:17%;
+        top: 60%;
+        right: 0%;
+    }
+    .img_9{
+        position: absolute;
+        width:17%;
+        top: 80%;
+        right: 22%;
+    }
+    
     
     .vector_1 {
         width: 210%;
@@ -2888,18 +3018,10 @@ ul {
     
     .audit {
         color: #90FFDE;
-        font-size: 4.0vw;
+        font-size: 3.15vw;
         font-weight: 100;
         line-height: 4.7vw;
         width: 100%;
-    }
-
-    
-    .audit {
-        color: #90FFDE;
-        font-size: 3.15vw;
-        font-weight: 100;
-    
     }
     
    
@@ -2907,7 +3029,7 @@ ul {
         cursor: pointer;
         margin-top: 2.5vw;
         margin-left: 0vw;
-        width:60%;
+        width:50%;
         text-align:center;
         height: 3.4vw; 
         background: linear-gradient( to right, #E83E8C, #7C5AC1, #007BFF);
@@ -3916,15 +4038,68 @@ ul {
         
         .background_image {
             position: absolute;
-            top: 15%;
+            top: 7%;
             width:100%;
-            height: 40%;
+            height: 80%;
           
         }
+
+        .img_1 {
+            position: absolute;
+            width:30%;
+            top: 40%;
+            left:0%;
+            right:0%;
+            margin: 0 auto;
+        }
         
-        .image1 {
-            width: 100%;
-            height: 100%;
+        .img_2{
+            position: absolute;
+            width:17%;
+            top: 0%;
+            left:-5%;
+        }
+        .img_3{
+            position: absolute;
+            width:17%;
+            top: 15%;
+            left: 15%;
+        }
+        .img_4{
+            position: absolute;
+            width:17%;
+            top: 33%;
+            left: 2%;
+        }
+        .img_5{
+            position: absolute;
+            width:17%;
+            top: 70%;
+            left: 10%;
+        }
+        .img_6{
+            position: absolute;
+            width:17%;
+            top: 5%;
+            right: -2%;
+        }
+        .img_7{
+            position: absolute;
+            width:17%;
+            top: 24%;
+            right: 12%;
+        }
+        .img_8{
+            position: absolute;
+            width:17%;
+            top: 60%;
+            right: 0%;
+        }
+        .img_9{
+            position: absolute;
+            width:17%;
+            top: 80%;
+            right: 22%;
         }
         
         .vector_1 {
@@ -3992,24 +4167,24 @@ ul {
         }
         
         .button_1 {
-            height: 7.2vw; 
+            height: 7.1vw; 
             width: 53.25vw;
             background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
             margin-top:0%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
         }
         
         .bazaarbutton {
-            height: 8.3vw; 
+            height: 8.4vw; 
             width: 97%;
             background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
             display: flex;
             align-items: center;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
         }
         
@@ -4018,13 +4193,13 @@ ul {
             display: flex;
             align-items: center;
             justify-content: center;
-            height:9.5vw;
+            height:9.6vw;
             width: 97%;
             text-align: center;
             margin-left: auto;
             margin-right: auto;
             background: linear-gradient( to right, #ac3069, #5c428f, #005bbd);
-            border-radius: 3px;
+            border-radius: 4px;
            
         }
         
@@ -4809,6 +4984,7 @@ ul {
             height: 100%;
             position: relative;
             padding: 0%;
+            animation: bounceThree 3s infinite ease;
         }
         
         .vector_3 {
@@ -5270,15 +5446,69 @@ h5 {
     .background_image {
         position: absolute;
         width:100%;
-        height:40%;
+        height:70%;
         left: 0%;
-        top: 20%;
+        top: 10%;
     }
     
-    .image1 {
-        width: 100%;
-        height: 100%;
+    .img_1 {
+        position: absolute;
+        width:30%;
+        top: 45%;
+        left:0%;
+        right:0%;
+        margin: 0 auto;
     }
+    
+    .img_2{
+        position: absolute;
+        width:20%;
+        top: 0%;
+        left:-5%;
+    }
+    .img_3{
+        position: absolute;
+        width:20%;
+        top: 15%;
+        left: 18%;
+    }
+    .img_4{
+        position: absolute;
+        width:20%;
+        top: 33%;
+        left: 2%;
+    }
+    .img_5{
+        position: absolute;
+        width:20%;
+        top: 70%;
+        left: 7%;
+    }
+    .img_6{
+        position: absolute;
+        width:20%;
+        top: 5%;
+        right: -2%;
+    }
+    .img_7{
+        position: absolute;
+        width:20%;
+        top: 28%;
+        right: 14%;
+    }
+    .img_8{
+        position: absolute;
+        width:20%;
+        top: 60%;
+        right: 0%;
+    }
+    .img_9{
+        position: absolute;
+        width:20%;
+        top: 85%;
+        right: 22%;
+    }
+    
     
     .vector_1 {
         display: none;
@@ -5463,11 +5693,12 @@ h5 {
         padding-bottom: 0%;
         height: 30vw;
         margin-left: 0%;
+        margin-bottom: 5%;
         width: 90%;
     }
     
     .tradedassets {
-        width: 34%;
+        width: 37%;
         max-width: 700px;
         height: 100%;
         position:relative;
@@ -5493,7 +5724,7 @@ h5 {
     }
     
     .completedtrade {
-        width: 34%;
+        width: 38%;
         max-width: 700px;
         height: 100%;
         position:relative;
@@ -6195,6 +6426,7 @@ h5 {
         height: 100%;
         position: relative;
         padding: 0%;
+        animation: bounceThree 3s infinite ease;
     }
     
     .vector_3 {
