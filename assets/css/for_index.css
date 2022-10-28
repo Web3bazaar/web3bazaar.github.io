@@ -165,16 +165,6 @@ button  {
 }
 
 
-
-@keyframes lightenOnHover {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
 @keyframes easeInOut {
     
     0%{background:#90FFDE;
@@ -265,6 +255,22 @@ button  {
 
     50% {transform: translateY(5px);}
 }
+
+@keyframes bounceFour {
+	0%{
+        transform: translateY(-25px);
+        opacity: 0}
+    40%{
+        transform: translateY(-20px);
+        opacity: 1}
+    20%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 1}
+	80% {
+        transform: translateY(-15px);
+        opacity: 1}
+}
+
 
 @keyframes slideFromLeft {
     from{
@@ -890,6 +896,9 @@ ul {
     text-align: center;
     margin-left:3%;
     margin-right: 3%;
+    animation: appear 2s forwards ease-out ;
+    opacity: 0;
+    animation-delay: 1s;
 }
 
 .description * {
@@ -1015,12 +1024,13 @@ ul {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-stroke: 0.15vw transparent;
+    
 }
 
 .brighten{
     opacity: 0;
-    animation: lightenOnHover 3.5s forwards ease;
-    animation-delay: 1s;
+    animation: appear 3.5s forwards ease;
+    animation-delay: 2s;
 }
 
 .overspread:hover {
@@ -1171,7 +1181,7 @@ ul {
 }
 
 .lock.visible {
-    animation: appear 1s forwards ease;
+    animation: bounceFour 1.5s forwards ease;
     animation-delay: 0.5s;
 }
 
@@ -1304,7 +1314,7 @@ ul {
     position: absolute;
     top: 0%;
     line-height: 3.4vw;
-    font-weight: 100;
+    font-weight: 500;
     font-size: 2.2vw;
     color: rgba(255, 255, 255, 0.849)
 }
@@ -1325,7 +1335,7 @@ ul {
 
 .hacken.visible {
     animation: appear 1s forwards ease;
-    animation-delay: 0.5s;
+    animation-delay: 3.5s;
 }
 
 .value_proposition_header_area {
@@ -1867,6 +1877,7 @@ ul {
     margin-left: 11%;
     margin-top: 0%;
     width: 75%;
+    min-height:14vh
 }
 
 .reason_for_donation * {
@@ -3503,12 +3514,14 @@ ul {
         padding-left: 0%;
         padding-right: 0%;
         margin-top: 1.5%;
+        margin-bottom: 0%;
         margin-left: 8%;
         width: 90%;
+        min-height:4vh
     }
     
     .reason_for_donation * {
-        font-size: 2vw;
+        font-size: 2.5vw;
         font-weight: 100;
         margin-left: 0%;
         line-height: 3vw;
@@ -3522,7 +3535,7 @@ ul {
         margin-left: 8%;
         width: 50%;
         font-size: 3.819vw;
-        margin-top:1%;
+        margin-top:0%;
         color:#90FFDE;
         font-weight: 100;
     
@@ -4912,7 +4925,7 @@ ul {
             margin-left: 0%;
             margin-top: 3%;
             width: 80%;
-           
+            min-height:15vh
         }
         
         .reason_for_donation * {
@@ -6352,7 +6365,7 @@ h5 {
         margin-left: 0%;
         margin-top: 3%;
         width: 100%;
-       
+        min-height:10vh
     }
     
     .reason_for_donation * {

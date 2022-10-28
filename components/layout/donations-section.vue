@@ -14,8 +14,8 @@
           
 
           <div class="reason_for_donation">
-              <h4>
-                  Send a donation to help us keep the Bazaar open to all and free to use forever.
+              <h4 ref="twenty">
+                {{typeValueTwo}}
               </h4>
           </div> 
 
@@ -56,6 +56,16 @@ export default {
   data() {
     return {
       percentages: [1, 10, 100],
+      typeValueTwo: '',
+      typeStringTwo: 'Send a donation to help us keep the Bazaar open to all and free to use forever.',
+      typingSpeedTwo: 100,
+      typeIndexTwo:0,
+
+      optionsTwo: {
+        rootMargin: "0px 0px -20px 0px",
+        threshold: 0.7
+        },
+  
     }
   },
   computed: {
@@ -65,6 +75,14 @@ export default {
       return this.getW3BDonationAddress(this.activeNetwork?.chainId)
     },
   },
+  created() {
+    setTimeout(this.typeTextTwo,this.typingSpeedTwo)
+    this.retypeText()
+      
+  },
+  mounted(){
+    
+  },  
   methods: {
     ...mapActions('donations', { donateAmount: 'donateAmount' }),
     async callDonateAmount(percentage) {
@@ -87,6 +105,26 @@ export default {
 
       return finalAmount + ' ' + this.activeNetwork?.nativeCurrency?.symbol
     },
+
+    typeTextTwo() {
+      if(this.typeIndexTwo < this.typeStringTwo.length) {
+
+          this.typeValueTwo += this.typeStringTwo.charAt(this.typeIndexTwo)
+          this.typeIndexTwo++;
+          setTimeout(this.typeTextTwo,this.typingSpeedTwo)
+      }else {
+        setTimeout(this.retypeText, 5000)
+      }
+    },
+
+    retypeText(){
+      if(this.typeIndexTwo >= this.typeStringTwo.length){
+          this.typeValueTwo ='';
+          this.typeIndexTwo = 0
+        this.typeTextTwo()
+      }
+    }
+     
   },
 }
 </script>

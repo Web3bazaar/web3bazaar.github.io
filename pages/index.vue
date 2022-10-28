@@ -53,7 +53,7 @@
                             <h4 class="description">The Web3 Bazaar is the peer-to-peer exchange for web3 assets supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.</h4>
                         </div>
                     
-                        <ui-action-btn class="brighten" :btnText=typeValue @click="openBetaModal" >
+                        <ui-action-btn class="brighten" :btnText="'ENTER THE BAZAAR'" @click="openBetaModal" >
                         </ui-action-btn>
                     </div>
                     
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="text">
-                        <h4 class="audit">Our smart contracts are safe <br/>and  have been audited by Hacken.</h4>
+                        <h4 class="audit">Our smart contracts are safe <br/>{{typeValue}}</h4>
                        
                         <button class="button_4" onclick="window.open('https://drive.google.com/file/d/1CjjpCHmor9CecunyKgau96Z7-YBzcC2-/view','_blank')">
                             <div class="learn_more">
@@ -270,7 +270,7 @@ export default {
     return {
         positionWithMousemove:true,
         typeValue: '',
-        typeString: 'ENTER THE BAZAAR',
+        typeString: 'and have been audited by Hacken.',
         typingSpeed: 100,
         typeIndex:0,
 
@@ -303,7 +303,6 @@ export default {
         rootMargin: "0px 0px -20px 0px",
         threshold: 0.5
         },
-        visible: false
     }
   },
 
@@ -320,16 +319,10 @@ export default {
     },
   },
 
-  created() {
-    
-  },
-
   mounted(){
     this.callBackFunction()
     this.observeStats()
-    setTimeout(() =>{
-        this.typeText()
-      }, 2000)
+    this.observeHackenAudit()
   },
 
   methods: {
@@ -468,7 +461,18 @@ export default {
         observer.observe(this.$refs.two)
     },
 
-    
+    observeHackenAudit(){
+        const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry=>{
+            if(entry.isIntersecting) {
+                this.typeText()
+            }
+        })
+            
+        }, this.options
+    );
+        observer.observe(this.$refs.three)
+    }
     
   },
 

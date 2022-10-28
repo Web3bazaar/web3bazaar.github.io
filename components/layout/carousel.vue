@@ -19,8 +19,6 @@
 export default {
     props: ['showArrow'],
 
-   
-
     setup() {
         
     },
