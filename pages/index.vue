@@ -216,11 +216,12 @@
             </div>
             
             <div ref="fourteen" class="carousel_container">
-                <div class="inner_container">
+                <div class="inner_container" @mouseenter="stopAutoPlay" @mouseleave="resumeAutoPlay">
                     <carousel
                         :showArrow="showArrow"
                         @next="next"
                         @prev="prev"
+                       
                     >  
                         <carousel-slide v-for="(slide,index) in slides" 
                             :key="slide" 
@@ -268,7 +269,6 @@ export default {
 
   data: () => {
     return {
-        positionWithMousemove:true,
         typeValue: '',
         typeString: 'and have been audited by Hacken.',
         typingSpeed: 100,
@@ -298,11 +298,14 @@ export default {
         visibleSlide:0,
         direction: 'left',
         showArrow: false,
+        autoplayEnabled: false,
+        autoPlayFunction: null,
 
         options: {
         rootMargin: "0px 0px -20px 0px",
         threshold: 0.5
         },
+
     }
   },
 
@@ -323,6 +326,7 @@ export default {
     this.callBackFunction()
     this.observeStats()
     this.observeHackenAudit()
+    this.observeCarousel()
   },
 
   methods: {
@@ -341,6 +345,42 @@ export default {
         this.xDirection=(e.clientX/10)
     },
 
+    countTrade() {
+    if(this.numerical < this.target) {
+    this.numerical++;
+    this.completedTrades = this.numerical
+    }
+    else if(this.numerical >= this.target) {
+    this.completedTrades = this.target   
+    } 
+    else {
+    this.target = false
+    }  setTimeout(this.countTrade,this.calcSpeed)
+    },
+
+    countAsset() {
+    if(this.numerical < this.targetOne) {
+    this.numerical++;
+    this.tradedAssets = this.numerical
+    }    
+    else if(this.numerical >= this.targetOne) {
+    this.tradedAssets =  this.targetOne
+    }
+    else {
+    this.targetOne = false
+    }setTimeout(this.countAsset,1)
+    },
+
+    typeText() {
+    if(this.typeIndex < this.typeString.length) {
+    this.typeValue += this.typeString.charAt(this.typeIndex)
+    this.typeIndex++;
+    }
+    else {
+    this.typeValue =this.typeString;
+    } setTimeout(this.typeText,this.typingSpeed)
+    },
+
     next() {
         if (this.visibleSlide >= this.slidesLen - 1) {
             this.visibleSlide=0;
@@ -348,8 +388,11 @@ export default {
         }else {
             this.visibleSlide++;
             this.showArrow =true
+            
         }
         this.direction="left"
+       
+     
     },
 
     prev() {
@@ -374,46 +417,26 @@ export default {
         }      
     },
 
-    typeText() {
-
-        if(this.typeIndex < this.typeString.length) {
-    
-            this.typeValue += this.typeString.charAt(this.typeIndex)
-            this.typeIndex++;
-
-        }
-        else {
-            this.typeValue =this.typeString;
-        } setTimeout(this.typeText,this.typingSpeed)
+    autoPlayCarousel(){
+        this.autoPlayFunction =setInterval(()=>{
+            if (this.visibleSlide >= this.slidesLen - 1) {
+                this.visibleSlide=0;
+                this.showArrow =false
+            }else {
+                this.visibleSlide++;
+                this.showArrow =true
+            }this.direction="left"
+        },5000)       
     },
     
-
-    countTrade() {
-        if(this.numerical < this.target) {
-            this.numerical++;
-            this.completedTrades = this.numerical
-        }
-        else if(this.numerical >= this.target) {
-            this.completedTrades = this.target   
-        } 
-        else {
-            this.target = false
-        }  setTimeout(this.countTrade,this.calcSpeed)
+    stopAutoPlay(){
+        clearInterval(this.autoPlayFunction)
     },
 
-    countAsset() {
-        if(this.numerical < this.targetOne) {
-            this.numerical++;
-            this.tradedAssets = this.numerical
-        }    
-        else if(this.numerical >= this.targetOne) {
-            this.tradedAssets =  this.targetOne
-        }
-        else {
-            this.targetOne = false
-        }setTimeout(this.countAsset,1)
+    resumeAutoPlay() {
+        this.autoPlayCarousel()
     },
-
+    
 
     callBackFunction(){
 
@@ -472,6 +495,19 @@ export default {
         }, this.options
     );
         observer.observe(this.$refs.three)
+    },
+
+    observeCarousel(){
+        const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry=>{
+            if(entry.isIntersecting) {
+                this.autoPlayCarousel()
+            }
+        })
+            
+        }, this.options
+    );
+        observer.observe(this.$refs.fourteen) 
     }
     
   },

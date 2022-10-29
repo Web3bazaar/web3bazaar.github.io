@@ -30,7 +30,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width:19%;
+        width:25%;
         height: 3%;
         left:0%;
         right:0%;

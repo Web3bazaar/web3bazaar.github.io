@@ -257,17 +257,17 @@ button  {
 }
 
 @keyframes bounceFour {
-	0%{
-        transform: translateY(-25px);
-        opacity: 0}
-    40%{
+	15%{
         transform: translateY(-20px);
         opacity: 1}
-    20%, 60%, 100% {
+    45%{
+        transform: translateY(-15px);
+        opacity: 1}
+    0%, 30%, 60%, 100% {
         transform: translateY(0);
         opacity: 1}
-	80% {
-        transform: translateY(-15px);
+	75% {
+        transform: translateY(-10px);
         opacity: 1}
 }
 
@@ -1177,12 +1177,12 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
+    opacity: 1;
 }
 
 .lock.visible {
     animation: bounceFour 1.5s forwards ease;
-    animation-delay: 0.5s;
+    animation-delay: 1s;
 }
 
 .text {
@@ -1817,7 +1817,7 @@ ul {
     animation-delay: 1s;
     position: relative;
     height: 100%; 
-    width: 100%;
+    width: 70%;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -3473,6 +3473,17 @@ ul {
         padding-bottom: 0%;
     }
 
+    .carousel_container.visible .inner_container{
+        opacity: 0;
+        animation: zoomOut 2s forwards ease;
+        animation-delay: 1s;
+        position: relative;
+        height: 100%; 
+        width: 100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
 
      /*footer-area*/
     .footer_area {
@@ -4884,6 +4895,18 @@ ul {
             align-items: center;
             margin-bottom: 0%;
             padding-bottom: 0%;
+        }
+
+        .carousel_container.visible .inner_container{
+            opacity: 0;
+            animation: zoomOut 2s forwards ease;
+            animation-delay: 1s;
+            position: relative;
+            height: 100%; 
+            width: 100%;
+            display:flex;
+            justify-content: center;
+            align-items: center;
         }
         
         /*footer-area*/
@@ -6311,6 +6334,18 @@ h5 {
         min-height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .carousel_container.visible .inner_container{
+        opacity: 0;
+        animation: zoomOut 2s forwards ease;
+        animation-delay: 1s;
+        position: relative;
+        height: 100%; 
+        width: 100%;
+        display:flex;
         justify-content: center;
         align-items: center;
     }

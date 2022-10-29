@@ -76,13 +76,9 @@ export default {
     },
   },
   created() {
-    setTimeout(this.typeTextTwo,this.typingSpeedTwo)
-    this.retypeText()
-      
+    setTimeout(this.typeTextTwo,this.typingSpeedTwo)      
   },
-  mounted(){
-    
-  },  
+  
   methods: {
     ...mapActions('donations', { donateAmount: 'donateAmount' }),
     async callDonateAmount(percentage) {
