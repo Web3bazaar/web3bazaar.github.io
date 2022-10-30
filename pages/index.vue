@@ -2,7 +2,7 @@
     <div class="body">
 
         <div class="header_area">
-            <div class="herosection" @mousemove="parallax">
+            <div class="herosection" @mousemove="parallax" @touchmove="parallaxe">
                 <div class="background_image" >
                     <div class="img_1">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
@@ -276,7 +276,7 @@ export default {
         typeIndex:0,
 
         xDirection: 0,
-        yDirection: null,
+        touchDirection: null,
         
 
         completedTrades: '',
@@ -346,6 +346,10 @@ export default {
 
     parallax(e) {
         this.xDirection=(e.clientX/10)
+    },
+
+    parallaxe(e){
+        this.xDirection=(e.targetTouches.item(0).clientX/5)
     },
 
     countTrade() {
@@ -444,12 +448,12 @@ export default {
     },
     
     performSlide(slideDirection){
-        this.yDirection = slideDirection
-        if(this.yDirection < -50){
+        this.touchDirection = slideDirection
+        if(this.touchDirection < -50){
            this.next()
-        }else if(this.yDirection > 30){
+        }else if(this.touchDirection > 30){
             this.prev()
-        } 
+        }clearTimeout(this.autoPlayFunction) 
     },
 
     callBackFunction(){
