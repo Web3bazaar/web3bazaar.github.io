@@ -3290,6 +3290,12 @@ ul {
         border-radius: 4.5vw;
         margin-top: 100%;        
     }
+
+    .permisionless_container.visible{
+        animation: bounce 3s forwards ease-in-out;
+        animation-delay: 0ms;
+    }
+    
     
     .wrapper_2 {
         background: #020a27ee;
@@ -3324,6 +3330,11 @@ ul {
         line-height: 3vw;
         border-radius: 4.5vw;
         margin-top: -125%; 
+    }
+
+    .free_to_use_container.visible{
+        animation: bounce 3s forwards ease-in-out;
+        animation-delay: 0ms;
     }
     
     .wrapper_3 {
@@ -3360,6 +3371,11 @@ ul {
         line-height: 3vw;
         border-radius: 4.5vw;
         margin-top: 25%;  
+    }
+
+    .supports_batch_transfer_container.visible{
+        animation: bounce 3s forwards ease-in-out;
+        animation-delay: 0ms;
     }
     
     .connected_logo {
@@ -3728,7 +3744,7 @@ ul {
     h5 {
         color: #ffffff;
         font-size: 3.2vw;
-        line-height: 3.5vw;
+        line-height: 4.5vw;
     }
     
      /*header*/
@@ -4661,7 +4677,7 @@ ul {
             background: #d9d9d910;
             text-align: center;
             padding: 0% 0% 0% 0%;
-            height: 63vw;
+            height: 67vw;
             line-height: 2vw;
             border-radius: 6vw;
             margin-top: -50%;
@@ -4671,7 +4687,7 @@ ul {
         .wrapper_1 {
             background: #020a27ee;
             padding: 0% 4% 0% 4%;
-            height: 63vw;
+            height: 67vw;
             width: 100%;
             line-height: 2vw;
             border-radius: 6vw;
@@ -4701,18 +4717,22 @@ ul {
             background: #d9d9d910;
             text-align: center;
             padding: 0% 0% 0% 0%;
-            height: 63vw;
+            height: 67vw;
             line-height: 2vw;
             border-radius: 6vw;
             margin-top: 100%;
             
         }
         
-        
+        .permisionless_container.visible{
+            animation: bounce 3s forwards ease-in-out;
+            animation-delay: 0ms;
+        }
+
         .wrapper_2 {
             background: #020a27ee;
             padding: 0% 4% 0% 4%;
-            height: 63vw;
+            height: 67vw;
             width: 100%;
             line-height: 2vw;
             border-radius: 6vw;
@@ -4738,16 +4758,21 @@ ul {
             background: #d9d9d910;
             text-align: center;
             padding: 0%;
-            height: 60vw;
+            height: 67vw;
             line-height: 2vw;
             border-radius: 6vw;
             margin-top: -125%;
         }
         
+        .free_to_use_container.visible{
+            animation: bounce 3s forwards ease-in-out;
+            animation-delay: 0ms;
+        }
+
         .wrapper_3 {
             background: #020a27ee;
             padding: 0% 4% 0% 4%;
-            height: 60vw;
+            height: 67vw;
             width: 100%;
             line-height: 2vw;
             border-radius: 6vw;
@@ -4775,16 +4800,21 @@ ul {
             background: #d9d9d910;
             text-align: center;
             padding: 0% 0% 0% 0%;
-            height: 60vw;
+            height: 67vw;
             line-height: 2vw;
             border-radius: 6vw;
             margin-top: 25%;        
+        }
+
+        .supports_batch_transfer_container.visible{
+            animation: bounce 3s forwards ease-in-out;
+            animation-delay: 0ms;
         }
         
         .wrapper_4 {
             background: #020a27ee;
             padding: 0% 4% 0% 4%;
-            height: 60vw;
+            height: 67vw;
             width: 100%;
             line-height: 2vw;
             border-radius: 6vw;
@@ -5158,7 +5188,7 @@ h4 {
 h5 {
     color: #ffffff;
     font-size: 4.5vw;
-    line-height:  5vw;
+    line-height:  6.2vw;
 }
 
  /*header*/
@@ -6097,7 +6127,7 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 85vw;
+        height: 90vw;
         line-height: 2vw;
         border-radius: 6vw
     } 
@@ -6105,7 +6135,7 @@ h5 {
     .wrapper_1 {
         background: #020a27ee;
         padding: 0% 6% 0% 6%;
-        height: 85vw;
+        height: 90vw;
         width: 97%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -6135,16 +6165,20 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 85vw;
+        height: 90vw;
         line-height: 2vw;
         border-radius: 6vw
-        
+    }
+
+    .permisionless_container.visible{
+        animation: bounce 3s forwards ease-in-out;
+        animation-delay: 0ms;
     }
     
     .wrapper_2 {
         background: #020a27ee;
         padding: 0% 6% 0% 6%;
-        height: 85vw;
+        height: 90vw;
         width: 97%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -6171,15 +6205,20 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 85vw;
+        height: 90vw;
         line-height: 2vw;
         border-radius: 6vw
+    }
+
+    .free_to_use_container.visible{
+        animation: bounce 3s forwards ease-in-out;
+        animation-delay: 0ms;
     }
 
     .wrapper_3 {
         background: #020a27ee;
         padding: 9% 8% 10% 8%;
-        height: 85vw;
+        height: 90vw;
         width: 97%;
         line-height: 2vw;
         border-radius: 6vw;
@@ -6207,15 +6246,20 @@ h5 {
         background: #d9d9d910;
         text-align: center;
         padding: 0%;
-        height: 85vw;
+        height: 90vw;
         line-height: 2vw;
         border-radius: 6vw
     }
     
+    .supports_batch_transfer_container.visible{
+        animation: bounce 3s forwards ease-in-out;
+        animation-delay: 0ms;
+    }
+
     .wrapper_4 {
         background: #020a27ee;
         padding: 5% 7% 0% 7%;
-        height: 85vw;
+        height: 90vw;
         width: 97%;
         line-height: 2vw;
         border-radius: 6vw;
