@@ -1,6 +1,6 @@
 <template>
     <transition :name="direction">
-        <div v-show="visibleSlide === index" class="carousel-slide">
+        <div v-show="visibleSlide === index" class="carousel-slide" @touchend="performSlide" @touchstart="compute">
             <slot></slot>
         </div>
     </transition>
@@ -10,10 +10,30 @@
 <script>
 export default {
     props:['visibleSlide','index','direction'],
+    data() {
+        return{
+            down: null,
+            slideDirection: 0
+        }
+    }, 
     setup() {
         
     },
-}
+
+     methods: {
+        compute(e){
+            this.down = e.targetTouches.item(0).clientX
+            console.log(this.down)
+        },
+        
+        performSlide(e){
+            this.slideDirection=(e.changedTouches.item(0).clientX)-this.down
+            console.log(this.slideDirection+'pt')
+            this.$emit('performSlide',this.slideDirection)
+        }
+     }
+}  
+ 
 </script>
 
 <style>
@@ -27,8 +47,7 @@ export default {
         flex-direction:column;
         align-items: center;
         justify-content:center;
-       
-        
+            
     }
 
     .carousel-slide *{

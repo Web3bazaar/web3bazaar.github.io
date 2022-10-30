@@ -81,6 +81,11 @@ export default {
         bottom:30%;
         margin: 0 auto;
         }
+
+    .carousel-indicator {
+        background: rgba(255, 255, 255, 0.185);
+
+    }
     }    
 
     @media screen and (max-width:500px){
@@ -98,7 +103,7 @@ export default {
     }
 
     .carousel-indicator {
-        background: rgba(0, 0, 0, 0.651);
+        background: rgba(255, 255, 255, 0.185);
         width: 11%;
         height:100%;
         border-radius:4px

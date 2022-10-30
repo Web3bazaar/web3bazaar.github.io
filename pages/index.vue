@@ -228,6 +228,7 @@
                             :index="index"
                             :visibleSlide="visibleSlide"
                             :direction="direction"
+                            @performSlide="performSlide"
                         >
                         <transition name="trans">
                                 <img :src="slide.url">
@@ -275,6 +276,8 @@ export default {
         typeIndex:0,
 
         xDirection: 0,
+        yDirection: null,
+        
 
         completedTrades: '',
         numerical:1,
@@ -298,8 +301,8 @@ export default {
         visibleSlide:0,
         direction: 'left',
         showArrow: false,
-        autoplayEnabled: false,
         autoPlayFunction: null,
+        
 
         options: {
         rootMargin: "0px 0px -20px 0px",
@@ -391,8 +394,7 @@ export default {
             
         }
         this.direction="left"
-       
-     
+        clearTimeout(this.autoPlayFunction)
     },
 
     prev() {
@@ -404,6 +406,7 @@ export default {
             this.showArrow =true
         }
         this.direction="right"
+        clearTimeout(this.autoPlayFunction)
     },
 
     slideSelect(index) {
@@ -414,29 +417,40 @@ export default {
         }
         else{
             this.showArrow= true 
-        }      
+        }clearTimeout(this.autoPlayFunction)
+
     },
 
     autoPlayCarousel(){
-        this.autoPlayFunction =setInterval(()=>{
-            if (this.visibleSlide >= this.slidesLen - 1) {
-                this.visibleSlide=0;
-                this.showArrow =false
-            }else {
-                this.visibleSlide++;
-                this.showArrow =true
-            }this.direction="left"
-        },5000)       
+        if (this.visibleSlide >= this.slidesLen - 1) {
+            this.visibleSlide=0;
+            this.showArrow =false
+        }else {
+            this.visibleSlide++;
+            this.showArrow =true
+        }
+        this.direction="left"
+        this.autoPlayFunction = setTimeout(()=>{
+            this.autoPlayCarousel()
+        }, 5000)      
     },
     
     stopAutoPlay(){
-        clearInterval(this.autoPlayFunction)
+        clearTimeout(this.autoPlayFunction)
     },
 
     resumeAutoPlay() {
         this.autoPlayCarousel()
     },
     
+    performSlide(slideDirection){
+        this.yDirection = slideDirection
+        if(this.yDirection < -50){
+           this.next()
+        }else if(this.yDirection > 30){
+            this.prev()
+        } 
+    },
 
     callBackFunction(){
 
@@ -501,7 +515,9 @@ export default {
         const observer = new IntersectionObserver(entries => {
         entries.forEach(entry=>{
             if(entry.isIntersecting) {
+                this.autoPlayFunction = setTimeout(()=>{
                 this.autoPlayCarousel()
+                }, 5000)
             }
         })
             
