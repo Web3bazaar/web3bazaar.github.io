@@ -2,33 +2,36 @@
     <div class="body">
 
         <div class="header_area">
-            <div class="herosection" @mousemove="parallax" @touchmove="parallaxe">
-                <div class="background_image" >
+            <div class="herosection"
+             @mousemove="parallax"
+             @touchmove="parallaxe" 
+           >
+                <div class="background_image">
                     <div class="img_1">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_2" :style="{translate: xDirection+'px'}">
+                    <div class="img_2" :style="{translate: `${xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_3" :style="{translate: xDirection+'px'}">
+                    <div class="img_3" :style="{translate: `${-xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_4" :style="{translate: xDirection+'px'}">
+                    <div class="img_4" :style="{translate: `${xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_5" :style="{translate: xDirection+'px'}">
+                    <div class="img_5" :style="{translate: `${-xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_6" :style="{translate: -xDirection+'px'}">
+                    <div class="img_6" :style="{translate: `${-xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_7" :style="{translate: -xDirection+'px'}">
+                    <div class="img_7" :style="{translate: `${xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_8" :style="{translate: -xDirection+'px'}">
+                    <div class="img_8" :style="{translate: `${-xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
-                    <div class="img_9" :style="{translate: -xDirection+'px'}">
+                    <div class="img_9" :style="{translate: `${xDirection+'px'} ${yDirection+'px'}`}">
                         <img src="../assets/fromfigma/Web3Bazaar_1of1_ArtPiece_HD_FINAL 8.png">
                     </div>
                    
@@ -53,7 +56,7 @@
                             <h4 class="description">The Web3 Bazaar is the peer-to-peer exchange for web3 assets supported by non-custodial escrow smart contracts that enable swaps of any NFT or ERC-20 token.</h4>
                         </div>
                     
-                        <ui-action-btn class="brighten" :btnText="'ENTER THE BAZAAR'" @click="openBetaModal" >
+                        <ui-action-btn class="brighten" :btnText="'ENTER THE BAZAAR'" @click="openBetaModal">
                         </ui-action-btn>
                     </div>
                     
@@ -276,7 +279,7 @@ export default {
         typeIndex:0,
 
         xDirection: 0,
-        touchDirection: null,
+        yDirection: 0,
         
 
         completedTrades: '',
@@ -300,6 +303,7 @@ export default {
         ],
         visibleSlide:0,
         direction: 'left',
+        touchDirection: null,
         showArrow: false,
         autoPlayFunction: null,
         
@@ -345,11 +349,15 @@ export default {
     },
 
     parallax(e) {
-        this.xDirection=(e.clientX/10)
+        this.xDirection=(e.clientX/5)
+        this.yDirection=(e.clientY/10)
+        this.count=0
     },
 
     parallaxe(e){
         this.xDirection=(e.targetTouches.item(0).clientX/5)
+        this.yDirection=(e.targetTouches.item(0).clientY/10)
+        this.count=0
     },
 
     countTrade() {
