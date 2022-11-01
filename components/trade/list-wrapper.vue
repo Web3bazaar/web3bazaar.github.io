@@ -3,7 +3,7 @@
     class="list-wrapper trades-wrapper-row"
     :class="{ disabledContainer: disabled }"
   >
-    <v-row :class="{ 'new-trade': newTrade }" justify="center">
+    <v-row :class="{ 'new-trade': newTrade }">
       <v-col cols="12" sm="5" class="item-col">
         <p class="">You</p>
         <v-card class="item-card">
@@ -132,10 +132,17 @@ export default {
 </script>
 
 <style lang="scss">
+
+.new-trade {
+  display:flex;
+  justify-content: center;
+}
+
 .disabledContainer {
   pointer-events: none;
 }
 .trades-wrapper-row {
+  
   .item-col:first-child .item-card section.list-item {
     left: 3px;
   }
@@ -145,6 +152,7 @@ export default {
   .list-trade-row {
     border-top: solid 1px #3b3b3bc0;
   }
+
 }
 .trades-wrapper-row:nth-child(2) {
   .list-trade-row {

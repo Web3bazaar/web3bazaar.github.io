@@ -10,8 +10,8 @@ export default {}
 .loader,
 .loader:before,
 .loader:after {
-  width: 2em;
-  height: 2em;
+  width: 1vw;
+  height: 1vw;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   -webkit-animation: load7 1.8s infinite ease-in-out;
@@ -20,7 +20,7 @@ export default {}
 .loader {
   color: #ffffff;
   font-size: 6px;
-  margin: 0;
+  margin-top: -15%;
   position: relative;
   text-indent: -9999em;
   -webkit-transform: translateZ(0) translateY(-100%);
@@ -28,7 +28,7 @@ export default {}
   transform: translateZ(0) translateY(-100%);
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
-  line-height: 0;
+  line-height: 2.1vw;
 }
 .loader:before,
 .loader:after {
@@ -37,12 +37,12 @@ export default {}
   top: 0;
 }
 .loader:before {
-  left: -3em;
+  left: -3vw;
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
 .loader:after {
-  left: 3em;
+  left: 3vw;
 }
 @keyframes load7 {
   0%,

@@ -1,25 +1,27 @@
 <template>
   <section
-    class="main-square section-padding-100 darker"
+    class="main-square darker"
     style="min-height: 70vh"
   >
     <v-container>
       <!-- Tittle -->
-      <v-row justify="end">
-        <v-col cols="12" lg="6" class="d-flex justify-center">
+      <div>
+        <div class="d-flex">
           <h1 class="gradient-text">Main Square</h1>
-        </v-col>
-        <v-col cols="12" lg="3" class="d-flex justify-center">
-          <nuxt-link
+        </div>
+        <div class="d-flex">
+            <nuxt-link
             v-if="hasTradesPendingExecutor || hasTradesPendingCreator"
             class="mb-6"
             :to="'/create-new-trade'"
           >
             <ui-action-btn :btn-text="'New Trade'"> </ui-action-btn>
-          </nuxt-link>
-        </v-col>
-      </v-row>
-      <dashboard-trades-section> </dashboard-trades-section>
+            </nuxt-link>
+        </div>
+      </div>
+      <div class="aligner">
+        <dashboard-trades-section> </dashboard-trades-section>
+      </div>
     </v-container>
   </section>
 </template>
@@ -88,6 +90,20 @@ export default {
 </script>
 
 <style lang="scss">
+
+.main-square{
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+
+.aligner {
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  width: 100%;
+}
+
 .trades--title {
   font-size: 1.3rem;
   margin-bottom: 16px;

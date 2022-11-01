@@ -1,15 +1,27 @@
-<template>
-  <v-btn
-    class="more-btn pixel2 w3b-bg-gradient"
+ <template>
+ <button class="button_1"
     type="submit"
     :small="small"
     :loading="loading"
     :disabled="disabled"
     :ripple="false"
-    @click="playSound"
-  >
-    {{ btnText }}
-  </v-btn>
+    @click="playSound">
+    <div class="bazaarbutton">
+        <div class="overlay">
+            <div class="overtop">
+                <div class="over_in">
+
+                    <div  class="overspread">
+                          <h3>{{ btnText }}</h3>                        
+                    </div>
+
+                </div>
+            </div>                           
+        </div>
+    </div> 
+ </button>
+  
+ 
 </template>
 
 <script>
@@ -50,7 +62,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped src="assets/css/for_index.css" >
 .login-btn {
   width: 176px !important;
   height: 35px !important;

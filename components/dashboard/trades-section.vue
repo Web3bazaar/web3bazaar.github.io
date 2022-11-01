@@ -4,7 +4,7 @@
       v-if="!hasTradesPendingExecutor && !hasTradesPendingCreator"
       justify="center"
     >
-      <v-col cols="12" lg="6" class="d-flex flex-column align-center">
+      <v-col class="d-flex flex-column">
         <h5 class="d-flex mb-4 text-center">
           It seems like you don't have any open trades in the Bazaar.
         </h5>
