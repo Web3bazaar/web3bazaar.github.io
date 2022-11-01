@@ -10,7 +10,7 @@
       Everything you'll do in this beta version is on Polygon's Mumbai Testnet.
       You won't pay any real fees nor trade Mainnet assets
     </p>
-    <p class="">
+    <p class="second_paragraph">
       <a
         :href="'https://medium.com/@web3bazaar/the-web3-bazaar-opens-for-tests-on-polygon-83f0ed26625c'"
         target="_blank"
@@ -155,5 +155,9 @@ export default {
       }
     }
   }
+}
+
+.second_paragraph{
+  margin-bottom: 7%
 }
 </style>
