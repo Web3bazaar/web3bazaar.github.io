@@ -434,14 +434,7 @@ export default {
     },
 
     autoPlayCarousel(){
-        if (this.visibleSlide >= this.slidesLen - 1) {
-            this.visibleSlide=0;
-            this.showArrow =false
-        }else {
-            this.visibleSlide++;
-            this.showArrow =true
-        }
-        this.direction="left"
+        this.next()
         this.autoPlayFunction = setTimeout(()=>{
             this.autoPlayCarousel()
         }, 5000)      
@@ -452,7 +445,9 @@ export default {
     },
 
     resumeAutoPlay() {
-        this.autoPlayCarousel()
+        setTimeout(()=>{
+            this.autoPlayCarousel()
+        }, 5000)      
     },
     
     performSlide(slideDirection){
